@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Empire Roleplay</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            background:
+                linear-gradient(rgba(15, 8, 20, 0.82), rgba(15, 8, 20, 0.92)),
+                url("background.jpg") center / cover;
+        }
+
+        .content {
+            width: min(700px, 90%);
+            padding: 50px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            background: rgba(25, 15, 30, 0.75);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+        }
+
+        p {
+            color: #ddd;
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            text-decoration: none;
+            background: #852a6f;
+        }
+
+        .button:hover {
+            background: #a83b90;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="content">
+        <h1>Empire Roleplay</h1>
+
+        <p>
+            Welcome to Empire Roleplay. Join our community, read our rules,
+            and begin your story.
+        </p>
+
+        <a class="button" href="https://discord.gg/YOURINVITE">
+            Join Our Discord
+        </a>
+    </main>
+</body>
+</html>

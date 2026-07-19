@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boost Tracker — Empire Roleplay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="boost">
+
+<div class="sky" aria-hidden="true">
+  <div class="grid-fade"></div>
+  <div class="beam"></div>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffdf8e"/><stop offset="1" stop-color="#c98a2e"/>
+    </linearGradient>
+    <symbol id="crown" viewBox="0 0 64 64">
+      <path d="M8 44 L12 20 L22 32 L32 14 L42 32 L52 20 L56 44 Z" fill="url(#g)" stroke="#7a5518" stroke-width="1.5"/>
+      <rect x="8" y="46" width="48" height="7" rx="2" fill="url(#g)" stroke="#7a5518" stroke-width="1.5"/>
+      <circle cx="12" cy="18" r="3" fill="#ffdf8e"/><circle cx="32" cy="12" r="3" fill="#ffdf8e"/><circle cx="52" cy="18" r="3" fill="#ffdf8e"/>
+      <circle cx="20" cy="49.5" r="1.8" fill="#9e1f3c"/><circle cx="32" cy="49.5" r="1.8" fill="#9e1f3c"/><circle cx="44" cy="49.5" r="1.8" fill="#9e1f3c"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="page">
+  <h1 class="page-title">🔥 Boost Tracker</h1>
+  <div class="sub">Leaderboard &amp; History</div>
+
+  <div class="stat-row">
+    <div class="stat"><div class="n" id="boostTotal">0</div><div class="l">Total boosts</div></div>
+    <div class="stat"><div class="n" id="boostPeople">0</div><div class="l">Boosters</div></div>
+    <div class="stat"><div class="n" id="boostTop">—</div><div class="l">Top booster</div></div>
+  </div>
+
+  <div class="panel">
+    <h2>Log a boost</h2>
+    <form class="row-form" id="boostForm">
+      <input type="text" id="boostName" placeholder="Discord name" required>
+      <input type="number" id="boostCount" placeholder="Boosts" min="1" value="1" required style="max-width:110px">
+      <button class="btn" type="submit">Add</button>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>Leaderboard</h2>
+    <div id="boostTable"></div>
+  </div>
+  <a class="back" href="index.html">← Back to portal</a>
+</main>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

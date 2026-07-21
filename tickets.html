@@ -32,28 +32,58 @@
 
 <main class="page">
   <h1 class="page-title">🎟️ Ticket Tracker</h1>
-  <div class="sub">Daily &amp; Weekly Counts</div>
+  <div class="sub">Auto-counted from Ticket Tool transcripts</div>
 
   <div class="stat-row">
-    <div class="stat"><div class="n" id="tixToday">0</div><div class="l">Today</div></div>
-    <div class="stat"><div class="n" id="tixWeek">0</div><div class="l">This week</div></div>
-    <div class="stat"><div class="n" id="tixAll">0</div><div class="l">All time</div></div>
+    <div class="stat"><div class="n" id="tixHandled">0</div><div class="l">Tickets handled</div></div>
+    <div class="stat"><div class="n" id="tixStaffN">0</div><div class="l">Staff credited</div></div>
+    <div class="stat"><div class="n" id="tixTransN">0</div><div class="l">Transcripts</div></div>
   </div>
 
   <div class="panel">
-    <h2>Log tickets</h2>
-    <form class="row-form" id="tixForm">
-      <input type="text" id="tixStaff" placeholder="Staff member" required>
-      <input type="number" id="tixCount" placeholder="Tickets" min="1" value="1" required style="max-width:110px">
-      <input type="date" id="tixDate" required>
+    <h2>Import transcripts</h2>
+    <div class="rule-note">1 ticket is credited to each staff member with <b>3+ quality replies</b> in a transcript. A quality reply = a staff message with <b>15+ characters</b>.</div>
+    <div class="dropzone" id="tixDrop">
+      <div class="dz-ico">📄</div>
+      <div class="dz-main">Drop Ticket Tool <b>.html</b> transcripts here</div>
+      <div class="dz-sub">or tap to choose files — you can select several at once</div>
+    </div>
+    <input type="file" id="tixFile" accept=".html,text/html" multiple hidden>
+    <div class="imp-msg" id="tixImportMsg"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Staff list — who gets counted</h2>
+    <form class="row-form" id="staffForm">
+      <input type="text" id="staffName" placeholder="Staff name (as shown in Discord)" required>
+      <input type="text" id="staffId" placeholder="Discord user ID (optional)">
       <button class="btn" type="submit">Add</button>
     </form>
+    <div id="staffTable" style="margin-top:14px"></div>
   </div>
 
   <div class="panel">
     <h2>Per staff (all time)</h2>
     <div id="tixTable"></div>
   </div>
+
+  <div class="panel">
+    <h2>Imported transcripts</h2>
+    <div id="tixTransList"></div>
+  </div>
+
+  <details class="panel" style="padding-top:20px">
+    <summary style="cursor:pointer;font-size:15px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)">Manual adjustment</summary>
+    <p style="color:var(--muted);font-size:13px;margin:12px 0 14px">Only needed for corrections — e.g. crediting a ticket that had no transcript. These add on top of the auto counts.</p>
+    <form class="row-form" id="tixForm">
+      <input type="text" id="tixStaff" placeholder="Staff member" required>
+      <input type="number" id="tixCount" placeholder="Tickets" min="1" value="1" required style="max-width:110px">
+      <input type="date" id="tixDate" required>
+      <button class="btn" type="submit">Add</button>
+    </form>
+    <div style="margin-top:12px"><button class="btn small ghost" onclick="delManual()">Clear all manual adjustments</button></div>
+  </details>
+
   <a class="back" href="index.html">← Back to portal</a>
 </main>
 

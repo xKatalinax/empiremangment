@@ -199,3 +199,26 @@ td.num{font-weight:800;color:var(--gold-bright);}
 }
 .cal-ev.bd{background:rgba(230,179,69,.16);border-color:rgba(230,179,69,.4);color:var(--gold-bright);}
 @media(max-width:640px){.cal-day{min-height:56px;} .cal-ev{font-size:9.5px;}}
+
+/* ============ ticket import ============ */
+.rule-note{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:14px;
+  background:rgba(230,179,69,.06);border:1px solid rgba(230,179,69,.22);border-radius:12px;padding:11px 14px;}
+.rule-note b{color:var(--gold-bright);}
+.dropzone{
+  border:1.5px dashed rgba(230,179,69,.4);border-radius:16px;padding:30px 20px;text-align:center;
+  cursor:pointer;transition:border-color .18s, background .18s, transform .18s;background:rgba(14,8,16,.4);
+}
+.dropzone:hover{border-color:var(--gold);background:rgba(230,179,69,.06);}
+.dropzone.drag{border-color:var(--gold-bright);background:rgba(230,179,69,.12);transform:scale(1.01);}
+.dropzone .dz-ico{font-size:32px;filter:drop-shadow(0 0 12px rgba(230,179,69,.35));}
+.dropzone .dz-main{margin-top:8px;font-weight:800;font-size:14.5px;}
+.dropzone .dz-main b{color:var(--gold-bright);}
+.dropzone .dz-sub{margin-top:4px;font-size:12.5px;color:var(--muted);}
+.imp-msg{margin-top:14px;font-size:13.5px;color:var(--text);min-height:0;line-height:1.5;}
+.imp-msg:empty{display:none;}
+.imp-msg.err{color:var(--crimson-soft);}
+.imp-msg .imp-detail{display:block;margin-top:8px;font-size:12.5px;color:var(--muted);}
+details.panel summary{list-style:none;}
+details.panel summary::-webkit-details-marker{display:none;}
+details.panel summary::before{content:"▸ ";color:var(--gold);}
+details.panel[open] summary::before{content:"▾ ";}

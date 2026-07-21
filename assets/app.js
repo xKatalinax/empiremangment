@@ -35,15 +35,21 @@ const store = (() => {
 let users = store.get('users', null);
 if(!users || !users.length){ users = DEFAULT_USERS.slice(); store.set('users', users); }
 let boosts  = store.get('boosts', []);
-let tickets = store.get('tickets', []);
+let tickets = store.get('tickets', []);            // manual adjustments {staff,count,date}
+let staffList   = store.get('staffList', []);      // who counts as staff: [{name,id}]
+let transcripts = store.get('transcripts', []);    // parsed tickets: [{sig,label,date,counts:{key:{name,replies}}}]
 let roster  = store.get('roster', [{name:"Kat", rank:"Owner"}]);
 let tebex   = store.get('tebex', []);
 let apps    = store.get('apps', []);
 let events  = store.get('events', []);
 
+/* ---- shared counting rules (must match the Discord bot in /discord-bot) ---- */
+const QUALITY_MIN_CHARS = 15;   // a "quality reply" = staff message with >= this many chars of real text
+const TICKET_MIN_REPLIES = 3;   // >= this many quality replies in one transcript = 1 ticket handled
+
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const save = () => { store.set('boosts',boosts); store.set('tickets',tickets); store.set('roster',roster); store.set('tebex',tebex); store.set('apps',apps); store.set('events',events); store.set('users',users); };
+const save = () => { store.set('boosts',boosts); store.set('tickets',tickets); store.set('staffList',staffList); store.set('transcripts',transcripts); store.set('roster',roster); store.set('tebex',tebex); store.set('apps',apps); store.set('events',events); store.set('users',users); };
 
 /* ---------- auth (session survives page changes, ends when tab closes) ---------- */
 function sessionGet(){ try{ return JSON.parse(sessionStorage.getItem('emp_session')||'null'); }catch(e){ return null; } }
@@ -127,9 +133,10 @@ function renderDashCards(u){
   const pend = tebex.filter(t=>t.status==='pending').length;
   const appPend = apps.filter(a=>a.status==='pending').length;
   const upcoming = nextEvent();
+  const tixHandled = Object.values(aggregateTix()).reduce((s,r)=>s+r.tickets,0);
   const cards = [
     {icon:'🔥', title:'Boost Tracker', desc:'Leaderboards & history', pill:'<span class="pill live"><span class="dot"></span>Boost live</span>', btn:'Open tracker', href:'boost.html'},
-    {icon:'🎟️', title:'Ticket Tracker', desc:'Daily & weekly counts', pill:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open tracker', href:'tickets.html'},
+    {icon:'🎟️', title:'Ticket Tracker', desc:'Auto-counted from transcripts', pill:tixHandled?`<span class="pill pending"><span class="dot"></span>${tixHandled} handled</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open tracker', href:'tickets.html'},
     {icon:'👥', title:'Staff Roster', desc:'Manage & track staff', pill:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open roster', href:'roster.html'},
     {icon:'💳', title:'Tebex Logs', desc:'Purchase log & confirmations', pill:pend?`<span class="pill pending"><span class="dot"></span>${pend} pending</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'View logs', href:'tebex.html'},
     {icon:'📋', title:'Applications', desc:'Staff application review', pill:appPend?`<span class="pill pending"><span class="dot"></span>${appPend} pending</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'View applications', href:'applications.html'},
@@ -181,30 +188,241 @@ function renderBoost(){
   }</table>` : `<div class="empty">No boosts logged yet. Add the first one above.</div>`;
 }
 
-/* ---------- ticket tracker ---------- */
+/* =====================================================
+   TICKET TRACKER — auto-counts from Ticket Tool transcripts
+   -----------------------------------------------------
+   Rule: a "quality reply" is a message from someone on the
+   staff list containing >= QUALITY_MIN_CHARS characters of real
+   text. A staff member who posts >= TICKET_MIN_REPLIES quality
+   replies inside one transcript is credited with 1 ticket handled.
+   The SAME logic runs in the Discord bot under /discord-bot.
+===================================================== */
+
+/* ---- helpers shared by matching & counting ---- */
+function normName(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,''); }
+function hashSig(str){                       // tiny stable hash for de-duping transcripts
+  let h = 5381; for(let i=0;i<str.length;i++){ h = ((h<<5)+h + str.charCodeAt(i))>>>0; }
+  return 'h'+h.toString(16);
+}
+function matchStaff(author){                 // returns the staff entry this author belongs to, or null
+  const a = normName(author);
+  if(!a) return null;
+  for(const st of staffList){
+    const id = String(st.id||'').trim();
+    if(id && String(author).includes(id)) return st;
+    const n = normName(st.name);
+    if(n && (a===n || (n.length>=3 && a.includes(n)))) return st;
+  }
+  return null;
+}
+
+/* ---- transcript parser (handles the two Ticket Tool export formats) ---- */
+function parseTranscript(html){
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const out = [];
+
+  // Format A — modern discord-html-transcripts (web components used by Ticket Tool)
+  const dmsgs = doc.querySelectorAll('discord-message');
+  if(dmsgs.length){
+    // Build a profile-id -> author-name lookup if profiles are defined on <discord-messages>
+    const profiles = {};
+    doc.querySelectorAll('discord-message[profile][author], [data-profile][author]').forEach(p=>{
+      profiles[p.getAttribute('profile')||p.getAttribute('data-profile')] = p.getAttribute('author');
+    });
+    // Some exports embed a JSON profile blob
+    doc.querySelectorAll('script').forEach(s=>{
+      const m = (s.textContent||'').match(/"profiles"\s*:\s*(\{[\s\S]*?\})\s*[,}]/);
+      if(m){ try{ const obj = JSON.parse(m[1]); for(const k in obj){ if(obj[k]&&obj[k].author) profiles[k]=obj[k].author; } }catch(e){} }
+    });
+    let last = '';
+    dmsgs.forEach(el=>{
+      let author = el.getAttribute('author') || el.getAttribute('data-author') || '';
+      const pref = el.getAttribute('profile') || el.getAttribute('data-profile');
+      if(!author && pref && profiles[pref]) author = profiles[pref];
+      if(!author) author = last; else last = author;           // grouped consecutive messages
+      // strip non-text children (embeds, reactions, attachments) so only typed text counts
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll('discord-embed,discord-attachment,discord-reaction,discord-reactions,discord-attachments,discord-command,discord-system-message,discord-invite').forEach(n=>n.remove());
+      out.push({ author:String(author).trim(), content:(clone.textContent||'').replace(/\s+/g,' ').trim() });
+    });
+    return out;
+  }
+
+  // Format B — legacy DiscordChatExporter template (chatlog__ classes)
+  const groups = doc.querySelectorAll('.chatlog__message-group');
+  if(groups.length){
+    groups.forEach(g=>{
+      const aEl = g.querySelector('.chatlog__author-name, .chatlog__author, span[title]');
+      const author = aEl ? (aEl.getAttribute('title') || aEl.textContent) : '';
+      g.querySelectorAll('.chatlog__content, .chatlog__markdown').forEach(c=>{
+        // avoid double-counting nested markdown inside content
+        if(c.classList.contains('chatlog__markdown') && c.closest('.chatlog__content')) return;
+        out.push({ author:String(author).trim(), content:(c.textContent||'').replace(/\s+/g,' ').trim() });
+      });
+    });
+    if(out.length) return out;
+  }
+  return out; // empty => unrecognised format (see note shown to the user)
+}
+
+/* ---- count one parsed transcript into {key:{name,replies}} ---- */
+function countTranscript(messages){
+  const tally = {};
+  for(const m of messages){
+    if(!m.content || m.content.length < QUALITY_MIN_CHARS) continue;   // quality-reply length rule
+    const st = matchStaff(m.author); if(!st) continue;                 // must be staff
+    const key = normName(st.name) || 'id'+st.id;
+    (tally[key] || (tally[key] = {name:st.name, replies:0})).replies++;
+  }
+  return tally;
+}
+
+/* ---- roll every transcript + manual adjustment into per-staff totals ---- */
+function aggregateTix(){
+  const per = {};
+  transcripts.forEach(t=>{
+    Object.entries(t.counts).forEach(([k,v])=>{
+      const row = per[k] || (per[k]={name:v.name, tickets:0, replies:0, manual:0});
+      row.name = v.name;
+      row.replies += v.replies;
+      if(v.replies >= TICKET_MIN_REPLIES) row.tickets += 1;            // 3+ quality replies = 1 ticket
+    });
+  });
+  tickets.forEach(t=>{                                                  // legacy / manual entries
+    const k = normName(t.staff);
+    const row = per[k] || (per[k]={name:t.staff, tickets:0, replies:0, manual:0});
+    row.tickets += (t.count||0); row.manual += (t.count||0);
+  });
+  return per;
+}
+
 function initTix(){
   if(!requireAuth()) return;
-  $('tixDate').value = new Date().toISOString().slice(0,10);
+
+  // seed the staff list from the roster the first time, so counting works out of the box
+  if(!staffList.length && roster.length){
+    staffList = roster.map(r=>({name:r.name, id:''}));
+    save();
+  }
+
+  // transcript import (file picker + drag & drop)
+  const drop = $('tixDrop'), file = $('tixFile');
+  if(file) file.addEventListener('change', e=> importFiles(e.target.files));
+  if(drop){
+    drop.addEventListener('click', ()=> file && file.click());
+    ['dragenter','dragover'].forEach(ev=> drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.add('drag'); }));
+    ['dragleave','drop'].forEach(ev=> drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.remove('drag'); }));
+    drop.addEventListener('drop', e=> importFiles(e.dataTransfer.files));
+  }
+
+  // staff-list manager
+  $('staffForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const name = $('staffName').value.trim(); if(!name) return;
+    const id = $('staffId').value.trim();
+    if(staffList.some(s=>normName(s.name)===normName(name))){ $('staffName').value=''; $('staffId').value=''; return; }
+    staffList.push({name, id});
+    save(); $('staffName').value=''; $('staffId').value=''; renderTix();
+  });
+
+  // manual adjustment (kept as a fallback / correction)
   $('tixForm').addEventListener('submit', e=>{
     e.preventDefault();
     const staff = $('tixStaff').value.trim(); if(!staff) return;
-    tickets.push({staff, count:parseInt($('tixCount').value)||1, date:$('tixDate').value});
+    tickets.push({staff, count:parseInt($('tixCount').value)||1, date:$('tixDate').value||new Date().toISOString().slice(0,10)});
     save(); $('tixStaff').value=''; $('tixCount').value=1; renderTix();
   });
+  if($('tixDate')) $('tixDate').value = new Date().toISOString().slice(0,10);
+
   renderTix();
 }
+
+function importFiles(fileList){
+  const files = [...(fileList||[])].filter(f=>/\.html?$/i.test(f.name) || f.type==='text/html');
+  if(!files.length){ flashImport('Please drop Ticket Tool <b>.html</b> transcript files.', true); return; }
+  if(!staffList.length){ flashImport('Add at least one staff member below first — that\'s who gets counted.', true); return; }
+  let done=0, added=0, skipped=0, unread=0, summaries=[];
+  files.forEach(f=>{
+    const reader = new FileReader();
+    reader.onload = () => {
+      const html = reader.result;
+      const msgs = parseTranscript(html);
+      if(!msgs.length){ unread++; }
+      else {
+        const sig = hashSig((f.name||'') + ':' + msgs.length + ':' + msgs.slice(0,40).map(m=>m.author+m.content.slice(0,24)).join('|'));
+        if(transcripts.some(t=>t.sig===sig)){ skipped++; }
+        else {
+          const counts = countTranscript(msgs);
+          const credited = Object.values(counts).filter(v=>v.replies>=TICKET_MIN_REPLIES).map(v=>v.name);
+          transcripts.push({ sig, label:f.name.replace(/\.html?$/i,''), date:new Date().toISOString().slice(0,10), counts });
+          added++;
+          summaries.push(`<b>${esc(f.name)}</b> → ${credited.length? credited.map(esc).join(', ')+' credited' : 'no one hit '+TICKET_MIN_REPLIES+'+ replies'}`);
+        }
+      }
+      if(++done===files.length){
+        save(); renderTix();
+        let msg = `Imported ${added} transcript${added!==1?'s':''}.`;
+        if(skipped) msg += ` ${skipped} already imported.`;
+        if(unread)  msg += ` ${unread} couldn't be read (unrecognised format — send Kat a sample).`;
+        flashImport(msg + (summaries.length? '<br><span class="imp-detail">'+summaries.join('<br>')+'</span>' : ''), unread>0 && added===0);
+      }
+    };
+    reader.onerror = () => { if(++done===files.length){ save(); renderTix(); } };
+    reader.readAsText(f);
+  });
+}
+function flashImport(html, isErr){
+  const el = $('tixImportMsg'); if(!el) return;
+  el.className = 'imp-msg' + (isErr?' err':'');
+  el.innerHTML = html;
+}
+
+function delStaff(i){ staffList.splice(i,1); save(); renderTix(); }
+function delTranscript(i){ transcripts.splice(i,1); save(); renderTix(); }
+function delManual(){ tickets = []; save(); renderTix(); }
+
 function renderTix(){
-  const today = new Date().toISOString().slice(0,10);
-  const weekAgo = new Date(Date.now()-6*864e5).toISOString().slice(0,10);
-  $('tixToday').textContent = tickets.filter(t=>t.date===today).reduce((s,t)=>s+t.count,0);
-  $('tixWeek').textContent  = tickets.filter(t=>t.date>=weekAgo).reduce((s,t)=>s+t.count,0);
-  $('tixAll').textContent   = tickets.reduce((s,t)=>s+t.count,0);
-  const per = {};
-  tickets.forEach(t=>{ per[t.staff]=(per[t.staff]||0)+t.count; });
-  const rows = Object.entries(per).sort((a,b)=>b[1]-a[1]);
-  $('tixTable').innerHTML = rows.length ? `<table><tr><th>Staff</th><th>Tickets</th></tr>${
-    rows.map(([n,c])=>`<tr><td>${esc(n)}</td><td class="num">${c}</td></tr>`).join('')
-  }</table>` : `<div class="empty">No tickets logged yet.</div>`;
+  const per = aggregateTix();
+  const rows = Object.values(per).sort((a,b)=> b.tickets-a.tickets || b.replies-a.replies);
+  const totalTickets = rows.reduce((s,r)=>s+r.tickets,0);
+  const credited = rows.filter(r=>r.tickets>0).length;
+
+  $('tixHandled').textContent = totalTickets;
+  $('tixStaffN').textContent  = credited;
+  $('tixTransN').textContent  = transcripts.length;
+
+  // per-staff leaderboard (the automatic ticket count)
+  $('tixTable').innerHTML = rows.length ? `<table>
+    <tr><th>#</th><th>Staff</th><th>Tickets handled</th><th>Quality replies</th></tr>${
+    rows.map((r,i)=>`<tr>
+      <td class="num">${i+1}</td>
+      <td>${i===0&&r.tickets>0?'👑 ':''}${esc(r.name)}</td>
+      <td class="num">${r.tickets}${r.manual?` <span class="tag grey" title="includes ${r.manual} manual">+${r.manual}</span>`:''}</td>
+      <td class="num" style="color:var(--muted)">${r.replies}</td>
+    </tr>`).join('')
+  }</table>` : `<div class="empty">No tickets counted yet. Add staff, then import transcripts above.</div>`;
+
+  // staff list
+  $('staffTable').innerHTML = staffList.length ? `<table><tr><th>Staff member</th><th>Discord ID (optional)</th><th></th></tr>${
+    staffList.map((s,i)=>`<tr>
+      <td>${esc(s.name)}</td>
+      <td style="font-family:monospace;font-size:13px;color:var(--muted)">${s.id?esc(s.id):'—'}</td>
+      <td style="text-align:right"><button class="btn small danger" onclick="delStaff(${i})">Remove</button></td>
+    </tr>`).join('')
+  }</table>` : `<div class="empty">No staff yet. Add the people whose replies should be counted.</div>`;
+
+  // imported transcripts
+  $('tixTransList').innerHTML = transcripts.length ? `<table><tr><th>Transcript</th><th>Credited</th><th></th></tr>${
+    transcripts.slice().reverse().map((t)=>{
+      const real = transcripts.indexOf(t);
+      const cred = Object.values(t.counts).filter(v=>v.replies>=TICKET_MIN_REPLIES).map(v=>`${esc(v.name)} (${v.replies})`);
+      return `<tr>
+        <td>${esc(t.label)}</td>
+        <td>${cred.length? cred.join(', ') : '<span style="color:var(--muted)">—</span>'}</td>
+        <td style="text-align:right"><button class="btn small danger" onclick="delTranscript(${real})">✕</button></td>
+      </tr>`;
+    }).join('')
+  }</table>` : `<div class="empty">No transcripts imported yet.</div>`;
 }
 
 /* ---------- staff roster ---------- */

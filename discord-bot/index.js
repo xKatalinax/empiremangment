@@ -87,6 +87,11 @@ const commands = [
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
   new SlashCommandBuilder()
+    .setName('export')
+    .setDescription('Export the counts as a file you can import into the Empire website')
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+
+  new SlashCommandBuilder()
     .setName('diagnose')
     .setDescription('Inspect one real transcript and report why it can\'t be read')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
@@ -250,6 +255,36 @@ async function syncStaffFromRoles(guild) {
   return { total, added, updated };
 }
 
+// ---------- export for the website ----------
+// The website is a static site with no backend, so the bridge is a file:
+// the bot writes this JSON, the Ticket Tracker page imports it.
+function buildExport() {
+  const totals = store.totals();
+  const rows = Object.entries(totals).map(([key, r]) => ({
+    key, name: r.name, rank: r.rank || '', tickets: r.tickets, replies: r.replies,
+  })).sort((a, b) => b.tickets - a.tickets || b.replies - a.replies);
+  return {
+    source: 'empire-ticket-counter',
+    version: 1,
+    generated: new Date().toISOString(),
+    rule: { qualityMinChars: QUALITY_MIN_CHARS, ticketMinReplies: TICKET_MIN_REPLIES },
+    transcriptCount: Object.keys(store.transcripts()).length,
+    totalTickets: rows.reduce((s, r) => s + r.tickets, 0),
+    staff: rows,
+  };
+}
+
+function writeExportFile() {
+  try {
+    fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
+    const p = path.join(__dirname, 'data', 'empire-tickets.json');
+    fs.writeFileSync(p, JSON.stringify(buildExport(), null, 2));
+    return p;
+  } catch (e) {
+    return null;
+  }
+}
+
 // ---------- read every transcript in a channel's full history ----------
 async function scanChannel(channel, samples) {
   const r = { scanned: 0, counted: 0, credited: 0, dupes: 0, unreadable: 0, fetchFailed: 0 };
@@ -358,6 +393,8 @@ client.once(Events.ClientReady, async () => {
       const r = await scanAll(guild, samples).catch((e) => { console.warn('scan failed:', e.message); return null; });
       if (r) {
         console.log(`[${guild.name}] scan done: ${r.counted} counted, ${r.dupes} already had, ${r.unreadable} unparseable, ${r.fetchFailed} download-failed`);
+        const p = writeExportFile();
+        if (p) console.log(`[${guild.name}] website export written to:\n    ${p}`);
         const s = samples[0];
         if (s && s.html) {
           try {
@@ -413,13 +450,17 @@ client.on('interactionCreate', async (i) => {
       return i.reply(`**${user.username}** has handled **${t}** ticket${t !== 1 ? 's' : ''} (${q} quality replies).`);
     }
     const rows = Object.values(totals).sort((a, b) => b.tickets - a.tickets || b.replies - a.replies);
-    if (!rows.length) return i.reply('No tickets counted yet. Add staff with `/staff add`, then `/sync` a transcript.');
+    if (!rows.length) return i.reply('No tickets counted yet. Add staff with `/syncstaff`, then `/scan`.');
+    const shown = rows.slice(0, 40);
+    let desc = shown.map((r, n) =>
+      `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''} — **${r.tickets}** ticket${r.tickets !== 1 ? 's' : ''} · ${r.replies} replies`
+    ).join('\n');
+    if (rows.length > shown.length) desc += `\n\n…and ${rows.length - shown.length} more.`;
+    if (desc.length > 4000) desc = desc.slice(0, 3990) + '\n…';
     const embed = new EmbedBuilder()
       .setTitle('🎟️ Ticket Leaderboard')
       .setColor(0xe6b345)
-      .setDescription(rows.map((r, n) =>
-        `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''} — **${r.tickets}** ticket${r.tickets !== 1 ? 's' : ''} · ${r.replies} replies`
-      ).join('\n'))
+      .setDescription(desc)
       .setFooter({ text: `Rule: ${TICKET_MIN_REPLIES}+ quality replies (${QUALITY_MIN_CHARS}+ chars) = 1 ticket` });
     return i.reply({ embeds: [embed] });
   }
@@ -478,6 +519,25 @@ client.on('interactionCreate', async (i) => {
       const known = guildProblemMessage(e);
       if (known) return i.editReply(known);
       return i.editReply('⚠️ Scan failed: ' + e.message + ' — make sure I can View Channel + Read Message History there.');
+    }
+  }
+
+  if (i.commandName === 'export') {
+    await i.deferReply();
+    try {
+      const payload = buildExport();
+      const buf = Buffer.from(JSON.stringify(payload, null, 2), 'utf8');
+      const rows = payload.staff.length;
+      return i.editReply({
+        content: [
+          `📤 **Export ready** — ${rows} staff, ${payload.totalTickets} tickets, ${payload.transcriptCount} transcripts.`,
+          '',
+          'On the website: **Ticket Tracker → Import from bot**, then pick this file.',
+        ].join('\n'),
+        files: [{ attachment: buf, name: 'empire-tickets.json' }],
+      });
+    } catch (e) {
+      return i.editReply('Export failed: ' + e.message);
     }
   }
 
@@ -583,9 +643,26 @@ client.on('interactionCreate', async (i) => {
       const ranked = s.slice().sort((a, b) => {
         const ra = rankIndex.has((a.rank || '').toLowerCase()) ? rankIndex.get((a.rank || '').toLowerCase()) : 999;
         const rb = rankIndex.has((b.rank || '').toLowerCase()) ? rankIndex.get((b.rank || '').toLowerCase()) : 999;
-        return ra - rb;
+        return ra - rb || a.name.localeCompare(b.name);
       });
-      return i.reply('**Staff being counted:**\n' + ranked.map((x) => `• ${x.name}${x.rank ? ` — *${x.rank}*` : ''}${x.id ? ` (<@${x.id}>)` : ''}`).join('\n'));
+      // Group by rank and keep every embed under Discord's 4096-char description cap.
+      const lines = ranked.map((x) => `• ${x.name}${x.rank ? ` — *${x.rank}*` : ''}`);
+      const embeds = [];
+      let buf = [];
+      for (const line of lines) {
+        if (buf.length && buf.join('\n').length + line.length + 1 > 3900) {
+          embeds.push(buf.join('\n')); buf = [];
+        }
+        buf.push(line);
+      }
+      if (buf.length) embeds.push(buf.join('\n'));
+
+      const first = new EmbedBuilder()
+        .setTitle(`👥 Staff being counted (${ranked.length})`)
+        .setColor(0xe6b345)
+        .setDescription(embeds[0]);
+      const rest = embeds.slice(1, 10).map((d) => new EmbedBuilder().setColor(0xe6b345).setDescription(d));
+      return i.reply({ embeds: [first, ...rest] });
     }
   }
 });
@@ -597,6 +674,11 @@ function creditEmbed(label, credited) {
     .setDescription(`**${label}**\n` + credited.map((c) => `• **${c.name}** +1 ticket (${c.replies} quality replies)`).join('\n'))
     .setTimestamp();
 }
+
+// Never let a single API hiccup take the whole bot down.
+client.on('error', (e) => console.error('client error:', e.message));
+process.on('unhandledRejection', (e) => console.error('unhandled rejection:', e?.message || e));
+process.on('uncaughtException', (e) => console.error('uncaught exception:', e?.message || e));
 
 // Register commands, but never let that stop the bot from logging in —
 // counting still works even if a slash command fails to register.

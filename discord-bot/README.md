@@ -26,8 +26,28 @@ Two ways to feed it transcripts:
 | `/staff add name: [user:]` | Manually add someone to the counted staff list |
 | `/staff remove name:` | Remove someone |
 | `/staff list` | Show who's being counted, sorted by rank |
+| `/export` | Export counts as a file to import into the Empire website |
+| `/diagnose` | Inspect one transcript if something can't be read |
 
 `/staff` requires the **Manage Server** permission.
+
+---
+
+## Syncing to the Empire website
+
+The website is a static site with no backend, so the bot can't push to it directly.
+The bridge is a file:
+
+1. In Discord, run **`/export`** — the bot posts `empire-tickets.json`.
+2. Download it.
+3. On the site: **Ticket Tracker → Sync from the Discord bot** → drop the file in.
+
+The page then shows every staff member's ticket count and rank. The bot also writes
+the same file to `discord-bot/data/empire-tickets.json` after each startup scan, so you
+can grab it from there instead.
+
+Re-import whenever you want to refresh; each import replaces the previous bot data.
+Manual corrections made on the website are kept and added on top.
 
 ---
 

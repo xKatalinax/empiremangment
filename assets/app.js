@@ -38,6 +38,7 @@ let boosts  = store.get('boosts', []);
 let tickets = store.get('tickets', []);            // manual adjustments {staff,count,date}
 let staffList   = store.get('staffList', []);      // who counts as staff: [{name,id}]
 let transcripts = store.get('transcripts', []);    // parsed tickets: [{sig,label,date,counts:{key:{name,replies}}}]
+let botData     = store.get('botData', null);      // counts imported from the Discord bot's /export file
 let roster  = store.get('roster', [{name:"Kat", rank:"Owner"}]);
 let tebex   = store.get('tebex', []);
 let apps    = store.get('apps', []);
@@ -49,7 +50,7 @@ const TICKET_MIN_REPLIES = 3;   // >= this many quality replies in one transcrip
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const save = () => { store.set('boosts',boosts); store.set('tickets',tickets); store.set('staffList',staffList); store.set('transcripts',transcripts); store.set('roster',roster); store.set('tebex',tebex); store.set('apps',apps); store.set('events',events); store.set('users',users); };
+const save = () => { store.set('boosts',boosts); store.set('tickets',tickets); store.set('staffList',staffList); store.set('transcripts',transcripts); store.set('botData',botData); store.set('roster',roster); store.set('tebex',tebex); store.set('apps',apps); store.set('events',events); store.set('users',users); };
 
 /* ---------- auth (session survives page changes, ends when tab closes) ---------- */
 function sessionGet(){ try{ return JSON.parse(sessionStorage.getItem('emp_session')||'null'); }catch(e){ return null; } }
@@ -307,20 +308,36 @@ function countTranscript(messages){
   return tally;
 }
 
-/* ---- roll every transcript + manual adjustment into per-staff totals ---- */
+/* ---- roll every source into per-staff totals ---- */
 function aggregateTix(){
   const per = {};
+
+  // 1. counts imported from the Discord bot (/export)
+  if(botData && Array.isArray(botData.staff)){
+    botData.staff.forEach(r=>{
+      const k = r.key || normName(r.name);
+      const row = per[k] || (per[k]={name:r.name, rank:r.rank||'', tickets:0, replies:0, manual:0, fromBot:0});
+      row.name = r.name; row.rank = r.rank || row.rank;
+      row.tickets += (r.tickets||0);
+      row.replies += (r.replies||0);
+      row.fromBot += (r.tickets||0);
+    });
+  }
+
+  // 2. transcripts imported here in the browser
   transcripts.forEach(t=>{
     Object.entries(t.counts).forEach(([k,v])=>{
-      const row = per[k] || (per[k]={name:v.name, tickets:0, replies:0, manual:0});
+      const row = per[k] || (per[k]={name:v.name, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
       row.name = v.name;
       row.replies += v.replies;
       if(v.replies >= TICKET_MIN_REPLIES) row.tickets += 1;            // 3+ quality replies = 1 ticket
     });
   });
-  tickets.forEach(t=>{                                                  // legacy / manual entries
+
+  // 3. manual corrections
+  tickets.forEach(t=>{
     const k = normName(t.staff);
-    const row = per[k] || (per[k]={name:t.staff, tickets:0, replies:0, manual:0});
+    const row = per[k] || (per[k]={name:t.staff, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
     row.tickets += (t.count||0); row.manual += (t.count||0);
   });
   return per;
@@ -343,6 +360,16 @@ function initTix(){
     ['dragenter','dragover'].forEach(ev=> drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.add('drag'); }));
     ['dragleave','drop'].forEach(ev=> drop.addEventListener(ev, e=>{ e.preventDefault(); drop.classList.remove('drag'); }));
     drop.addEventListener('drop', e=> importFiles(e.dataTransfer.files));
+  }
+
+  // bot export import (empire-tickets.json from /export)
+  const botFile = $('botFile'), botDrop = $('botDrop');
+  if(botFile) botFile.addEventListener('change', e=> importBotFile(e.target.files[0]));
+  if(botDrop){
+    botDrop.addEventListener('click', ()=> botFile && botFile.click());
+    ['dragenter','dragover'].forEach(ev=> botDrop.addEventListener(ev, e=>{ e.preventDefault(); botDrop.classList.add('drag'); }));
+    ['dragleave','drop'].forEach(ev=> botDrop.addEventListener(ev, e=>{ e.preventDefault(); botDrop.classList.remove('drag'); }));
+    botDrop.addEventListener('drop', e=>{ if(e.dataTransfer.files[0]) importBotFile(e.dataTransfer.files[0]); });
   }
 
   // staff-list manager
@@ -407,6 +434,30 @@ function flashImport(html, isErr){
   el.innerHTML = html;
 }
 
+function importBotFile(f){
+  if(!f) return;
+  const el = $('botMsg');
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const data = JSON.parse(reader.result);
+      if(data.source !== 'empire-ticket-counter' || !Array.isArray(data.staff)){
+        throw new Error('That doesn\'t look like an export from the bot.');
+      }
+      botData = data; save(); renderTix();
+      const when = data.generated ? new Date(data.generated).toLocaleString() : 'just now';
+      if(el){ el.className='imp-msg'; el.innerHTML =
+        `Imported <b>${data.staff.length}</b> staff and <b>${data.totalTickets}</b> tickets from the bot.<br>` +
+        `<span class="imp-detail">Generated ${esc(when)} · ${data.transcriptCount||0} transcripts</span>`; }
+    }catch(err){
+      if(el){ el.className='imp-msg err'; el.textContent = 'Could not read that file: ' + err.message; }
+    }
+  };
+  reader.onerror = () => { if(el){ el.className='imp-msg err'; el.textContent='Could not read that file.'; } };
+  reader.readAsText(f);
+}
+function clearBotData(){ botData = null; save(); renderTix(); }
+
 function delStaff(i){ staffList.splice(i,1); save(); renderTix(); }
 function delTranscript(i){ transcripts.splice(i,1); save(); renderTix(); }
 function delManual(){ tickets = []; save(); renderTix(); }
@@ -419,18 +470,27 @@ function renderTix(){
 
   $('tixHandled').textContent = totalTickets;
   $('tixStaffN').textContent  = credited;
-  $('tixTransN').textContent  = transcripts.length;
+  $('tixTransN').textContent  = (botData ? (botData.transcriptCount||0) : 0) + transcripts.length;
+
+  const bs = $('botStatus');
+  if(bs){
+    bs.innerHTML = botData
+      ? `<span class="tag ok">Synced</span> ${botData.staff.length} staff · ${botData.totalTickets} tickets · ${botData.transcriptCount||0} transcripts
+         <button class="btn small ghost" style="margin-left:10px" onclick="clearBotData()">Clear</button>`
+      : `<span class="tag grey">Not synced</span> Run <code>/export</code> in Discord, then import the file above.`;
+  }
 
   // per-staff leaderboard (the automatic ticket count)
   $('tixTable').innerHTML = rows.length ? `<table>
-    <tr><th>#</th><th>Staff</th><th>Tickets handled</th><th>Quality replies</th></tr>${
+    <tr><th>#</th><th>Staff</th><th>Rank</th><th>Tickets handled</th><th>Quality replies</th></tr>${
     rows.map((r,i)=>`<tr>
       <td class="num">${i+1}</td>
       <td>${i===0&&r.tickets>0?'👑 ':''}${esc(r.name)}</td>
+      <td style="color:var(--muted);font-size:13px">${r.rank?esc(r.rank):'—'}</td>
       <td class="num">${r.tickets}${r.manual?` <span class="tag grey" title="includes ${r.manual} manual">+${r.manual}</span>`:''}</td>
       <td class="num" style="color:var(--muted)">${r.replies}</td>
     </tr>`).join('')
-  }</table>` : `<div class="empty">No tickets counted yet. Add staff, then import transcripts above.</div>`;
+  }</table>` : `<div class="empty">No tickets counted yet. Import the bot's export above, or add staff and import transcripts.</div>`;
 
   // staff list
   $('staffTable').innerHTML = staffList.length ? `<table><tr><th>Staff member</th><th>Discord ID (optional)</th><th></th></tr>${

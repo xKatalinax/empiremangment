@@ -41,8 +41,21 @@
   </div>
 
   <div class="panel">
-    <h2>Import transcripts</h2>
-    <div class="rule-note">1 ticket is credited to each staff member with <b>3+ quality replies</b> in a transcript. A quality reply = a staff message with <b>15+ characters</b>.</div>
+    <h2>Sync from the Discord bot</h2>
+    <div class="rule-note">The bot counts every transcript automatically. Run <b>/export</b> in Discord, download <b>empire-tickets.json</b>, and drop it here to update this page.</div>
+    <div class="dropzone" id="botDrop">
+      <div class="dz-ico">🔄</div>
+      <div class="dz-main">Drop <b>empire-tickets.json</b> here</div>
+      <div class="dz-sub">or tap to choose the file</div>
+    </div>
+    <input type="file" id="botFile" accept=".json,application/json" hidden>
+    <div class="imp-msg" id="botMsg"></div>
+    <div id="botStatus" style="margin-top:12px;font-size:13px;color:var(--muted)"></div>
+  </div>
+
+  <details class="panel">
+    <summary style="cursor:pointer;font-size:15px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold)">Import transcripts manually</summary>
+    <div class="rule-note" style="margin-top:14px">1 ticket is credited to each staff member with <b>3+ quality replies</b> in a transcript. A quality reply = a staff message with <b>15+ characters</b>.</div>
     <div class="dropzone" id="tixDrop">
       <div class="dz-ico">📄</div>
       <div class="dz-main">Drop Ticket Tool <b>.html</b> transcripts here</div>
@@ -50,7 +63,7 @@
     </div>
     <input type="file" id="tixFile" accept=".html,text/html" multiple hidden>
     <div class="imp-msg" id="tixImportMsg"></div>
-  </div>
+  </details>
 
   <div class="panel">
     <h2>Staff list — who gets counted</h2>

@@ -74,11 +74,30 @@ function ticketToolChannelName(html) {
 }
 
 function parseTranscript(html) {
+  try {
+    return parseTranscriptInner(html);
+  } catch (e) {
+    // RangeError (stack overflow) and friends must never take the bot down.
+    return [];
+  }
+}
+
+function parseTranscriptInner(html) {
   // Format A — Ticket Tool (what this project is built for)
   const tt = parseTicketTool(html);
   if (tt && tt.length) return tt;
 
-  const root = parse(html, { blockTextElements: { script: true, style: true } });
+  // The DOM fallback recurses, and a multi-megabyte transcript can overflow the
+  // stack. Ticket Tool files are always Format A, so anything huge that got here
+  // is not worth risking a crash over.
+  if (html.length > 4_000_000) return [];
+
+  let root;
+  try {
+    root = parse(html, { blockTextElements: { script: true, style: true } });
+  } catch (e) {
+    return []; // malformed or too deeply nested -> report as unparseable, don't crash
+  }
   const out = [];
 
   // Format B — modern discord-html-transcripts web components

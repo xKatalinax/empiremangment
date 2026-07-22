@@ -222,3 +222,5 @@ details.panel summary{list-style:none;}
 details.panel summary::-webkit-details-marker{display:none;}
 details.panel summary::before{content:"▸ ";color:var(--gold);}
 details.panel[open] summary::before{content:"▾ ";}
+.tag.ok{background:rgba(76,217,122,.15);border-color:rgba(76,217,122,.4);color:#4cd97a;}
+#botStatus code{background:rgba(230,179,69,.12);padding:2px 6px;border-radius:6px;color:var(--gold-bright);font-size:12px;}

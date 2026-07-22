@@ -115,6 +115,15 @@ Fill in `DISCORD_TOKEN`, `CLIENT_ID`, `GUILD_ID`, and (for automatic mode)
 separated by commas (e.g. `TRANSCRIPT_CHANNEL_ID=111...,222...,333...`). See the
 comments in `.env.example`.
 
+> **Updating the bot later?** Your `.env` is not included in the download. Copy your
+> existing `.env` somewhere safe before replacing the `discord-bot` folder, then put it
+> back — otherwise you'll have to re-enter your token and IDs.
+
+**Check your settings** (catches typos without printing your secrets):
+```bash
+npm run checkenv
+```
+
 **4. Install + run** (Node.js 18 or newer)
 ```bash
 npm install

@@ -6,6 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "node index.js",
+    "checkenv": "node checkenv.js",
     "diagnose": "node diagnose.js"
   },
   "engines": {

@@ -71,4 +71,32 @@ module.exports = {
     }
     return per;
   },
+
+  // same roll-up, but split into Thursday→Wednesday weeks:
+  //   { 'YYYY-MM-DD': { key: {name, rank, tickets, replies} } }
+  weeklyTotals(limit = 12) {
+    const { TICKET_MIN_REPLIES, weekKey, currentWeekKey } = require('./counter');
+    const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const rankOf = (key, name) => {
+      const m = db.staff.find((s) => norm(s.name) === key || norm(s.name) === norm(name));
+      return m ? (m.rank || '') : '';
+    };
+    const weeks = {};
+    for (const rec of Object.values(db.transcripts)) {
+      const wk = weekKey(rec.date) || currentWeekKey();
+      const per = weeks[wk] || (weeks[wk] = {});
+      for (const [k, v] of Object.entries(rec.counts)) {
+        const row = per[k] || (per[k] = { name: v.name, rank: rankOf(k, v.name), tickets: 0, replies: 0 });
+        row.name = v.name;
+        row.replies += v.replies;
+        if (v.replies >= TICKET_MIN_REPLIES) row.tickets += 1;
+      }
+    }
+    weeks[currentWeekKey()] = weeks[currentWeekKey()] || {};   // always show the live week
+    // keep only the most recent `limit` weeks so the export stays small
+    const keep = Object.keys(weeks).sort().reverse().slice(0, limit);
+    const out = {};
+    for (const k of keep) out[k] = weeks[k];
+    return out;
+  },
 };

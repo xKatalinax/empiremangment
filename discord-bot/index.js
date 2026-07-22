@@ -1,8 +1,10 @@
 // =====================================================
 //  Empire Roleplay — Ticket Counter bot
 //  Auto-counts tickets from Ticket Tool transcripts using the
-//  same rule as the web portal: a staff member with 3+ quality
-//  replies (15+ char messages) in a transcript = 1 ticket handled.
+//  same rule as the web portal: a transcript counts as 1 ticket for
+//  each staff member who left a quality reply — a message with 10+
+//  words that actually helps the player (filler such as
+//  "is this good to close" is ignored).
 // =====================================================
 
 require('dotenv').config();
@@ -15,8 +17,9 @@ const {
 
 const { parseTranscript } = require('./lib/parser');
 const {
-  countTranscript, creditedFrom, transcriptSig,
-  QUALITY_MIN_CHARS, TICKET_MIN_REPLIES,
+  countTranscript, creditedFrom, transcriptSig, transcriptDate,
+  currentWeekKey, weekKey, weekLabel,
+  QUALITY_MIN_WORDS, TICKET_MIN_REPLIES,
 } = require('./lib/counter');
 const store = require('./lib/store');
 const publisher = require('./lib/publish');
@@ -75,6 +78,13 @@ const commands = [
     .setName('tickets')
     .setDescription('Show the ticket leaderboard, or one staff member\'s count')
     .addUserOption((o) => o.setName('staff').setDescription('Show just this staff member').setRequired(false)),
+
+  new SlashCommandBuilder()
+    .setName('weekly')
+    .setDescription('This week\'s ticket leaderboard (weeks reset every Thursday)')
+    .addIntegerOption((o) => o.setName('back')
+      .setDescription('How many weeks back to look (0 = this week)')
+      .setMinValue(0).setMaxValue(11).setRequired(false)),
 
   new SlashCommandBuilder()
     .setName('sync')
@@ -154,7 +164,7 @@ async function processTranscript(html, label) {
 
   const counts = countTranscript(messages, store.staff());
   const credited = creditedFrom(counts).map((v) => ({ name: v.name, replies: v.replies }));
-  store.addTranscript(sig, { label, date: new Date().toISOString().slice(0, 10), counts });
+  store.addTranscript(sig, { label, date: transcriptDate(messages), counts });
   return { ok: true, credited, counts };
 }
 
@@ -273,10 +283,21 @@ function buildExport() {
     source: 'empire-ticket-counter',
     version: 1,
     generated: new Date().toISOString(),
-    rule: { qualityMinChars: QUALITY_MIN_CHARS, ticketMinReplies: TICKET_MIN_REPLIES },
+    rule: { qualityMinWords: QUALITY_MIN_WORDS, ticketMinReplies: TICKET_MIN_REPLIES },
     transcriptCount: Object.keys(store.transcripts()).length,
     totalTickets: rows.reduce((s, r) => s + r.tickets, 0),
     staff: rows,
+    // Thursday -> Wednesday weeks, so the site can show a weekly board
+    weekResetDay: 'Thursday',
+    currentWeek: currentWeekKey(),
+    weeks: Object.fromEntries(
+      Object.entries(store.weeklyTotals()).map(([wk, per]) => [
+        wk,
+        Object.entries(per)
+          .map(([key, r]) => ({ key, name: r.name, rank: r.rank || '', tickets: r.tickets, replies: r.replies }))
+          .sort((a, b) => b.tickets - a.tickets || b.replies - a.replies),
+      ])
+    ),
   };
 }
 
@@ -497,7 +518,46 @@ client.on('interactionCreate', async (i) => {
       .setTitle('🎟️ Ticket Leaderboard')
       .setColor(0xe6b345)
       .setDescription(desc)
-      .setFooter({ text: `Rule: ${TICKET_MIN_REPLIES}+ quality replies (${QUALITY_MIN_CHARS}+ chars) = 1 ticket` });
+      .setFooter({ text: `Rule: ${TICKET_MIN_REPLIES}+ quality repl${TICKET_MIN_REPLIES === 1 ? 'y' : 'ies'} (${QUALITY_MIN_WORDS}+ helpful words) = 1 ticket` });
+    return i.reply({ embeds: [embed] });
+  }
+
+  if (i.commandName === 'weekly') {
+    const back = i.options.getInteger('back') || 0;
+    const d = new Date();
+    d.setDate(d.getDate() - back * 7);
+    const wk = weekKey(d);
+    const weeks = store.weeklyTotals();
+    const rows = Object.values(weeks[wk] || {})
+      .sort((a, b) => b.tickets - a.tickets || b.replies - a.replies)
+      .filter((r) => r.tickets > 0);
+
+    const embed = new EmbedBuilder()
+      .setTitle(`🗓️ Weekly Tickets — ${weekLabel(wk)}`)
+      .setColor(0xe6b345)
+      .setFooter({ text: back === 0 ? 'Resets Thursday · updates as transcripts come in' : 'Past week' });
+
+    if (!rows.length) {
+      embed.setDescription(back === 0
+        ? 'No tickets counted yet this week. The board resets every Thursday.'
+        : 'No tickets were counted that week.');
+      return i.reply({ embeds: [embed] });
+    }
+
+    const top = rows[0];
+    const tied = rows.filter((r) => r.tickets === top.tickets);
+    const leader = tied.map((r) => `**${r.name}**`).join(' & ');
+    embed.addFields({
+      name: tied.length > 1 ? '👑 Tied for most tickets' : '👑 Most tickets',
+      value: `${leader} — **${top.tickets}** ticket${top.tickets !== 1 ? 's' : ''}${tied.length > 1 ? ' each' : ''}`,
+    });
+
+    const shown = rows.slice(0, 25);
+    let desc = shown.map((r, n) =>
+      `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''} — **${r.tickets}** · ${r.replies} replies`
+    ).join('\n');
+    if (rows.length > shown.length) desc += `\n…and ${rows.length - shown.length} more.`;
+    embed.setDescription(desc);
     return i.reply({ embeds: [embed] });
   }
 
@@ -514,7 +574,7 @@ client.on('interactionCreate', async (i) => {
       const r = await processTranscript(html, label);
       if (!r.ok && r.reason === 'duplicate') return i.editReply('♻️ That transcript was already counted.');
       if (!r.ok) return i.editReply('⚠️ Couldn\'t read that transcript. Send Kat a sample so the parser can be tuned.');
-      if (!r.credited.length) return i.editReply(`Processed **${label}** — nobody hit ${TICKET_MIN_REPLIES}+ quality replies, so no credit.`);
+      if (!r.credited.length) return i.editReply(`Processed **${label}** — nobody left a quality reply (${QUALITY_MIN_WORDS}+ helpful words), so no credit.`);
       return i.editReply({ embeds: [creditEmbed(label, r.credited)] });
     } catch (e) {
       return i.editReply('⚠️ Fetch failed: ' + e.message + (url ? ' — hosted transcript links can be JS-rendered; try attaching the `.html` file instead.' : ''));

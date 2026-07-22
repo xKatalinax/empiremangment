@@ -19,6 +19,7 @@ const {
   QUALITY_MIN_CHARS, TICKET_MIN_REPLIES,
 } = require('./lib/counter');
 const store = require('./lib/store');
+const publisher = require('./lib/publish');
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
@@ -84,6 +85,11 @@ const commands = [
   new SlashCommandBuilder()
     .setName('scan')
     .setDescription('Read EVERY transcript in the watched channel(s) — no uploading one by one')
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+
+  new SlashCommandBuilder()
+    .setName('publish')
+    .setDescription('Push the current counts to the Empire website now')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
   new SlashCommandBuilder()
@@ -285,6 +291,31 @@ function writeExportFile() {
   }
 }
 
+// Push counts to the website repo. Debounced so a burst of tickets makes one commit.
+let publishTimer = null;
+let publishing = false;
+async function publishNow(reason = '') {
+  if (!publisher.isConfigured()) return { ok: false, skipped: true };
+  if (publishing) return { ok: false, skipped: true };
+  publishing = true;
+  try {
+    const r = await publisher.publish(buildExport());
+    if (r.ok) console.log(`published counts to website${reason ? ' (' + reason + ')' : ''}`);
+    else if (!r.skipped) console.warn('publish failed:', r.error);
+    return r;
+  } catch (e) {
+    console.warn('publish failed:', e.message);
+    return { ok: false, error: e.message };
+  } finally {
+    publishing = false;
+  }
+}
+function schedulePublish(reason) {
+  if (!publisher.isConfigured()) return;
+  clearTimeout(publishTimer);
+  publishTimer = setTimeout(() => publishNow(reason), 20_000); // batch rapid changes
+}
+
 // ---------- read every transcript in a channel's full history ----------
 async function scanChannel(channel, samples) {
   const r = { scanned: 0, counted: 0, credited: 0, dupes: 0, unreadable: 0, fetchFailed: 0 };
@@ -395,6 +426,10 @@ client.once(Events.ClientReady, async () => {
         console.log(`[${guild.name}] scan done: ${r.counted} counted, ${r.dupes} already had, ${r.unreadable} unparseable, ${r.fetchFailed} download-failed`);
         const p = writeExportFile();
         if (p) console.log(`[${guild.name}] website export written to:\n    ${p}`);
+        const pub = await publishNow('startup scan');
+        if (pub && pub.skipped && !publisher.isConfigured()) {
+          console.log('  (website auto-publish is off — set GITHUB_TOKEN and GITHUB_REPO in .env to turn it on)');
+        }
         const s = samples[0];
         if (s && s.html) {
           try {
@@ -429,6 +464,7 @@ client.on('messageCreate', async (msg) => {
       } else if (r.reason === 'duplicate') anyDupe = true;
     }
     await msg.react(anyOk ? '✅' : anyDupe ? '♻️' : '⚠️');
+    if (anyOk) schedulePublish('new ticket');
   } catch (e) {
     console.error('auto-process failed:', e.message);
     await msg.react('⚠️').catch(() => {});
@@ -514,12 +550,38 @@ client.on('interactionCreate', async (i) => {
       } else {
         lines.push('', 'Run `/tickets` to see the board.');
       }
-      return i.editReply(lines.join('\n'));
+      const pub = await publishNow('scan command');
+      if (pub && pub.ok) lines.push('', '🌐 Website updated automatically.');
+      else if (pub && !pub.skipped) lines.push('', '⚠️ Website publish failed: ' + pub.error);
+      return i.editReply(lines.join('\n').slice(0, 1900));
     } catch (e) {
       const known = guildProblemMessage(e);
       if (known) return i.editReply(known);
       return i.editReply('⚠️ Scan failed: ' + e.message + ' — make sure I can View Channel + Read Message History there.');
     }
+  }
+
+  if (i.commandName === 'publish') {
+    await i.deferReply();
+    if (!publisher.isConfigured()) {
+      return i.editReply([
+        '⚠️ Website auto-publish isn\'t set up yet.',
+        '',
+        'Add these to `.env`, then restart me:',
+        '```',
+        'GITHUB_TOKEN=github_pat_...',
+        'GITHUB_REPO=xKatalinax/empiremangment',
+        'GITHUB_BRANCH=main',
+        '```',
+        'The token needs **Contents: read and write** on that repo.',
+      ].join('\n'));
+    }
+    const r = await publishNow('publish command');
+    if (r.ok) {
+      const p = buildExport();
+      return i.editReply(`🌐 Website updated — **${p.totalTickets}** tickets across **${p.staff.length}** staff.\nIt may take a minute for GitHub Pages to rebuild.`);
+    }
+    return i.editReply('⚠️ Publish failed: ' + (r.error || 'unknown error'));
   }
 
   if (i.commandName === 'export') {
@@ -614,6 +676,7 @@ client.on('interactionCreate', async (i) => {
           'Set `STAFF_ROLES` in `.env` to your server\'s exact role names (highest rank first), then run this again.',
         ].join('\n'));
       }
+      schedulePublish('staff sync');
       return i.editReply(`👥 Staff list rebuilt from roles: **${s.total}** staff (${s.added} new, ${s.updated} updated). Run \`/staff list\` to see them.`);
     } catch (e) {
       const known = guildProblemMessage(e);

@@ -362,6 +362,10 @@ function initTix(){
     drop.addEventListener('drop', e=> importFiles(e.dataTransfer.files));
   }
 
+  // Pull the counts the bot publishes into this repo (data/tickets.json).
+  // This is what makes the page update itself with no manual import.
+  fetchPublishedCounts();
+
   // bot export import (empire-tickets.json from /export)
   const botFile = $('botFile'), botDrop = $('botDrop');
   if(botFile) botFile.addEventListener('change', e=> importBotFile(e.target.files[0]));
@@ -434,6 +438,27 @@ function flashImport(html, isErr){
   el.innerHTML = html;
 }
 
+/* Fetch the counts the Discord bot commits to this repo. Runs on every page load,
+   so the tracker stays current without anyone importing anything by hand. */
+function fetchPublishedCounts(){
+  const el = $('botStatus');
+  if(el) el.innerHTML = '<span class="tag grey">Checking…</span> looking for published counts';
+  fetch('data/tickets.json?t=' + Date.now(), {cache:'no-store'})
+    .then(r => { if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(data => {
+      if(data.source !== 'empire-ticket-counter' || !Array.isArray(data.staff)) throw new Error('bad format');
+      // Only replace if it's newer than what we already have.
+      const haveTime = botData && botData.generated ? Date.parse(botData.generated) : 0;
+      const newTime  = data.generated ? Date.parse(data.generated) : Date.now();
+      if(newTime >= haveTime){ botData = data; save(); }
+      renderTix();
+    })
+    .catch(() => {
+      // No published file yet (or offline) — fall back to whatever was imported before.
+      renderTix();
+    });
+}
+
 function importBotFile(f){
   if(!f) return;
   const el = $('botMsg');
@@ -474,10 +499,16 @@ function renderTix(){
 
   const bs = $('botStatus');
   if(bs){
-    bs.innerHTML = botData
-      ? `<span class="tag ok">Synced</span> ${botData.staff.length} staff · ${botData.totalTickets} tickets · ${botData.transcriptCount||0} transcripts
-         <button class="btn small ghost" style="margin-left:10px" onclick="clearBotData()">Clear</button>`
-      : `<span class="tag grey">Not synced</span> Run <code>/export</code> in Discord, then import the file above.`;
+    if(botData){
+      const when = botData.generated ? new Date(botData.generated) : null;
+      const mins = when ? Math.round((Date.now()-when.getTime())/60000) : null;
+      const ago = mins===null ? '' : mins<1 ? 'just now' : mins<60 ? mins+' min ago' : mins<1440 ? Math.round(mins/60)+' h ago' : Math.round(mins/1440)+' d ago';
+      bs.innerHTML = `<span class="tag ok">Synced</span> ${botData.staff.length} staff · ${botData.totalTickets} tickets · ${botData.transcriptCount||0} transcripts`
+        + (ago ? ` <span style="opacity:.75">· updated ${esc(ago)}</span>` : '')
+        + ` <button class="btn small ghost" style="margin-left:10px" onclick="fetchPublishedCounts()">Refresh</button>`;
+    } else {
+      bs.innerHTML = `<span class="tag grey">Not synced</span> No published counts found. Run <code>/publish</code> in Discord, or drop an export file above.`;
+    }
   }
 
   // per-staff leaderboard (the automatic ticket count)

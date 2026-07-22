@@ -26,7 +26,8 @@ Two ways to feed it transcripts:
 | `/staff add name: [user:]` | Manually add someone to the counted staff list |
 | `/staff remove name:` | Remove someone |
 | `/staff list` | Show who's being counted, sorted by rank |
-| `/export` | Export counts as a file to import into the Empire website |
+| `/publish` | Push counts to the website right now |
+| `/export` | Download counts as a file (backup if auto-publish is off) |
 | `/diagnose` | Inspect one transcript if something can't be read |
 
 `/staff` requires the **Manage Server** permission.
@@ -35,19 +36,39 @@ Two ways to feed it transcripts:
 
 ## Syncing to the Empire website
 
-The website is a static site with no backend, so the bot can't push to it directly.
-The bridge is a file:
+The portal is a static GitHub Pages site, so there's no server to POST to. Instead the
+bot **commits the counts into the site's repo**; GitHub Pages serves that file and the
+Ticket Tracker page fetches it on load. Once set up, the website updates itself.
 
-1. In Discord, run **`/export`** — the bot posts `empire-tickets.json`.
-2. Download it.
-3. On the site: **Ticket Tracker → Sync from the Discord bot** → drop the file in.
+### One-time setup
 
-The page then shows every staff member's ticket count and rank. The bot also writes
-the same file to `discord-bot/data/empire-tickets.json` after each startup scan, so you
-can grab it from there instead.
+1. Create a token at <https://github.com/settings/personal-access-tokens/new>
+   - **Repository access:** Only select repositories -> your website repo
+   - **Permissions:** Repository permissions -> **Contents** -> **Read and write**
+2. Put it in `.env`:
+   ```
+   GITHUB_TOKEN=github_pat_...
+   GITHUB_REPO=xKatalinax/empiremangment
+   GITHUB_BRANCH=main
+   GITHUB_PATH=data/tickets.json
+   ```
+3. Restart the bot, then run `/publish` once to confirm. It should say the website was
+   updated; give GitHub Pages a minute to rebuild, then load the Ticket Tracker page.
 
-Re-import whenever you want to refresh; each import replaces the previous bot data.
-Manual corrections made on the website are kept and added on top.
+### When it publishes
+
+- after the startup history scan
+- after `/scan` and `/syncstaff`
+- about 20 seconds after a new ticket is counted (batched, so a busy hour is one commit)
+- any time you run `/publish`
+
+Keep the token secret — `.gitignore` already excludes `.env`. If it ever leaks, delete it
+on GitHub and generate a new one.
+
+### If you'd rather not use a token
+
+Auto-publish is optional. Without it, use `/export` in Discord and drop the file into
+**Ticket Tracker -> Manual import** on the website.
 
 ---
 

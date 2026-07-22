@@ -108,13 +108,25 @@ ephemeral disks, attach a volume or the counts reset on redeploy.
 
 ## Notes
 
-- **De-duplication:** each transcript is fingerprinted, so re-posting or re-syncing the
+- **Transcript format.** Ticket Tool transcripts contain no readable HTML — the messages
+  are a base64-encoded JSON array inside a `messages` variable, which their web viewer
+  decodes in the browser. The parser in `lib/parser.js` decodes that same payload, so it
+  reads the file directly without needing a browser. Older `discord-html-transcripts` and
+  `chatlog__` exports are still handled as fallbacks.
+- **Staff matching is by Discord user ID.** Every message in a Ticket Tool transcript
+  carries `user_id`, so `/syncstaff` (which stores each member's ID) gives exact matching —
+  nicknames, renames and display-name changes don't break it. If a staff member was added
+  by name only, it falls back to name matching.
+- **Bot messages never count.** Ticket Tool's own posts are flagged `bot: true` and are
+  skipped, so its welcome and closing messages can't earn credit.
+- **Length rule ignores noise.** Mentions, custom emoji, code blocks and links are stripped
+  before the 15-character check, so "<@123> ok" doesn't count as a quality reply.
+- **De-duplication:** each transcript is fingerprinted, so re-posting or re-scanning the
   same one won't double-count. (Bot reacts ♻️ if it's already been counted.)
-- **Hosted transcript links** (`tickettool.xyz/...`) are rendered with JavaScript, so
-  fetching the URL may not return the messages. Attaching the `.html` file to `/sync`,
-  or letting the bot read the file Ticket Tool posts, is the reliable path.
-- The parser handles both Ticket Tool export formats (modern `discord-html-transcripts`
-  web components and the legacy `chatlog__` template). If a transcript reads as
-  "unreadable" (⚠️), send a sample so the selectors in `lib/parser.js` can be tuned.
+- **Links as well as files.** A `tickettool.xyz/transcript/v1/...` link is just a viewer
+  around the file Discord stores; the bot converts it to the underlying CDN URL, so
+  transcripts posted as links are counted too. (`/v2/` Google-Drive links are not supported.)
+- **Diagnostics.** If anything can't be read, run `/diagnose` in Discord, or
+  `npm run diagnose` locally against `data/sample-transcript.html`.
 - The counting rule lives in `lib/counter.js` (`QUALITY_MIN_CHARS`, `TICKET_MIN_REPLIES`)
   and is identical to the web portal, so both always agree.

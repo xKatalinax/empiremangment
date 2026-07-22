@@ -23,17 +23,29 @@ function hashSig(str) {
 // signature from parsed messages, so the same transcript never counts twice
 function transcriptSig(messages) {
   const seed = messages.length + ':' +
-    messages.slice(0, 40).map((m) => m.author + m.content.slice(0, 24)).join('|');
+    messages.slice(0, 40).map((m) => (m.authorId || m.author) + ':' + (m.content || '').slice(0, 24)).join('|');
   return hashSig(seed);
 }
 
-// does this author string belong to someone on the staff list?
-function matchStaff(author, staffList) {
+// does this message's author belong to someone on the staff list?
+// Ticket Tool transcripts carry the real Discord user_id, so prefer an exact
+// ID match and fall back to name matching only for other transcript formats.
+function matchStaff(msg, staffList) {
+  const authorId = typeof msg === 'object' ? String(msg.authorId || '') : '';
+  const author = typeof msg === 'object' ? String(msg.author || '') : String(msg || '');
+
+  // Prefer an exact Discord ID match — Ticket Tool transcripts always carry one.
+  if (authorId) {
+    for (const st of staffList) {
+      if (st.id && String(st.id) === authorId) return st;
+    }
+  }
+  // Fall back to the display name (needed when staff were added without an ID).
   const a = normName(author);
   if (!a) return null;
   for (const st of staffList) {
     const id = String(st.id || '').trim();
-    if (id && String(author).includes(id)) return st;
+    if (id && author.includes(id)) return st;
     const n = normName(st.name);
     if (n && (a === n || (n.length >= 3 && a.includes(n)))) return st;
   }
@@ -44,8 +56,9 @@ function matchStaff(author, staffList) {
 function countTranscript(messages, staffList) {
   const tally = {};
   for (const m of messages) {
+    if (m.bot) continue;                                   // never count bot posts
     if (!m.content || m.content.length < QUALITY_MIN_CHARS) continue;
-    const st = matchStaff(m.author, staffList);
+    const st = matchStaff(m, staffList);
     if (!st) continue;
     const key = normName(st.name) || ('id' + st.id);
     (tally[key] || (tally[key] = { name: st.name, replies: 0 })).replies++;

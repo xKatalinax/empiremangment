@@ -6,8 +6,10 @@
 // =====================================================
 
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 const {
-  Client, GatewayIntentBits, Partials, REST, Routes,
+  Client, GatewayIntentBits, Partials, REST, Routes, Events,
   SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits,
 } = require('discord.js');
 
@@ -85,6 +87,11 @@ const commands = [
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
   new SlashCommandBuilder()
+    .setName('diagnose')
+    .setDescription('Inspect one real transcript and report why it can\'t be read')
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
+
+  new SlashCommandBuilder()
     .setName('syncstaff')
     .setDescription('Rebuild the staff list from Discord roles, tagged with each highest rank')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
@@ -140,9 +147,58 @@ async function processTranscript(html, label) {
   return { ok: true, credited, counts };
 }
 
+// A Ticket Tool link is just a viewer wrapped around the file Discord stores.
+//   https://tickettool.xyz/transcript/v1/<channel>/<attachment>/<name>.html/<ex>/<is>/<hm>
+// maps to
+//   https://cdn.discordapp.com/attachments/<channel>/<attachment>/<name>.html?ex=..&is=..&hm=..
+function tickettoolToCdn(url) {
+  const m = String(url).match(
+    /tickettool\.xyz\/transcript\/v\d+\/(\d+)\/(\d+)\/([^/\s]+?\.html?)\/([0-9a-f]+)\/([0-9a-f]+)\/([0-9a-f]+)/i
+  );
+  if (!m) return null;
+  const [, channelId, attId, name, ex, is, hm] = m;
+  return `https://cdn.discordapp.com/attachments/${channelId}/${attId}/${name}?ex=${ex}&is=${is}&hm=${hm}&`;
+}
+
+// Find every transcript source in a message: real attachments first, then
+// Ticket Tool links in the body or in embeds.
+function transcriptSources(msg) {
+  const out = [];
+  for (const a of msg.attachments.values()) {
+    if (/\.html?$/i.test(a.name || '')) out.push({ name: a.name, url: a.url });
+  }
+  if (out.length) return out;
+
+  const texts = [msg.content || ''];
+  for (const e of msg.embeds || []) {
+    texts.push(e.description || '', e.url || '', e.title || '');
+    for (const f of e.fields || []) texts.push(f.value || '');
+  }
+  const seen = new Set();
+  for (const t of texts) {
+    for (const m of String(t).matchAll(/https?:\/\/tickettool\.xyz\/transcript\/\S+/gi)) {
+      const link = m[0].replace(/[)>\]]+$/, '');
+      const cdn = tickettoolToCdn(link);
+      const url = cdn || link;
+      if (seen.has(url)) continue;
+      seen.add(url);
+      const nameMatch = link.match(/\/([^/\s]+?\.html?)\//i);
+      out.push({ name: nameMatch ? nameMatch[1] : 'transcript', url, viaLink: true });
+    }
+  }
+  return out;
+}
+
 async function fetchText(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('HTTP ' + res.status);
+  // Discord's CDN can reject requests with no User-Agent, so always send one.
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent': 'EmpireTicketCounter/1.0 (+https://empirerp.net)',
+      'Accept': 'text/html,application/xhtml+xml,*/*',
+    },
+    redirect: 'follow',
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText || ''}`.trim());
   return res.text();
 }
 
@@ -195,8 +251,8 @@ async function syncStaffFromRoles(guild) {
 }
 
 // ---------- read every transcript in a channel's full history ----------
-async function scanChannel(channel) {
-  const r = { scanned: 0, counted: 0, credited: 0, dupes: 0, unreadable: 0 };
+async function scanChannel(channel, samples) {
+  const r = { scanned: 0, counted: 0, credited: 0, dupes: 0, unreadable: 0, fetchFailed: 0 };
   let before;
   // guard against non-text channels
   if (!channel || typeof channel.messages?.fetch !== 'function') return r;
@@ -204,16 +260,24 @@ async function scanChannel(channel) {
     const batch = await channel.messages.fetch({ limit: 100, ...(before ? { before } : {}) });
     if (!batch.size) break;
     for (const msg of batch.values()) {
-      const att = msg.attachments.find((a) => /\.html?$/i.test(a.name || ''));
-      if (!att) continue;
-      r.scanned++;
-      try {
-        const html = await fetchText(att.url);
-        const res = await processTranscript(html, att.name.replace(/\.html?$/i, ''));
-        if (res.ok) { r.counted++; if (res.credited.length) r.credited++; }
-        else if (res.reason === 'duplicate') r.dupes++;
-        else r.unreadable++;
-      } catch (e) { r.unreadable++; }
+      const sources = transcriptSources(msg);
+      if (!sources.length) continue;
+      for (const src of sources) {
+        r.scanned++;
+        try {
+          const html = await fetchText(src.url);
+          const res = await processTranscript(html, src.name.replace(/\.html?$/i, ''));
+          if (res.ok) { r.counted++; if (res.credited.length) r.credited++; }
+          else if (res.reason === 'duplicate') r.dupes++;
+          else {
+            r.unreadable++;
+            if (samples && !samples.some((s) => s.html)) samples.push({ name: src.name, html });
+          }
+        } catch (e) {
+          r.fetchFailed++;
+          if (samples && !samples.some((s) => s.error)) samples.push({ name: src.name, error: e.message, url: src.url });
+        }
+      }
     }
     before = batch.last().id;
     if (batch.size < 100) break;
@@ -221,15 +285,38 @@ async function scanChannel(channel) {
   return r;
 }
 
-async function scanAll(guild) {
-  const totals = { scanned: 0, counted: 0, credited: 0, dupes: 0, unreadable: 0 };
+async function scanAll(guild, samples) {
+  const totals = { scanned: 0, counted: 0, credited: 0, dupes: 0, unreadable: 0, fetchFailed: 0 };
   for (const id of TRANSCRIPT_CHANNEL_IDS) {
     const ch = guild.channels.cache.get(id) || await guild.channels.fetch(id).catch(() => null);
     if (!ch) continue;
-    const r = await scanChannel(ch);
+    const r = await scanChannel(ch, samples);
     for (const k in totals) totals[k] += r[k];
   }
   return totals;
+}
+
+// ---------- describe an unparseable transcript so the parser can be fixed ----------
+function describeHtml(html) {
+  const lines = [];
+  lines.push(`size: ${html.length.toLocaleString()} characters`);
+  const tagCounts = {};
+  for (const m of html.matchAll(/<([a-zA-Z][\w-]*)/g)) {
+    const t = m[1].toLowerCase();
+    tagCounts[t] = (tagCounts[t] || 0) + 1;
+  }
+  const top = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  lines.push('most common tags: ' + top.map(([t, n]) => `${t}(${n})`).join(', '));
+  const classes = {};
+  for (const m of html.matchAll(/class="([^"]{1,120})"/g)) {
+    for (const c of m[1].split(/\s+/)) if (c) classes[c] = (classes[c] || 0) + 1;
+  }
+  const topC = Object.entries(classes).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  if (topC.length) lines.push('most common classes: ' + topC.map(([c, n]) => `${c}(${n})`).join(', '));
+  for (const probe of ['discord-message', 'chatlog__message-group', 'chatlog__', 'messageContent', 'data-author', 'tickettool']) {
+    if (html.includes(probe)) lines.push(`contains "${probe}": yes`);
+  }
+  return lines.join('\n');
 }
 
 // ---------- client ----------
@@ -243,7 +330,7 @@ const client = new Client({
   partials: [Partials.Channel],
 });
 
-client.once('ready', async () => {
+client.once(Events.ClientReady, async () => {
   console.log(`Logged in as ${client.user.tag}`);
   if (TRANSCRIPT_CHANNEL_IDS.size) console.log('Watching transcript channels:', [...TRANSCRIPT_CHANNEL_IDS].join(', '));
 
@@ -267,8 +354,24 @@ client.once('ready', async () => {
     // optional: read the entire transcript-channel history on boot
     if (SCAN_ON_STARTUP && TRANSCRIPT_CHANNEL_IDS.size) {
       console.log(`[${guild.name}] scanning transcript history…`);
-      const r = await scanAll(guild).catch((e) => { console.warn('scan failed:', e.message); return null; });
-      if (r) console.log(`[${guild.name}] scan done: ${r.counted} counted, ${r.dupes} already had, ${r.unreadable} unreadable`);
+      const samples = [];
+      const r = await scanAll(guild, samples).catch((e) => { console.warn('scan failed:', e.message); return null; });
+      if (r) {
+        console.log(`[${guild.name}] scan done: ${r.counted} counted, ${r.dupes} already had, ${r.unreadable} unparseable, ${r.fetchFailed} download-failed`);
+        const s = samples[0];
+        if (s && s.html) {
+          try {
+            fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
+            const p = path.join(__dirname, 'data', 'sample-transcript.html');
+            fs.writeFileSync(p, s.html);
+            console.log(`\n  A transcript I could not parse was saved to:\n    ${p}`);
+            console.log('  Run "npm run diagnose" to inspect it, or send that file to be tuned against.\n');
+            console.log(describeHtml(s.html).split('\n').map((l) => '    ' + l).join('\n'), '\n');
+          } catch (e) { /* ignore */ }
+        } else if (s && s.error) {
+          console.log(`  Download failure example (${s.name}): ${s.error}`);
+        }
+      }
     }
   }
 });
@@ -276,21 +379,19 @@ client.once('ready', async () => {
 // auto-process transcripts posted in the log channel
 client.on('messageCreate', async (msg) => {
   if (!TRANSCRIPT_CHANNEL_IDS.size || !TRANSCRIPT_CHANNEL_IDS.has(msg.channelId)) return;
-  const htmlAtt = msg.attachments.find((a) => /\.html?$/i.test(a.name || ''));
-  if (!htmlAtt) return;
+  const sources = transcriptSources(msg);
+  if (!sources.length) return;
   try {
-    const html = await fetchText(htmlAtt.url);
-    const r = await processTranscript(html, htmlAtt.name.replace(/\.html?$/i, ''));
-    if (r.ok) {
-      await msg.react('✅');
-      if (r.credited.length) {
-        await msg.reply({ embeds: [creditEmbed(htmlAtt.name, r.credited)] });
-      }
-    } else if (r.reason === 'duplicate') {
-      await msg.react('♻️');
-    } else {
-      await msg.react('⚠️');
+    let anyOk = false, anyDupe = false;
+    for (const src of sources) {
+      const html = await fetchText(src.url);
+      const r = await processTranscript(html, src.name.replace(/\.html?$/i, ''));
+      if (r.ok) {
+        anyOk = true;
+        if (r.credited.length) await msg.reply({ embeds: [creditEmbed(src.name, r.credited)] });
+      } else if (r.reason === 'duplicate') anyDupe = true;
     }
+    await msg.react(anyOk ? '✅' : anyDupe ? '♻️' : '⚠️');
   } catch (e) {
     console.error('auto-process failed:', e.message);
     await msg.react('⚠️').catch(() => {});
@@ -349,12 +450,94 @@ client.on('interactionCreate', async (i) => {
     await i.deferReply();
     try {
       const guild = await resolveGuild(i);
-      const r = await scanAll(guild);
-      return i.editReply(`📜 Scanned every transcript channel.\n• **${r.counted}** newly counted\n• ${r.dupes} already had\n• ${r.unreadable} unreadable\n\nRun \`/tickets\` to see the board.`);
+      const samples = [];
+      const r = await scanAll(guild, samples);
+      const lines = [
+        '📜 Scanned every transcript channel.',
+        `• **${r.counted}** newly counted`,
+        `• ${r.dupes} already had`,
+        `• ${r.scanned} transcript files seen`,
+      ];
+      if (r.unreadable) lines.push(`• ⚠️ ${r.unreadable} downloaded but couldn't be parsed`);
+      if (r.fetchFailed) lines.push(`• ⚠️ ${r.fetchFailed} couldn't be downloaded`);
+      if (r.unreadable || r.fetchFailed) {
+        lines.push('', 'Run `/diagnose` to see what these files actually contain.');
+        const s = samples[0];
+        if (s && s.html) {
+          try {
+            fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
+            fs.writeFileSync(path.join(__dirname, 'data', 'sample-transcript.html'), s.html);
+            lines.push('A copy was saved to `discord-bot/data/sample-transcript.html` for inspection.');
+          } catch (e) { /* ignore */ }
+        }
+      } else {
+        lines.push('', 'Run `/tickets` to see the board.');
+      }
+      return i.editReply(lines.join('\n'));
     } catch (e) {
       const known = guildProblemMessage(e);
       if (known) return i.editReply(known);
       return i.editReply('⚠️ Scan failed: ' + e.message + ' — make sure I can View Channel + Read Message History there.');
+    }
+  }
+
+  if (i.commandName === 'diagnose') {
+    if (!TRANSCRIPT_CHANNEL_IDS.size) return i.reply({ content: 'No transcript channels set in `.env`.', ephemeral: true });
+    await i.deferReply();
+    try {
+      const guild = await resolveGuild(i);
+      // grab the newest .html attachment from any watched channel
+      let found = null;
+      for (const id of TRANSCRIPT_CHANNEL_IDS) {
+        const ch = guild.channels.cache.get(id) || await guild.channels.fetch(id).catch(() => null);
+        if (!ch || typeof ch.messages?.fetch !== 'function') continue;
+        const batch = await ch.messages.fetch({ limit: 50 }).catch(() => null);
+        if (!batch) continue;
+        for (const msg of batch.values()) {
+          const s = transcriptSources(msg);
+          if (s.length) { found = { src: s[0], channel: ch.name }; break; }
+        }
+        if (found) break;
+      }
+      if (!found) return i.editReply('No transcripts (attachments or Ticket Tool links) found in the watched channels. Are the channel IDs right?');
+
+      let html;
+      try {
+        html = await fetchText(found.src.url);
+      } catch (e) {
+        return i.editReply([
+          `Found **${found.src.name}** in #${found.channel} but could not download it.`,
+          `Error: \`${e.message}\``,
+          found.src.viaLink ? 'This came from a Ticket Tool link.' : 'This came from a file attachment.',
+          '',
+          'If this says HTTP 403/404, the transcript link has expired on Discord\'s side.',
+        ].join('\n'));
+      }
+
+      const msgs = parseTranscript(html);
+      const report = describeHtml(html);
+      const head = html.slice(0, 600).replace(/```/g, '`­``');
+
+      const out = [
+        `**Diagnosing \`${found.src.name}\`** (from #${found.channel})`,
+        '',
+        `Parser found **${msgs.length}** messages.`,
+        '',
+        '**Structure:**',
+        '```',
+        report,
+        '```',
+        '**First 600 characters:**',
+        '```html',
+        head,
+        '```',
+      ].join('\n');
+
+      return i.editReply(out.slice(0, 1900));
+    } catch (e) {
+      const known = guildProblemMessage(e);
+      if (known) return i.editReply(known);
+      return i.editReply('Diagnose failed: ' + e.message);
     }
   }
 

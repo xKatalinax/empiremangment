@@ -204,73 +204,103 @@ function hashSig(str){                       // tiny stable hash for de-duping t
   let h = 5381; for(let i=0;i<str.length;i++){ h = ((h<<5)+h + str.charCodeAt(i))>>>0; }
   return 'h'+h.toString(16);
 }
-function matchStaff(author){                 // returns the staff entry this author belongs to, or null
-  const a = normName(author);
+function matchStaff(msg){                    // returns the staff entry this message's author belongs to, or null
+  const authorId = (msg && typeof msg==='object') ? String(msg.authorId||'') : '';
+  const author   = (msg && typeof msg==='object') ? String(msg.author||'')   : String(msg||'');
+  if(authorId){                              // Ticket Tool gives us the real Discord ID — prefer it
+    for(const st of staffList){ if(st.id && String(st.id)===authorId) return st; }
+  }
+  const a = normName(author);                // fall back to name (staff added without an ID)
   if(!a) return null;
   for(const st of staffList){
     const id = String(st.id||'').trim();
-    if(id && String(author).includes(id)) return st;
+    if(id && author.includes(id)) return st;
     const n = normName(st.name);
     if(n && (a===n || (n.length>=3 && a.includes(n)))) return st;
   }
   return null;
 }
 
-/* ---- transcript parser (handles the two Ticket Tool export formats) ---- */
+/* strip mentions/emoji/code/links so they don't inflate the length check */
+function textOnly(raw){
+  return String(raw||'')
+    .replace(/<a?:\w+:\d+>/g,' ')
+    .replace(/<@[!&]?\d+>/g,' ')
+    .replace(/<#\d+>/g,' ')
+    .replace(/```[\s\S]*?```/g,' ')
+    .replace(/`[^`]*`/g,' ')
+    .replace(/https?:\/\/\S+/g,' ')
+    .replace(/\s+/g,' ').trim();
+}
+
+/* ---- transcript parser ----
+   Ticket Tool stores nothing readable in the HTML: the messages are a base64
+   JSON array in a `messages` variable that their viewer decodes in-browser.
+   We decode the same blob. Older/other exports fall back to HTML scraping. */
 function parseTranscript(html){
+  // Format A — Ticket Tool base64 payload
+  const b64 = html.match(/\bmessages\s*=\s*"([A-Za-z0-9+/=]{40,})"/);
+  if(b64){
+    try{
+      const arr = JSON.parse(decodeURIComponent(escape(atob(b64[1]))));
+      if(Array.isArray(arr) && arr.length){
+        return arr.map(x=>({
+          author: x.nick || x.username || '',
+          authorId: String(x.user_id||''),
+          bot: !!x.bot,
+          content: textOnly(x.content),
+          created: x.created || null
+        }));
+      }
+    }catch(e){ /* fall through to HTML parsing */ }
+  }
+
   const doc = new DOMParser().parseFromString(html, 'text/html');
   const out = [];
 
-  // Format A — modern discord-html-transcripts (web components used by Ticket Tool)
+  // Format B — discord-html-transcripts web components
   const dmsgs = doc.querySelectorAll('discord-message');
   if(dmsgs.length){
-    // Build a profile-id -> author-name lookup if profiles are defined on <discord-messages>
     const profiles = {};
     doc.querySelectorAll('discord-message[profile][author], [data-profile][author]').forEach(p=>{
       profiles[p.getAttribute('profile')||p.getAttribute('data-profile')] = p.getAttribute('author');
-    });
-    // Some exports embed a JSON profile blob
-    doc.querySelectorAll('script').forEach(s=>{
-      const m = (s.textContent||'').match(/"profiles"\s*:\s*(\{[\s\S]*?\})\s*[,}]/);
-      if(m){ try{ const obj = JSON.parse(m[1]); for(const k in obj){ if(obj[k]&&obj[k].author) profiles[k]=obj[k].author; } }catch(e){} }
     });
     let last = '';
     dmsgs.forEach(el=>{
       let author = el.getAttribute('author') || el.getAttribute('data-author') || '';
       const pref = el.getAttribute('profile') || el.getAttribute('data-profile');
       if(!author && pref && profiles[pref]) author = profiles[pref];
-      if(!author) author = last; else last = author;           // grouped consecutive messages
-      // strip non-text children (embeds, reactions, attachments) so only typed text counts
+      if(!author) author = last; else last = author;
       const clone = el.cloneNode(true);
       clone.querySelectorAll('discord-embed,discord-attachment,discord-reaction,discord-reactions,discord-attachments,discord-command,discord-system-message,discord-invite').forEach(n=>n.remove());
-      out.push({ author:String(author).trim(), content:(clone.textContent||'').replace(/\s+/g,' ').trim() });
+      out.push({ author:String(author).trim(), authorId:'', bot:false, content:textOnly(clone.textContent) });
     });
     return out;
   }
 
-  // Format B — legacy DiscordChatExporter template (chatlog__ classes)
+  // Format C — legacy DiscordChatExporter template
   const groups = doc.querySelectorAll('.chatlog__message-group');
   if(groups.length){
     groups.forEach(g=>{
       const aEl = g.querySelector('.chatlog__author-name, .chatlog__author, span[title]');
       const author = aEl ? (aEl.getAttribute('title') || aEl.textContent) : '';
       g.querySelectorAll('.chatlog__content, .chatlog__markdown').forEach(c=>{
-        // avoid double-counting nested markdown inside content
         if(c.classList.contains('chatlog__markdown') && c.closest('.chatlog__content')) return;
-        out.push({ author:String(author).trim(), content:(c.textContent||'').replace(/\s+/g,' ').trim() });
+        out.push({ author:String(author).trim(), authorId:'', bot:false, content:textOnly(c.textContent) });
       });
     });
     if(out.length) return out;
   }
-  return out; // empty => unrecognised format (see note shown to the user)
+  return out; // empty => unrecognised format
 }
 
 /* ---- count one parsed transcript into {key:{name,replies}} ---- */
 function countTranscript(messages){
   const tally = {};
   for(const m of messages){
+    if(m.bot) continue;                                                // never count bot posts
     if(!m.content || m.content.length < QUALITY_MIN_CHARS) continue;   // quality-reply length rule
-    const st = matchStaff(m.author); if(!st) continue;                 // must be staff
+    const st = matchStaff(m); if(!st) continue;                        // must be staff
     const key = normName(st.name) || 'id'+st.id;
     (tally[key] || (tally[key] = {name:st.name, replies:0})).replies++;
   }
@@ -349,7 +379,7 @@ function importFiles(fileList){
       const msgs = parseTranscript(html);
       if(!msgs.length){ unread++; }
       else {
-        const sig = hashSig((f.name||'') + ':' + msgs.length + ':' + msgs.slice(0,40).map(m=>m.author+m.content.slice(0,24)).join('|'));
+        const sig = hashSig(msgs.length + ':' + msgs.slice(0,40).map(m=>(m.authorId||m.author)+':'+(m.content||'').slice(0,24)).join('|'));
         if(transcripts.some(t=>t.sig===sig)){ skipped++; }
         else {
           const counts = countTranscript(msgs);

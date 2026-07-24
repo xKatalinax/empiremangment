@@ -1,13 +1,13 @@
 {
   "source": "empire-ticket-counter",
   "version": 1,
-  "generated": "2026-07-23T01:34:10.743Z",
+  "generated": "2026-07-24T05:17:40.324Z",
   "rule": {
     "qualityMinWords": 10,
     "ticketMinReplies": 1
   },
-  "transcriptCount": 9112,
-  "totalTickets": 8843,
+  "transcriptCount": 9113,
+  "totalTickets": 8844,
   "staff": [
     {
       "key": "mira",
@@ -69,8 +69,8 @@
       "key": "lunasmith",
       "name": "Luna Smith",
       "rank": "Administrator",
-      "tickets": 309,
-      "replies": 677
+      "tickets": 310,
+      "replies": 680
     },
     {
       "key": "gp",
@@ -312,8 +312,17 @@
     }
   ],
   "weekResetDay": "Thursday",
-  "currentWeek": "2026-07-16",
+  "currentWeek": "2026-07-23",
   "weeks": {
+    "2026-07-23": [
+      {
+        "key": "lunasmith",
+        "name": "Luna Smith",
+        "rank": "Administrator",
+        "tickets": 1,
+        "replies": 3
+      }
+    ],
     "2026-07-16": [
       {
         "key": "mira",

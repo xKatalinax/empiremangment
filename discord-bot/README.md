@@ -4,7 +4,7 @@ Auto-counts staff tickets from **Ticket Tool** transcripts, using the exact same
 rule as the web portal:
 
 > A **quality reply** is a staff message with **15+ characters** of real text.
-> A staff member with **3+ quality replies** in one transcript is credited with **1 ticket handled**.
+> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**.
 
 Two ways to feed it transcripts:
 
@@ -18,7 +18,7 @@ Two ways to feed it transcripts:
 
 | Command | What it does |
 | --- | --- |
-| `/tickets` | Weekly leaderboard (Friday 12:00 AM reset) |
+| `/tickets` | Weekly leaderboard (Friday 12:00 PM reset) — also shows all-time totals |
 | `/tickets period:All time` | Every ticket ever counted |
 | `/tickets staff:@user` | Show one person's week + all-time count |
 | `/scan` | **Read every transcript in the watched channels** — full history, no uploading |
@@ -37,17 +37,22 @@ Two ways to feed it transcripts:
 
 ## Weekly counts
 
-The week runs **Friday 12:00 AM to the following Friday 12:00 AM**, on the dot. A ticket
-is filed by the time of the last message in its transcript, so a ticket closed at
-11:59 PM Thursday belongs to the outgoing week and one at 12:00 AM Friday starts the new one.
+The week runs **Friday 12:00 PM (midday) to the following Friday 12:00 PM**, on the dot.
+A ticket is filed by the time of the last message in its transcript, so a ticket closed at
+11:59 AM Friday belongs to the outgoing week and one at 12:00 PM Friday starts the new one.
 
-`/tickets` shows the current week by default; `/tickets period:All time` shows everything.
-The website has the same **This week / All time** toggle and displays the countdown to the
-next reset. Nothing is deleted at rollover — the all-time board keeps every ticket.
+`/tickets` shows the current week by default and now prints each person's all-time total
+next to their weekly one, plus a combined "X this week · Y all time" line. `/tickets
+period:All time` still shows the all-time board on its own. The website shows both at once:
+a **Tickets this week** and a **Tickets all time** stat, an **All time** column in the
+per-staff table, and the **This week / All time** toggle. Nothing is deleted at rollover —
+the all-time board keeps every ticket.
 
 Timing uses the clock of the machine running the bot. If you host it in another timezone,
 set `WEEK_TZ_OFFSET` in `.env` to the hours from UTC you want the reset judged in
-(US Eastern is `-5` in winter, `-4` in summer).
+(US Eastern is `-5` in winter, `-4` in summer). To move the rollover off midday, set
+`WEEK_RESET_HOUR` (`0` = midnight, `12` = midday) and change `WEEK_RESET_HOUR` at the top
+of `assets/app.js` to match.
 
 ---
 

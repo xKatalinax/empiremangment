@@ -46,20 +46,32 @@ let events  = store.get('events', []);
 
 /* ---- shared counting rules (must match the Discord bot in /discord-bot) ---- */
 const QUALITY_MIN_CHARS = 15;   // a "quality reply" = staff message with >= this many chars of real text
-const TICKET_MIN_REPLIES = 3;   // >= this many quality replies in one transcript = 1 ticket handled
+const TICKET_MIN_REPLIES = 2;   // >= this many quality replies in one transcript = 1 ticket handled
 
-/* ---- weekly period: Friday 00:00 -> next Friday 00:00 (matches the bot) ---- */
+/* ---- weekly period: Friday 12:00 PM -> next Friday 12:00 PM (matches the bot) ----
+   WEEK_RESET_HOUR is the hour the week rolls over: 12 = midday, 0 = midnight.
+   The bot has the same constant in discord-bot/lib/counter.js — keep them in sync. */
+const WEEK_RESET_HOUR = 12;
 let tixView = store.get('tixView', 'week');   // 'week' or 'all'
+function resetLabel(){
+  const h = ((WEEK_RESET_HOUR % 24) + 24) % 24;
+  return (h % 12 === 0 ? 12 : h % 12) + ':00 ' + (h < 12 ? 'AM' : 'PM');
+}
 function weekStart(when){
-  const t = new Date(when===undefined?Date.now():when);
+  // Shift back by the reset hour so the anchor is a plain midnight, floor to the
+  // most recent Friday, then put the hour back on.
+  const t = new Date((when===undefined?Date.now():when) - WEEK_RESET_HOUR*36e5);
   const d = new Date(t.getFullYear(), t.getMonth(), t.getDate(), 0,0,0,0);
   d.setDate(d.getDate() - ((d.getDay() - 5 + 7) % 7));   // Fri=5
+  d.setHours(WEEK_RESET_HOUR, 0, 0, 0);                  // after the date math, so DST is handled
   return d.getTime();
 }
-function weekEnd(when){ return weekStart(when) + 7*864e5; }
+/* Step into the middle of the next week and re-floor, so a DST change can't
+   drift the rollover by an hour. */
+function weekEnd(when){ return weekStart(weekStart(when) + 7*864e5 + 12*36e5); }
 function weekLabel(when){
   const f = d => d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
-  return f(new Date(weekStart(when))) + ' – ' + f(new Date(weekEnd(when)-864e5));
+  return f(new Date(weekStart(when))) + ' ' + resetLabel() + ' – ' + f(new Date(weekEnd(when))) + ' ' + resetLabel();
 }
 
 const $ = id => document.getElementById(id);
@@ -148,10 +160,11 @@ function renderDashCards(u){
   const pend = tebex.filter(t=>t.status==='pending').length;
   const appPend = apps.filter(a=>a.status==='pending').length;
   const upcoming = nextEvent();
-  const tixHandled = Object.values(aggregateTix()).reduce((s,r)=>s+r.tickets,0);
+  const tixWeek    = Object.values(aggregateTix('week')).reduce((s,r)=>s+r.tickets,0);
+  const tixHandled = Object.values(aggregateTix('all')).reduce((s,r)=>s+r.tickets,0);
   const cards = [
     {icon:'🔥', title:'Boost Tracker', desc:'Leaderboards & history', pill:'<span class="pill live"><span class="dot"></span>Boost live</span>', btn:'Open tracker', href:'boost.html'},
-    {icon:'🎟️', title:'Ticket Tracker', desc:'Auto-counted from transcripts', pill:tixHandled?`<span class="pill pending"><span class="dot"></span>${tixHandled} handled</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open tracker', href:'tickets.html'},
+    {icon:'🎟️', title:'Ticket Tracker', desc:'Auto-counted from transcripts', pill:tixHandled?`<span class="pill pending"><span class="dot"></span>${tixWeek} this week · ${tixHandled} all time</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open tracker', href:'tickets.html'},
     {icon:'👥', title:'Staff Roster', desc:'Manage & track staff', pill:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open roster', href:'roster.html'},
     {icon:'💳', title:'Tebex Logs', desc:'Purchase log & confirmations', pill:pend?`<span class="pill pending"><span class="dot"></span>${pend} pending</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'View logs', href:'tebex.html'},
     {icon:'📋', title:'Applications', desc:'Staff application review', pill:appPend?`<span class="pill pending"><span class="dot"></span>${appPend} pending</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'View applications', href:'applications.html'},
@@ -323,9 +336,9 @@ function countTranscript(messages){
 }
 
 /* ---- roll every source into per-staff totals for the selected period ---- */
-function aggregateTix(){
+function aggregateTix(view){
   const per = {};
-  const weekly = tixView === 'week';
+  const weekly = (view || tixView) === 'week';
   const since = weekly ? weekStart() : 0;
 
   // 1. counts published by the Discord bot (weekly board comes pre-computed)
@@ -355,7 +368,7 @@ function aggregateTix(){
       const row = per[k] || (per[k]={name:v.name, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
       row.name = v.name;
       row.replies += v.replies;
-      if(v.replies >= TICKET_MIN_REPLIES) row.tickets += 1;            // 3+ quality replies = 1 ticket
+      if(v.replies >= TICKET_MIN_REPLIES) row.tickets += 1;            // 2+ quality replies = 1 ticket
     });
   });
 
@@ -526,7 +539,17 @@ function renderTix(){
   const totalTickets = rows.reduce((s,r)=>s+r.tickets,0);
   const credited = rows.filter(r=>r.tickets>0).length;
 
+  // All-time figures are always available, whichever period is selected.
+  const allPer  = aggregateTix('all');
+  const allRows = Object.values(allPer);
+  const allTimeTotal = allRows.reduce((s,r)=>s+r.tickets,0);
+  const allTimeFor = r => {
+    const hit = allPer[normName(r.name)] || allRows.find(x=>normName(x.name)===normName(r.name));
+    return hit ? hit.tickets : 0;
+  };
+
   $('tixHandled').textContent = totalTickets;
+  $('tixAllTime') && ($('tixAllTime').textContent = allTimeTotal);
   $('tixStaffN').textContent  = credited;
   $('tixTransN').textContent  = (botData ? (botData.transcriptCount||0) : 0) + transcripts.length;
 
@@ -540,7 +563,7 @@ function renderTix(){
       `<button class="btn small ${tixView==='week'?'':'ghost'}" onclick="setTixView('week')">This week</button>
        <button class="btn small ${tixView==='all'?'':'ghost'}" onclick="setTixView('all')">All time</button>
        <span class="period-note">${tixView==='week'
-         ? `${esc(weekLabel())} · resets Friday 12:00 AM (in ${left})`
+         ? `${esc(weekLabel())} · resets Friday ${resetLabel()} (in ${left})`
          : 'Every ticket ever counted'}</span>`;
   }
   const lbl = $('tixStatLabel');
@@ -562,12 +585,13 @@ function renderTix(){
 
   // per-staff leaderboard (the automatic ticket count)
   $('tixTable').innerHTML = rows.length ? `<table>
-    <tr><th>#</th><th>Staff</th><th>Rank</th><th>Tickets handled</th><th>Quality replies</th></tr>${
+    <tr><th>#</th><th>Staff</th><th>Rank</th><th>${tixView==='week'?'This week':'Tickets handled'}</th><th>All time</th><th>Quality replies</th></tr>${
     rows.map((r,i)=>`<tr>
       <td class="num">${i+1}</td>
       <td>${i===0&&r.tickets>0?'👑 ':''}${esc(r.name)}</td>
       <td style="color:var(--muted);font-size:13px">${r.rank?esc(r.rank):'—'}</td>
       <td class="num">${r.tickets}${r.manual?` <span class="tag grey" title="includes ${r.manual} manual">+${r.manual}</span>`:''}</td>
+      <td class="num" style="color:var(--muted)">${allTimeFor(r)}</td>
       <td class="num" style="color:var(--muted)">${r.replies}</td>
     </tr>`).join('')
   }</table>` : `<div class="empty">No tickets counted yet. Import the bot's export above, or add staff and import transcripts.</div>`;

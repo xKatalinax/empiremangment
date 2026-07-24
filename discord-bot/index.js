@@ -1,7 +1,7 @@
 // =====================================================
 //  Empire Roleplay — Ticket Counter bot
 //  Auto-counts tickets from Ticket Tool transcripts using the
-//  same rule as the web portal: a staff member with 3+ quality
+//  same rule as the web portal: a staff member with 2+ quality
 //  replies (15+ char messages) in a transcript = 1 ticket handled.
 // =====================================================
 
@@ -16,7 +16,7 @@ const {
 const { parseTranscript } = require('./lib/parser');
 const {
   countTranscript, creditedFrom, transcriptSig,
-  weekStart, weekLabel, nextReset,
+  weekStart, weekLabel, nextReset, resetLabel,
   QUALITY_MIN_CHARS, TICKET_MIN_REPLIES,
 } = require('./lib/counter');
 const store = require('./lib/store');
@@ -289,7 +289,7 @@ function buildExport() {
     generated: new Date().toISOString(),
     rule: { qualityMinChars: QUALITY_MIN_CHARS, ticketMinReplies: TICKET_MIN_REPLIES },
     week: {
-      startsOn: 'Friday 00:00',
+      startsOn: `Friday ${resetLabel()}`,
       start: new Date(ws).toISOString(),
       end: new Date(nextReset()).toISOString(),
       label: weekLabel(),
@@ -338,12 +338,12 @@ function schedulePublish(reason) {
   publishTimer = setTimeout(() => publishNow(reason), 20_000); // batch rapid changes
 }
 
-// Fire exactly at the Friday 00:00 rollover so the website's weekly board resets
-// on time even if no new ticket comes in.
+// Fire exactly at the Friday 12:00 PM rollover so the website's weekly board
+// resets on time even if no new ticket comes in.
 let rolloverTimer = null;
 function scheduleWeeklyRollover() {
   clearTimeout(rolloverTimer);
-  const ms = Math.max(1000, nextReset() - Date.now() + 2000); // +2s to land just past midnight
+  const ms = Math.max(1000, nextReset() - Date.now() + 2000); // +2s to land just past the cut-off
   // setTimeout caps out around 24.8 days; our max is 7, so this is safe.
   rolloverTimer = setTimeout(async () => {
     console.log('weekly rollover — new week starts', weekLabel());
@@ -536,24 +536,47 @@ client.on('interactionCreate', async (i) => {
       );
     }
 
-    const rows = Object.values(totals).sort((a, b) => b.tickets - a.tickets || b.replies - a.replies);
+    const rows = Object.entries(totals)
+      .map(([key, r]) => ({ key, ...r }))
+      .sort((a, b) => b.tickets - a.tickets || b.replies - a.replies);
     if (!rows.length) {
       return i.reply(period === 'all'
         ? 'No tickets counted yet. Add staff with `/syncstaff`, then `/scan`.'
         : `No tickets yet this week (${weekLabel()}). Try \`/tickets period:All time\`.`);
     }
+    // On the weekly board, show each person's all-time total next to the week's,
+    // and a combined all-time figure at the bottom.
+    const allTotals = period === 'week' ? store.totals(0) : null;
+    const allTimeFor = (key, name) => {
+      if (!allTotals) return null;
+      const n = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const row = allTotals[key] || Object.values(allTotals).find((r) => r.name.toLowerCase().replace(/[^a-z0-9]/g, '') === n);
+      return row ? row.tickets : 0;
+    };
+
     const shown = rows.slice(0, 40);
-    let desc = shown.map((r, n) =>
-      `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''} — **${r.tickets}** ticket${r.tickets !== 1 ? 's' : ''} · ${r.replies} replies`
-    ).join('\n');
+    let desc = shown.map((r, n) => {
+      const at = allTimeFor(r.key, r.name);
+      return `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''} — **${r.tickets}** ticket${r.tickets !== 1 ? 's' : ''} · ${r.replies} replies`
+        + (at === null ? '' : ` · ${at} all time`);
+    }).join('\n');
     if (rows.length > shown.length) desc += `\n\n…and ${rows.length - shown.length} more.`;
+
+    const weekTotal = rows.reduce((s, r) => s + r.tickets, 0);
+    const grandTotal = allTotals
+      ? Object.values(allTotals).reduce((s, r) => s + r.tickets, 0)
+      : weekTotal;
+    desc += allTotals
+      ? `\n\n**${weekTotal}** ticket${weekTotal !== 1 ? 's' : ''} this week · **${grandTotal}** all time`
+      : `\n\n**${grandTotal}** ticket${grandTotal !== 1 ? 's' : ''} all time`;
+
     if (desc.length > 4000) desc = desc.slice(0, 3990) + '\n…';
 
     const resetIn = nextReset() - Date.now();
     const hrs = Math.floor(resetIn / 3600_000);
     const resetTxt = period === 'all'
       ? `Rule: ${TICKET_MIN_REPLIES}+ quality replies (${QUALITY_MIN_CHARS}+ chars) = 1 ticket`
-      : `Resets Friday 12:00 AM · ${hrs < 24 ? `in ${hrs}h` : `in ${Math.floor(hrs / 24)}d ${hrs % 24}h`}`;
+      : `Resets Friday ${resetLabel()} · ${hrs < 24 ? `in ${hrs}h` : `in ${Math.floor(hrs / 24)}d ${hrs % 24}h`}`;
 
     const embed = new EmbedBuilder()
       .setTitle(`🎟️ Ticket Leaderboard — ${scope}`)

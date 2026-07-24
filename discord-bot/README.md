@@ -4,7 +4,11 @@ Auto-counts staff tickets from **Ticket Tool** transcripts, using the exact same
 rule as the web portal:
 
 > A **quality reply** is a staff message with **15+ characters** of real text.
+<<<<<<< Updated upstream
 > A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**.
+=======
+> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**. A quality reply is **10+ words** and has to look like actual help.
+>>>>>>> Stashed changes
 
 Two ways to feed it transcripts:
 
@@ -18,7 +22,11 @@ Two ways to feed it transcripts:
 
 | Command | What it does |
 | --- | --- |
+<<<<<<< Updated upstream
 | `/tickets` | Weekly leaderboard (Friday 12:00 PM reset) — also shows all-time totals |
+=======
+| `/tickets` | Weekly leaderboard (Friday 12:00 AM reset) — also shows all-time totals |
+>>>>>>> Stashed changes
 | `/tickets period:All time` | Every ticket ever counted |
 | `/tickets staff:@user` | Show one person's week + all-time count |
 | `/scan` | **Read every transcript in the watched channels** — full history, no uploading |
@@ -37,9 +45,15 @@ Two ways to feed it transcripts:
 
 ## Weekly counts
 
+<<<<<<< Updated upstream
 The week runs **Friday 12:00 PM (midday) to the following Friday 12:00 PM**, on the dot.
 A ticket is filed by the time of the last message in its transcript, so a ticket closed at
 11:59 AM Friday belongs to the outgoing week and one at 12:00 PM Friday starts the new one.
+=======
+The week runs **Friday 12:00 AM (midnight) to the following Friday 12:00 AM**, on the dot.
+A ticket is filed by the time of the last message in its transcript, so a ticket closed at
+11:59 PM Thursday belongs to the outgoing week and one at 12:00 AM Friday starts the new one.
+>>>>>>> Stashed changes
 
 `/tickets` shows the current week by default and now prints each person's all-time total
 next to their weekly one, plus a combined "X this week · Y all time" line. `/tickets
@@ -202,3 +216,40 @@ ephemeral disks, attach a volume or the counts reset on redeploy.
   `npm run diagnose` locally against `data/sample-transcript.html`.
 - The counting rule lives in `lib/counter.js` (`QUALITY_MIN_CHARS`, `TICKET_MIN_REPLIES`)
   and is identical to the web portal, so both always agree.
+
+---
+
+## What counts as a reply
+
+A staff message counts only if **both** are true:
+
+1. It is **10 or more words** long (mentions, emoji, links and code blocks are
+   stripped out first, so they can't pad the count).
+2. It passes the **helpfulness check** in `isQualityReply()`
+   (`discord-bot/lib/counter.js`).
+
+The helpfulness check is a heuristic, not real comprehension. It peels off
+formula openers ("hey", "thanks", "bump", "on it", "closing this"), then removes
+stopwords and pleasantries, and requires **4 distinct meaningful words** to
+remain. So this counts:
+
+> closing this — I refunded the car to your garage, relog and it'll be there
+
+and this does not:
+
+> hey there how are you doing today hope you are having a good one
+
+Tuning knobs, all at the top of `discord-bot/lib/counter.js` (mirror any change
+in `assets/app.js`):
+
+| Constant | Default | Effect |
+| --- | --- | --- |
+| `QUALITY_MIN_WORDS` | `10` | Minimum words in a reply |
+| `HELPFUL_MIN_CONTENT_WORDS` | `4` | How strict the helpfulness check is — raise to catch more filler, lower if real replies are being missed |
+| `TICKET_MIN_REPLIES` | `2` | Replies needed for 1 ticket |
+| `STOPWORDS` / `PLEASANTRIES` | — | Word lists that don't count as substance |
+| `FORMULA_OPENERS` | — | Openers stripped before judging the rest |
+
+**After changing any of these, run `/scan recount:True`.** Stored records keep
+only reply tallies, not the original message text, so old transcripts cannot be
+re-judged in place — they have to be read again from the channel.

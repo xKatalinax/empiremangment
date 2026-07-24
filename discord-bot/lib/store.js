@@ -63,6 +63,16 @@ module.exports = {
   addTranscript(sig, rec) { db.transcripts[sig] = rec; persist(); },
   transcripts: () => db.transcripts,
 
+  // Wipe the stored tallies so every transcript gets read again. Needed after a
+  // counting-rule change: records keep only reply counts, not the original text,
+  // so old rows can't be re-judged in place. Staff list is left alone.
+  clearTranscripts() {
+    const n = Object.keys(db.transcripts).length;
+    db.transcripts = {};
+    persist();
+    return n;
+  },
+
   // roll everything up into per-staff totals { key: {name, rank, tickets, replies} }
   // Pass a millisecond timestamp to count only transcripts from then onwards.
   totals(sinceTs = 0) {

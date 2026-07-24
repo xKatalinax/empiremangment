@@ -2,7 +2,11 @@
 //  Empire Roleplay — Ticket Counter bot
 //  Auto-counts tickets from Ticket Tool transcripts using the
 //  same rule as the web portal: a staff member with 2+ quality
+<<<<<<< Updated upstream
 //  replies (15+ char messages) in a transcript = 1 ticket handled.
+=======
+//  replies (10+ words, filler filtered out) in a transcript = 1 ticket.
+>>>>>>> Stashed changes
 // =====================================================
 
 require('dotenv').config();
@@ -17,7 +21,11 @@ const { parseTranscript } = require('./lib/parser');
 const {
   countTranscript, creditedFrom, transcriptSig,
   weekStart, weekLabel, nextReset, resetLabel,
+<<<<<<< Updated upstream
   QUALITY_MIN_CHARS, TICKET_MIN_REPLIES,
+=======
+  QUALITY_MIN_WORDS, TICKET_MIN_REPLIES,
+>>>>>>> Stashed changes
 } = require('./lib/counter');
 const store = require('./lib/store');
 const publisher = require('./lib/publish');
@@ -88,6 +96,9 @@ const commands = [
   new SlashCommandBuilder()
     .setName('scan')
     .setDescription('Read EVERY transcript in the watched channel(s) — no uploading one by one')
+    .addBooleanOption((o) => o.setName('recount')
+      .setDescription('Wipe stored counts and re-judge every transcript under the current rules')
+      .setRequired(false))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
   new SlashCommandBuilder()
@@ -287,7 +298,7 @@ function buildExport() {
     source: 'empire-ticket-counter',
     version: 2,
     generated: new Date().toISOString(),
-    rule: { qualityMinChars: QUALITY_MIN_CHARS, ticketMinReplies: TICKET_MIN_REPLIES },
+    rule: { qualityMinWords: QUALITY_MIN_WORDS, ticketMinReplies: TICKET_MIN_REPLIES, helpfulnessFilter: true },
     week: {
       startsOn: `Friday ${resetLabel()}`,
       start: new Date(ws).toISOString(),
@@ -575,7 +586,11 @@ client.on('interactionCreate', async (i) => {
     const resetIn = nextReset() - Date.now();
     const hrs = Math.floor(resetIn / 3600_000);
     const resetTxt = period === 'all'
+<<<<<<< Updated upstream
       ? `Rule: ${TICKET_MIN_REPLIES}+ quality replies (${QUALITY_MIN_CHARS}+ chars) = 1 ticket`
+=======
+      ? `Rule: ${TICKET_MIN_REPLIES}+ helpful replies (${QUALITY_MIN_WORDS}+ words each) = 1 ticket`
+>>>>>>> Stashed changes
       : `Resets Friday ${resetLabel()} · ${hrs < 24 ? `in ${hrs}h` : `in ${Math.floor(hrs / 24)}d ${hrs % 24}h`}`;
 
     const embed = new EmbedBuilder()
@@ -599,7 +614,7 @@ client.on('interactionCreate', async (i) => {
       const r = await processTranscript(html, label);
       if (!r.ok && r.reason === 'duplicate') return i.editReply('♻️ That transcript was already counted.');
       if (!r.ok) return i.editReply('⚠️ Couldn\'t read that transcript. Send Kat a sample so the parser can be tuned.');
-      if (!r.credited.length) return i.editReply(`Processed **${label}** — nobody hit ${TICKET_MIN_REPLIES}+ quality replies, so no credit.`);
+      if (!r.credited.length) return i.editReply(`Processed **${label}** — nobody hit ${TICKET_MIN_REPLIES}+ helpful replies of ${QUALITY_MIN_WORDS}+ words, so no credit.`);
       return i.editReply({ embeds: [creditEmbed(label, r.credited)] });
     } catch (e) {
       return i.editReply('⚠️ Fetch failed: ' + e.message + (url ? ' — hosted transcript links can be JS-rendered; try attaching the `.html` file instead.' : ''));
@@ -612,10 +627,16 @@ client.on('interactionCreate', async (i) => {
     await i.deferReply();
     try {
       const guild = await resolveGuild(i);
+      // A rule change can't be applied to stored rows — they only hold reply
+      // tallies, not the original text — so recount clears them and re-reads.
+      const recount = i.options.getBoolean('recount') || false;
+      const wiped = recount ? store.clearTranscripts() : 0;
       const samples = [];
       const r = await scanAll(guild, samples);
       const lines = [
-        '📜 Scanned every transcript channel.',
+        recount
+          ? `📜 Recounted from scratch — cleared **${wiped}** stored transcript${wiped !== 1 ? 's' : ''} and re-read the channels.`
+          : '📜 Scanned every transcript channel.',
         `• **${r.counted}** newly counted`,
         `• ${r.dupes} already had`,
         `• ${r.scanned} transcript files seen`,

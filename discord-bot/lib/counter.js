@@ -2,14 +2,97 @@
 //  Shared counting rules — identical to the web portal
 //  (assets/app.js in the Empire management portal).
 //
-//  quality reply  = a staff message with >= QUALITY_MIN_CHARS
-//                   characters of real text
+//  quality reply  = a staff message that is at least
+//                   QUALITY_MIN_WORDS words long AND looks like
+//                   actual help rather than filler
 //  1 ticket handled = >= TICKET_MIN_REPLIES quality replies from
 //                   the same staff member inside one transcript
 // =====================================================
 
+<<<<<<< Updated upstream
 const QUALITY_MIN_CHARS = 15;
 const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
+=======
+const QUALITY_MIN_WORDS = 10;   // a reply must be at least this many words
+const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
+const HELPFUL_MIN_CONTENT_WORDS = 4;  // distinct meaningful words needed on top of the length
+
+// Common words that carry no support value by themselves. A message made
+// entirely of these is padding, however long it is.
+const STOPWORDS = new Set(`
+a an the and or but if so then than that this these those there here
+i me my mine we us our you your yours he she it they them his her its their
+is am are was were be been being do does did done doesn't have has had having
+of in on at to from for with by about as into over after before up down out off
+not no yes ok okay sure just really very too also only even still much many lot
+will would can could shall should may might must gonna wanna gotta
+what when where who whom which why how
+im ive ill id youre youve dont doesnt didnt cant cannot wont isnt arent thats
+u ur r ye yea yeah yep nope nah lol lmao lmfao xd haha hahaha bruh
+one two three like get got go going know think want need see look make made
+now today tomorrow yesterday time day back again well good great nice cool
+`.trim().split(/\s+/));
+
+// Greetings, thanks and other pleasantries — polite, but not the help itself.
+const PLEASANTRIES = new Set(`
+hi hey hello yo hiya greetings morning afternoon evening night welcome
+thanks thank thankyou ty tysm thx tks cheers appreciate appreciated
+please pls plz sorry apologies apologise apologize
+bye goodbye later cya seeya np problem worries anytime
+sir maam ma'am mate bro brother buddy friend king queen boss chief guys everyone
+`.trim().split(/\s+/));
+
+// Formula openers — "bump", "on it", "closing this", "thanks" and friends.
+// These aren't rejected outright: the opener is stripped and whatever follows
+// has to stand on its own. So "closing this — I refunded the car, relog and
+// it'll be there" still counts, while a bare "closing this, thanks again" doesn't.
+const FORMULA_OPENERS = [
+  /^(bump|bumping|up|anyone|any (updates?|news))\b/,
+  /^(still (waiting|here|need|needs))\b/,
+  /^(on it|i'?ll take (this|it)|taking (this|it)|got it|handled|mine)\b/,
+  /^(closing|closed|close|marking|resolving|resolved) (this|the|it|as|out)\b/,
+  /^(thanks?|thank you|ty|tysm|no problem|you'?re welcome|yw|anytime)\b/,
+  /^(hi|hey|hello|yo|hiya|greetings|good (morning|afternoon|evening))\b/,
+];
+
+// Split into comparable words: drop punctuation, keep apostrophes.
+function wordsOf(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9'\s]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+/**
+ * Does this message count as a quality reply?
+ * Two tests: it has to be long enough, and it has to say something.
+ *
+ * The second test is a heuristic, not real comprehension — it strips formula
+ * openers, then stopwords and pleasantries, and requires what's left to hold at
+ * least HELPFUL_MIN_CONTENT_WORDS distinct meaningful words. That clears out
+ * "hey there, sorry for the wait, hope you're having a good day" style padding
+ * while keeping anything that actually explains, instructs or answers.
+ */
+function isQualityReply(text) {
+  const words = wordsOf(text);
+  if (words.length < QUALITY_MIN_WORDS) return false;   // the 10-word floor
+
+  // Peel off leading filler formulas — repeatedly, since they stack
+  // ("hey there, thanks for waiting, bumping this...").
+  let rest = words.join(' ');
+  for (let pass = 0; pass < 4; pass++) {
+    const before = rest;
+    for (const re of FORMULA_OPENERS) rest = rest.replace(re, '').trim();
+    if (rest === before) break;
+  }
+
+  const content = new Set(
+    rest.split(/\s+/).filter((w) => w.length > 2 && !STOPWORDS.has(w) && !PLEASANTRIES.has(w))
+  );
+  return content.size >= HELPFUL_MIN_CONTENT_WORDS;
+}
+>>>>>>> Stashed changes
 
 const normName = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -57,7 +140,7 @@ function countTranscript(messages, staffList) {
   const tally = {};
   for (const m of messages) {
     if (m.bot) continue;                                   // never count bot posts
-    if (!m.content || m.content.length < QUALITY_MIN_CHARS) continue;
+    if (!isQualityReply(m.content)) continue;               // 10+ words and actually helpful
     const st = matchStaff(m, staffList);
     if (!st) continue;
     const key = normName(st.name) || ('id' + st.id);
@@ -71,15 +154,24 @@ function creditedFrom(counts) {
   return Object.values(counts).filter((v) => v.replies >= TICKET_MIN_REPLIES);
 }
 
+<<<<<<< Updated upstream
 // ---- weekly periods: a week runs Friday 12:00 PM -> next Friday 12:00 PM ----
 // Anchored to Friday midday exactly. Uses the machine's local time unless
+=======
+// ---- weekly periods: a week runs Friday 12:00 AM -> next Friday 12:00 AM ----
+// Anchored to Friday midnight exactly. Uses the machine's local time unless
+>>>>>>> Stashed changes
 // WEEK_TZ_OFFSET is set (hours from UTC, e.g. -5 for US Eastern standard time).
 //
 // To move the rollover somewhere else, change RESET_HOUR (0 = midnight,
 // 12 = noon) or set WEEK_RESET_HOUR in the environment. The web portal has the
 // same constant at the top of assets/app.js — keep the two in sync.
 const RESET_HOUR = process.env.WEEK_RESET_HOUR === undefined || process.env.WEEK_RESET_HOUR === ''
+<<<<<<< Updated upstream
   ? 12
+=======
+  ? 0
+>>>>>>> Stashed changes
   : Number(process.env.WEEK_RESET_HOUR);
 
 const TZ_OFFSET = process.env.WEEK_TZ_OFFSET === undefined || process.env.WEEK_TZ_OFFSET === ''
@@ -123,7 +215,11 @@ function weekEnd(when = Date.now()) {
   return weekStart(weekStart(when) + 7 * 86_400_000 + 12 * 3600_000);
 }
 
+<<<<<<< Updated upstream
 // Label like "Fri 18 Jul 12:00 PM – Fri 25 Jul 12:00 PM"
+=======
+// Label like "Fri 18 Jul 12:00 AM – Fri 25 Jul 12:00 AM"
+>>>>>>> Stashed changes
 function weekLabel(when = Date.now()) {
   const s = new Date(weekStart(when));
   const e = new Date(weekEnd(when));
@@ -137,7 +233,12 @@ function nextReset(when = Date.now()) {
 }
 
 module.exports = {
+<<<<<<< Updated upstream
   QUALITY_MIN_CHARS, TICKET_MIN_REPLIES, RESET_HOUR, resetLabel,
+=======
+  QUALITY_MIN_WORDS, TICKET_MIN_REPLIES, HELPFUL_MIN_CONTENT_WORDS,
+  RESET_HOUR, resetLabel, isQualityReply, wordsOf,
+>>>>>>> Stashed changes
   normName, hashSig, transcriptSig, matchStaff, countTranscript, creditedFrom,
   weekStart, weekEnd, weekLabel, nextReset,
 };

@@ -44,6 +44,7 @@ let tebex   = store.get('tebex', []);
 let apps    = store.get('apps', []);
 let events  = store.get('events', []);
 
+<<<<<<< Updated upstream
 /* ---- shared counting rules (must match the Discord bot in /discord-bot) ---- */
 const QUALITY_MIN_CHARS = 15;   // a "quality reply" = staff message with >= this many chars of real text
 const TICKET_MIN_REPLIES = 2;   // >= this many quality replies in one transcript = 1 ticket handled
@@ -52,6 +53,95 @@ const TICKET_MIN_REPLIES = 2;   // >= this many quality replies in one transcrip
    WEEK_RESET_HOUR is the hour the week rolls over: 12 = midday, 0 = midnight.
    The bot has the same constant in discord-bot/lib/counter.js — keep them in sync. */
 const WEEK_RESET_HOUR = 12;
+=======
+/* ---- shared counting rules (must match the Discord bot in /discord-bot) ----
+   This block is a straight copy of the top of discord-bot/lib/counter.js.
+   If you change one, change the other or the website and Discord will disagree. */
+const QUALITY_MIN_WORDS = 10;   // a reply must be at least this many words
+const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
+const HELPFUL_MIN_CONTENT_WORDS = 4;  // distinct meaningful words needed on top of the length
+
+// Common words that carry no support value by themselves. A message made
+// entirely of these is padding, however long it is.
+const STOPWORDS = new Set(`
+a an the and or but if so then than that this these those there here
+i me my mine we us our you your yours he she it they them his her its their
+is am are was were be been being do does did done doesn't have has had having
+of in on at to from for with by about as into over after before up down out off
+not no yes ok okay sure just really very too also only even still much many lot
+will would can could shall should may might must gonna wanna gotta
+what when where who whom which why how
+im ive ill id youre youve dont doesnt didnt cant cannot wont isnt arent thats
+u ur r ye yea yeah yep nope nah lol lmao lmfao xd haha hahaha bruh
+one two three like get got go going know think want need see look make made
+now today tomorrow yesterday time day back again well good great nice cool
+`.trim().split(/\s+/));
+
+// Greetings, thanks and other pleasantries — polite, but not the help itself.
+const PLEASANTRIES = new Set(`
+hi hey hello yo hiya greetings morning afternoon evening night welcome
+thanks thank thankyou ty tysm thx tks cheers appreciate appreciated
+please pls plz sorry apologies apologise apologize
+bye goodbye later cya seeya np problem worries anytime
+sir maam ma'am mate bro brother buddy friend king queen boss chief guys everyone
+`.trim().split(/\s+/));
+
+// Formula openers — "bump", "on it", "closing this", "thanks" and friends.
+// These aren't rejected outright: the opener is stripped and whatever follows
+// has to stand on its own. So "closing this — I refunded the car, relog and
+// it'll be there" still counts, while a bare "closing this, thanks again" doesn't.
+const FORMULA_OPENERS = [
+  /^(bump|bumping|up|anyone|any (updates?|news))\b/,
+  /^(still (waiting|here|need|needs))\b/,
+  /^(on it|i'?ll take (this|it)|taking (this|it)|got it|handled|mine)\b/,
+  /^(closing|closed|close|marking|resolving|resolved) (this|the|it|as|out)\b/,
+  /^(thanks?|thank you|ty|tysm|no problem|you'?re welcome|yw|anytime)\b/,
+  /^(hi|hey|hello|yo|hiya|greetings|good (morning|afternoon|evening))\b/,
+];
+
+// Split into comparable words: drop punctuation, keep apostrophes.
+function wordsOf(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9'\s]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+/**
+ * Does this message count as a quality reply?
+ * Two tests: it has to be long enough, and it has to say something.
+ *
+ * The second test is a heuristic, not real comprehension — it strips formula
+ * openers, then stopwords and pleasantries, and requires what's left to hold at
+ * least HELPFUL_MIN_CONTENT_WORDS distinct meaningful words. That clears out
+ * "hey there, sorry for the wait, hope you're having a good day" style padding
+ * while keeping anything that actually explains, instructs or answers.
+ */
+function isQualityReply(text) {
+  const words = wordsOf(text);
+  if (words.length < QUALITY_MIN_WORDS) return false;   // the 10-word floor
+
+  // Peel off leading filler formulas — repeatedly, since they stack
+  // ("hey there, thanks for waiting, bumping this...").
+  let rest = words.join(' ');
+  for (let pass = 0; pass < 4; pass++) {
+    const before = rest;
+    for (const re of FORMULA_OPENERS) rest = rest.replace(re, '').trim();
+    if (rest === before) break;
+  }
+
+  const content = new Set(
+    rest.split(/\s+/).filter((w) => w.length > 2 && !STOPWORDS.has(w) && !PLEASANTRIES.has(w))
+  );
+  return content.size >= HELPFUL_MIN_CONTENT_WORDS;
+}
+
+/* ---- weekly period: Friday 12:00 AM -> next Friday 12:00 AM (matches the bot) ----
+   WEEK_RESET_HOUR is the hour the week rolls over: 0 = midnight, 12 = midday.
+   The bot has the same constant in discord-bot/lib/counter.js — keep them in sync. */
+const WEEK_RESET_HOUR = 0;
+>>>>>>> Stashed changes
 let tixView = store.get('tixView', 'week');   // 'week' or 'all'
 function resetLabel(){
   const h = ((WEEK_RESET_HOUR % 24) + 24) % 24;
@@ -219,10 +309,11 @@ function renderBoost(){
 /* =====================================================
    TICKET TRACKER — auto-counts from Ticket Tool transcripts
    -----------------------------------------------------
-   Rule: a "quality reply" is a message from someone on the
-   staff list containing >= QUALITY_MIN_CHARS characters of real
-   text. A staff member who posts >= TICKET_MIN_REPLIES quality
-   replies inside one transcript is credited with 1 ticket handled.
+   Rule: a "quality reply" is a message from someone on the staff
+   list that is >= QUALITY_MIN_WORDS words long and passes the
+   helpfulness check (see isQualityReply). A staff member who posts
+   >= TICKET_MIN_REPLIES quality replies inside one transcript is
+   credited with 1 ticket handled.
    The SAME logic runs in the Discord bot under /discord-bot.
 ===================================================== */
 
@@ -327,7 +418,7 @@ function countTranscript(messages){
   const tally = {};
   for(const m of messages){
     if(m.bot) continue;                                                // never count bot posts
-    if(!m.content || m.content.length < QUALITY_MIN_CHARS) continue;   // quality-reply length rule
+    if(!isQualityReply(m.content)) continue;                           // 10+ words and actually helpful
     const st = matchStaff(m); if(!st) continue;                        // must be staff
     const key = normName(st.name) || 'id'+st.id;
     (tally[key] || (tally[key] = {name:st.name, replies:0})).replies++;

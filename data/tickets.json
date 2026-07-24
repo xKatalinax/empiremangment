@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-24T11:24:19.216Z",
+  "generated": "2026-07-24T12:19:30.507Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,19 +12,19 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 19,
+    "totalTickets": 26,
     "staff": [
-      {
-        "key": "poptart",
-        "name": "Poptart",
-        "rank": "Administrator",
-        "tickets": 3,
-        "replies": 12
-      },
       {
         "key": "kat",
         "name": "kat",
         "rank": "LOA",
+        "tickets": 7,
+        "replies": 24
+      },
+      {
+        "key": "poptart",
+        "name": "Poptart",
+        "rank": "Administrator",
         "tickets": 3,
         "replies": 12
       },
@@ -43,9 +43,23 @@
         "replies": 11
       },
       {
+        "key": "charliewatleh",
+        "name": "Charlie Watleh",
+        "rank": "Moderator",
+        "tickets": 2,
+        "replies": 8
+      },
+      {
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Moderator",
+        "tickets": 1,
+        "replies": 9
+      },
+      {
+        "key": "mira",
+        "name": "Mira",
+        "rank": "Administrator",
         "tickets": 1,
         "replies": 8
       },
@@ -106,13 +120,6 @@
         "replies": 2
       },
       {
-        "key": "mira",
-        "name": "Mira",
-        "rank": "Administrator",
-        "tickets": 0,
-        "replies": 2
-      },
-      {
         "key": "iaderekwalsh",
         "name": "IA | Derek Walsh",
         "rank": "Senior Administrator",
@@ -132,6 +139,13 @@
         "rank": "Administrator",
         "tickets": 0,
         "replies": 1
+      },
+      {
+        "key": "kolton",
+        "name": "Kolton",
+        "rank": "LOA",
+        "tickets": 0,
+        "replies": 1
       }
     ]
   },
@@ -142,19 +156,19 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 19,
+      "totalTickets": 26,
       "staff": [
-        {
-          "key": "poptart",
-          "name": "Poptart",
-          "rank": "Administrator",
-          "tickets": 3,
-          "replies": 12
-        },
         {
           "key": "kat",
           "name": "kat",
           "rank": "LOA",
+          "tickets": 7,
+          "replies": 24
+        },
+        {
+          "key": "poptart",
+          "name": "Poptart",
+          "rank": "Administrator",
           "tickets": 3,
           "replies": 12
         },
@@ -173,9 +187,23 @@
           "replies": 11
         },
         {
+          "key": "charliewatleh",
+          "name": "Charlie Watleh",
+          "rank": "Moderator",
+          "tickets": 2,
+          "replies": 8
+        },
+        {
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Moderator",
+          "tickets": 1,
+          "replies": 9
+        },
+        {
+          "key": "mira",
+          "name": "Mira",
+          "rank": "Administrator",
           "tickets": 1,
           "replies": 8
         },
@@ -236,13 +264,6 @@
           "replies": 2
         },
         {
-          "key": "mira",
-          "name": "Mira",
-          "rank": "Administrator",
-          "tickets": 0,
-          "replies": 2
-        },
-        {
           "key": "iaderekwalsh",
           "name": "IA | Derek Walsh",
           "rank": "Senior Administrator",
@@ -260,6 +281,13 @@
           "key": "sho",
           "name": "Sho",
           "rank": "Administrator",
+          "tickets": 0,
+          "replies": 1
+        },
+        {
+          "key": "kolton",
+          "name": "Kolton",
+          "rank": "LOA",
           "tickets": 0,
           "replies": 1
         }
@@ -3102,22 +3130,22 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9346,
-  "totalTickets": 5111,
+  "transcriptCount": 9352,
+  "totalTickets": 5118,
   "staff": [
     {
       "key": "mira",
       "name": "Mira",
       "rank": "Administrator",
-      "tickets": 596,
-      "replies": 2962
+      "tickets": 597,
+      "replies": 2968
     },
     {
       "key": "kat",
       "name": "kat",
       "rank": "LOA",
-      "tickets": 569,
-      "replies": 2919
+      "tickets": 573,
+      "replies": 2931
     },
     {
       "key": "clarksmith",
@@ -3187,7 +3215,7 @@
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Moderator",
       "tickets": 128,
-      "replies": 705
+      "replies": 706
     },
     {
       "key": "iaderekwalsh",
@@ -3330,18 +3358,18 @@
       "replies": 200
     },
     {
+      "key": "charliewatleh",
+      "name": "Charlie Watleh",
+      "rank": "Moderator",
+      "tickets": 32,
+      "replies": 182
+    },
+    {
       "key": "id1034173416619659316",
       "name": "𝕭𝕰𝕬𝕹",
       "rank": "Moderator",
       "tickets": 31,
       "replies": 109
-    },
-    {
-      "key": "charliewatleh",
-      "name": "Charlie Watleh",
-      "rank": "Moderator",
-      "tickets": 30,
-      "replies": 174
     },
     {
       "key": "gregory",
@@ -3397,7 +3425,7 @@
       "name": "Kolton",
       "rank": "LOA",
       "tickets": 16,
-      "replies": 58
+      "replies": 59
     },
     {
       "key": "giyu",

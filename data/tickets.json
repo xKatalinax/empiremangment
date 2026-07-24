@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-24T11:03:45.876Z",
+  "generated": "2026-07-24T11:05:03.267Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 23,
+    "totalTickets": 25,
     "staff": [
       {
         "key": "lunasmith",
@@ -57,6 +57,13 @@
         "replies": 5
       },
       {
+        "key": "snq",
+        "name": "ʇsɹnʍʇɐɹq",
+        "rank": "Moderator",
+        "tickets": 1,
+        "replies": 8
+      },
+      {
         "key": "harrisonford",
         "name": "Harrison Ford",
         "rank": "Support",
@@ -99,6 +106,13 @@
         "replies": 2
       },
       {
+        "key": "nini",
+        "name": "nini",
+        "rank": "Senior Administrator",
+        "tickets": 1,
+        "replies": 2
+      },
+      {
         "key": "sho",
         "name": "Sho",
         "rank": "Administrator",
@@ -128,7 +142,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 23,
+      "totalTickets": 25,
       "staff": [
         {
           "key": "lunasmith",
@@ -173,6 +187,13 @@
           "replies": 5
         },
         {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Moderator",
+          "tickets": 1,
+          "replies": 8
+        },
+        {
           "key": "harrisonford",
           "name": "Harrison Ford",
           "rank": "Support",
@@ -210,6 +231,13 @@
         {
           "key": "savi",
           "name": "Savi",
+          "rank": "Senior Administrator",
+          "tickets": 1,
+          "replies": 2
+        },
+        {
+          "key": "nini",
+          "name": "nini",
           "rank": "Senior Administrator",
           "tickets": 1,
           "replies": 2
@@ -3144,8 +3172,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9345,
-  "totalTickets": 6808,
+  "transcriptCount": 9346,
+  "totalTickets": 6810,
   "staff": [
     {
       "key": "mira",
@@ -3232,18 +3260,18 @@
       "replies": 801
     },
     {
+      "key": "snq",
+      "name": "ʇsɹnʍʇɐɹq",
+      "rank": "Moderator",
+      "tickets": 151,
+      "replies": 916
+    },
+    {
       "key": "iaderekwalsh",
       "name": "IA | Derek Walsh",
       "rank": "Senior Administrator",
       "tickets": 151,
       "replies": 681
-    },
-    {
-      "key": "snq",
-      "name": "ʇsɹnʍʇɐɹq",
-      "rank": "Moderator",
-      "tickets": 150,
-      "replies": 908
     },
     {
       "key": "sho",
@@ -3340,8 +3368,8 @@
       "key": "nini",
       "name": "nini",
       "rank": "Senior Administrator",
-      "tickets": 73,
-      "replies": 331
+      "tickets": 74,
+      "replies": 333
     },
     {
       "key": "spazzktlsquad",

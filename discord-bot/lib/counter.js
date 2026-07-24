@@ -9,9 +9,11 @@
 //                   the same staff member inside one transcript
 // =====================================================
 
-const QUALITY_MIN_WORDS = 10;   // a reply must be at least this many words
+const QUALITY_MIN_WORDS = 3;    // a reply must be at least this many words
 const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
-const HELPFUL_MIN_CONTENT_WORDS = 4;  // distinct meaningful words needed on top of the length
+const HELPFUL_MIN_CONTENT_WORDS = 2;   // meaningful words a normal reply needs
+const QUESTION_MIN_CONTENT_WORDS = 4;  // questions need more — "is this gtc?" isn't help
+const SHORT_REPLY_MAX_WORDS = 8;       // above this, a reply can't lean on the help-verb shortcut
 
 // Common words that carry no support value by themselves. A message made
 // entirely of these is padding, however long it is.
@@ -27,6 +29,8 @@ im ive ill id youre youve dont doesnt didnt cant cannot wont isnt arent thats
 u ur r ye yea yeah yep nope nah lol lmao lmfao xd haha hahaha bruh
 one two three like get got go going know think want need see look make made
 now today tomorrow yesterday time day back again well good great nice cool
+right left down someone somebody something anything everything nothing
+thing things stuff bit while chance ticket tickets issue matter case
 `.trim().split(/\s+/));
 
 // Greetings, thanks and other pleasantries — polite, but not the help itself.
@@ -36,6 +40,55 @@ thanks thank thankyou ty tysm thx tks cheers appreciate appreciated
 please pls plz sorry apologies apologise apologize
 bye goodbye later cya seeya np problem worries anytime
 sir maam ma'am mate bro brother buddy friend king queen boss chief guys everyone
+`.trim().split(/\s+/));
+
+// Conversational verbs and hedges. With only a 3-word floor these have to be
+// listed explicitly, otherwise "hope you are doing well" reads as substance.
+const CHITCHAT = new Set(`
+doing hope hoping wondering thinking thought feel feeling felt guess suppose
+sure alright cool awesome perfect fine okay great lovely brilliant amazing
+wait waiting hold holding moment minute sec second soon shortly
+hows how's whats what's hey'a sup
+makes make made sense seems seem means mean understood understand
+gotcha exactly indeed correct agree agreed noted alright
+`.trim().split(/\s+/));
+
+// Words that signal the staffer actually did something or gave an instruction.
+// A short reply with one of these counts even if it's only got one content word
+// ("i refunded it"), which a pure density test would otherwise throw away.
+const HELP_VERBS = new Set(`
+refund refunded refunding ban banned unban unbanned kick kicked mute muted
+warn warned approve approved deny denied accept accepted reject rejected
+transfer transferred move moved fix fixed fixing repair repaired
+restart relog rejoin reconnect reinstall install download update updated
+verify verified clear cleared delete deleted remove removed add added
+send sent give gave given grant granted issue issued deliver delivered
+open press click type enter rebind rebound reset resolve resolved
+whitelist whitelisted appeal appealed unlock unlocked enable disable
+check checked try tried head join go navigate scroll select choose
+`.trim().split(/\s+/));
+
+// Stock filler phrases. Stripped wherever they appear, not just at the start,
+// so "give me one moment" can't donate 'give' as if it were real content.
+const FILLER_PHRASES = [
+  /\bgive me (a|one) (moment|minute|sec|second)\b/g,
+  /\b(one|a) (moment|minute|sec|second)( please)?\b/g,
+  /\blet me (check|look|see|have a look)\b/g,
+  /\bbear with me\b/g,
+  /\bi'?ll be right (with|back)\b/g,
+  /\breaching out\b/g,
+  /\bget back to you\b/g,
+  /\bthanks? (again|so much|for (waiting|your patience))\b/g,
+  /\btake a look\b/g,
+];
+
+// Question openers — a short interrogative is the staffer asking for something,
+// not providing help, so it has to clear a higher bar to count.
+const QUESTION_OPENERS = new Set(`
+is are was were am do does did can could will would shall should
+have has had may might must
+what when where who whom which why how whats what's whos who's
+any anyone anybody
 `.trim().split(/\s+/));
 
 // Formula openers — "bump", "on it", "closing this", "thanks" and friends.
@@ -62,31 +115,56 @@ function wordsOf(text) {
 
 /**
  * Does this message count as a quality reply?
- * Two tests: it has to be long enough, and it has to say something.
  *
- * The second test is a heuristic, not real comprehension — it strips formula
- * openers, then stopwords and pleasantries, and requires what's left to hold at
- * least HELPFUL_MIN_CONTENT_WORDS distinct meaningful words. That clears out
- * "hey there, sorry for the wait, hope you're having a good day" style padding
- * while keeping anything that actually explains, instructs or answers.
+ * With the floor at 3 words, length barely filters anything, so the decision is
+ * about what the message is *doing*:
+ *
+ *   1. At least QUALITY_MIN_WORDS words.
+ *   2. Formula openers are peeled off ("hey", "thanks", "bump", "on it").
+ *   3. Stopwords, pleasantries and chitchat are removed; what survives is the
+ *      message's actual content.
+ *   4. A question has to clear QUESTION_MIN_CONTENT_WORDS — asking for
+ *      information isn't giving help, so "is this gtc?" is out while
+ *      "can you send your steam hex and a screenshot of the error" is in.
+ *   5. Anything else needs HELPFUL_MIN_CONTENT_WORDS content words, OR one
+ *      content word plus a help verb, so terse-but-real replies like
+ *      "i refunded it" still count.
+ *
+ * It's a heuristic, not comprehension. See the README for the tuning knobs.
  */
 function isQualityReply(text) {
   const words = wordsOf(text);
-  if (words.length < QUALITY_MIN_WORDS) return false;   // the 10-word floor
+  if (words.length < QUALITY_MIN_WORDS) return false;
 
   // Peel off leading filler formulas — repeatedly, since they stack
   // ("hey there, thanks for waiting, bumping this...").
   let rest = words.join(' ');
+  for (const re of FILLER_PHRASES) rest = rest.replace(re, ' ');
+  rest = rest.replace(/\s+/g, ' ').trim();
   for (let pass = 0; pass < 4; pass++) {
     const before = rest;
     for (const re of FORMULA_OPENERS) rest = rest.replace(re, '').trim();
     if (rest === before) break;
   }
+  if (!rest) return false;
 
+  const restWords = rest.split(/\s+/);
   const content = new Set(
-    rest.split(/\s+/).filter((w) => w.length > 2 && !STOPWORDS.has(w) && !PLEASANTRIES.has(w))
+    restWords.filter((w) => w.length > 2
+      && !STOPWORDS.has(w) && !PLEASANTRIES.has(w) && !CHITCHAT.has(w))
   );
-  return content.size >= HELPFUL_MIN_CONTENT_WORDS;
+
+  // Is the staffer asking rather than answering?
+  const asks = String(text || '').includes('?') || QUESTION_OPENERS.has(restWords[0]);
+  if (asks) return content.size >= QUESTION_MIN_CONTENT_WORDS;
+
+  if (content.size >= HELPFUL_MIN_CONTENT_WORDS) return true;
+
+  // Terse-but-real replies ("i refunded it") get through on a help verb. Long
+  // messages don't — if 20 words boil down to one content word, it's padding.
+  return words.length <= SHORT_REPLY_MAX_WORDS
+    && content.size >= 1
+    && restWords.some((w) => HELP_VERBS.has(w));
 }
 
 const normName = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -215,7 +293,7 @@ function nextReset(when = Date.now()) {
 }
 
 module.exports = {
-  QUALITY_MIN_WORDS, TICKET_MIN_REPLIES, HELPFUL_MIN_CONTENT_WORDS,
+  QUALITY_MIN_WORDS, TICKET_MIN_REPLIES, HELPFUL_MIN_CONTENT_WORDS, QUESTION_MIN_CONTENT_WORDS,
   RESET_HOUR, resetLabel, isQualityReply, wordsOf,
   normName, hashSig, transcriptSig, matchStaff, countTranscript, creditedFrom,
   weekStart, weekEnd, weekLabel, nextReset,

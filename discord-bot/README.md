@@ -4,7 +4,7 @@ Auto-counts staff tickets from **Ticket Tool** transcripts, using the exact same
 rule as the web portal:
 
 > A **quality reply** is a staff message with **15+ characters** of real text.
-> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**. A quality reply is **10+ words** and has to look like actual help.
+> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**. A quality reply is **3+ words** and has to look like actual help rather than a question or filler.
 
 Two ways to feed it transcripts:
 
@@ -218,20 +218,35 @@ ephemeral disks, attach a volume or the counts reset on redeploy.
 
 A staff message counts only if **both** are true:
 
-1. It is **10 or more words** long (mentions, emoji, links and code blocks are
+1. It is **3 or more words** long (mentions, emoji, links and code blocks are
    stripped out first, so they can't pad the count).
 2. It passes the **helpfulness check** in `isQualityReply()`
    (`discord-bot/lib/counter.js`).
 
-The helpfulness check is a heuristic, not real comprehension. It peels off
-formula openers ("hey", "thanks", "bump", "on it", "closing this"), then removes
-stopwords and pleasantries, and requires **4 distinct meaningful words** to
-remain. So this counts:
+At a 3-word floor the length test barely filters anything, so the helpfulness
+check does the real work. It is a heuristic, not comprehension. It strips filler
+phrases ("give me a moment", "let me check", "reaching out") and formula openers
+("hey", "thanks", "bump", "on it", "closing this"), removes stopwords,
+pleasantries and chitchat, then judges what survives:
 
+* **A question needs 4 content words.** Asking for information is not giving
+  help, so `is this gtc?` and `can you check?` are out, while `can you send me
+  your steam hex and a screenshot of the error` is in.
+* **Anything else needs 2 content words**, so `check your keybinds` and
+  `ban appeal denied` count.
+* **Short replies of 8 words or fewer** can also get through on a single content
+  word plus a help verb, which rescues terse-but-real answers like
+  `i refunded it`. Longer messages don't get that shortcut — if 20 words boil
+  down to one content word, it is padding.
+
+These count:
+
+> i refunded it · press F to interact · your whitelist is approved
 > closing this — I refunded the car to your garage, relog and it'll be there
 
-and this does not:
+These do not:
 
+> is this gtc? · ok let me check · give me a moment · yeah that makes sense
 > hey there how are you doing today hope you are having a good one
 
 Tuning knobs, all at the top of `discord-bot/lib/counter.js` (mirror any change
@@ -239,12 +254,39 @@ in `assets/app.js`):
 
 | Constant | Default | Effect |
 | --- | --- | --- |
-| `QUALITY_MIN_WORDS` | `10` | Minimum words in a reply |
-| `HELPFUL_MIN_CONTENT_WORDS` | `4` | How strict the helpfulness check is — raise to catch more filler, lower if real replies are being missed |
+| `QUALITY_MIN_WORDS` | `3` | Minimum words in a reply |
+| `HELPFUL_MIN_CONTENT_WORDS` | `2` | Content words a normal reply needs — raise to catch more filler, lower if real replies are missed |
+| `QUESTION_MIN_CONTENT_WORDS` | `4` | Bar for questions. Lower it if you want clarifying questions to count |
+| `SHORT_REPLY_MAX_WORDS` | `8` | Longest reply allowed to pass on the help-verb shortcut |
 | `TICKET_MIN_REPLIES` | `2` | Replies needed for 1 ticket |
-| `STOPWORDS` / `PLEASANTRIES` | — | Word lists that don't count as substance |
-| `FORMULA_OPENERS` | — | Openers stripped before judging the rest |
+| `STOPWORDS` / `PLEASANTRIES` / `CHITCHAT` | — | Word lists that don't count as substance |
+| `HELP_VERBS` | — | Verbs that mark a real action or instruction |
+| `FORMULA_OPENERS` / `FILLER_PHRASES` | — | Stock phrasing stripped before judging the rest |
 
 **After changing any of these, run `/scan recount:True`.** Stored records keep
 only reply tallies, not the original message text, so old transcripts cannot be
 re-judged in place — they have to be read again from the channel.
+
+
+---
+
+## Deploying website changes
+
+`assets/app.js` is cached hard by browsers and by the GitHub Pages CDN. If the site
+still shows old columns or old numbers after an update, you are almost certainly
+looking at a cached copy rather than a broken build.
+
+Every page loads the script with a version string:
+
+```html
+<script src="assets/app.js?v=2026-07-24-5"></script>
+```
+
+**When you change `assets/app.js`, bump that `?v=` in every `.html` file and the
+`APP_BUILD` constant at the top of `app.js` to the same value.** The new URL is
+treated as a different file, so browsers fetch it instead of reusing the old one.
+
+To check which build is live: open the site, press F12, and look at the Console tab.
+It prints `Empire portal build <version>` on load. If that version is older than the
+one in your files, the upload did not land or the cache has not cleared — hard-refresh
+with Ctrl+Shift+R, and confirm `assets/app.js` itself was committed, not just the HTML.

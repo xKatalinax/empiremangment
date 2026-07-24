@@ -1,10 +1,8 @@
 // =====================================================
 //  Empire Roleplay — Ticket Counter bot
 //  Auto-counts tickets from Ticket Tool transcripts using the
-//  same rule as the web portal: a transcript counts as 1 ticket for
-//  each staff member who left a quality reply — a message with 10+
-//  words that actually helps the player (filler such as
-//  "is this good to close" is ignored).
+//  same rule as the web portal: a staff member with 3+ quality
+//  replies (15+ char messages) in a transcript = 1 ticket handled.
 // =====================================================
 
 require('dotenv').config();
@@ -17,9 +15,9 @@ const {
 
 const { parseTranscript } = require('./lib/parser');
 const {
-  countTranscript, creditedFrom, transcriptSig, transcriptDate,
-  currentWeekKey, weekKey, weekLabel,
-  QUALITY_MIN_WORDS, TICKET_MIN_REPLIES,
+  countTranscript, creditedFrom, transcriptSig,
+  weekStart, weekLabel, nextReset,
+  QUALITY_MIN_CHARS, TICKET_MIN_REPLIES,
 } = require('./lib/counter');
 const store = require('./lib/store');
 const publisher = require('./lib/publish');
@@ -77,14 +75,9 @@ const commands = [
   new SlashCommandBuilder()
     .setName('tickets')
     .setDescription('Show the ticket leaderboard, or one staff member\'s count')
+    .addStringOption((o) => o.setName('period').setDescription('This week (default) or all time').setRequired(false)
+      .addChoices({ name: 'This week', value: 'week' }, { name: 'All time', value: 'all' }))
     .addUserOption((o) => o.setName('staff').setDescription('Show just this staff member').setRequired(false)),
-
-  new SlashCommandBuilder()
-    .setName('weekly')
-    .setDescription('This week\'s ticket leaderboard (weeks reset every Thursday)')
-    .addIntegerOption((o) => o.setName('back')
-      .setDescription('How many weeks back to look (0 = this week)')
-      .setMinValue(0).setMaxValue(11).setRequired(false)),
 
   new SlashCommandBuilder()
     .setName('sync')
@@ -95,9 +88,6 @@ const commands = [
   new SlashCommandBuilder()
     .setName('scan')
     .setDescription('Read EVERY transcript in the watched channel(s) — no uploading one by one')
-    .addBooleanOption((o) => o.setName('fresh')
-      .setDescription('Wipe stored counts first and recount everything under the current rule')
-      .setRequired(false))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
   new SlashCommandBuilder()
@@ -167,7 +157,14 @@ async function processTranscript(html, label) {
 
   const counts = countTranscript(messages, store.staff());
   const credited = creditedFrom(counts).map((v) => ({ name: v.name, replies: v.replies }));
-  store.addTranscript(sig, { label, date: transcriptDate(messages), counts });
+  // Use the last real message time so the ticket lands in the right week.
+  let ts = 0;
+  for (const m of messages) {
+    const t = Number(m.created || 0);
+    if (t > ts) ts = t;
+  }
+  if (!ts) ts = Date.now();
+  store.addTranscript(sig, { label, date: new Date(ts).toISOString().slice(0, 10), ts, counts });
   return { ok: true, credited, counts };
 }
 
@@ -278,30 +275,30 @@ async function syncStaffFromRoles(guild) {
 // The website is a static site with no backend, so the bridge is a file:
 // the bot writes this JSON, the Ticket Tracker page imports it.
 function buildExport() {
-  const totals = store.totals();
-  const rows = Object.entries(totals).map(([key, r]) => ({
+  const mkRows = (since) => Object.entries(store.totals(since)).map(([key, r]) => ({
     key, name: r.name, rank: r.rank || '', tickets: r.tickets, replies: r.replies,
   })).sort((a, b) => b.tickets - a.tickets || b.replies - a.replies);
+
+  const rows = mkRows(0);
+  const ws = weekStart();
+  const weekRows = mkRows(ws);
+
   return {
     source: 'empire-ticket-counter',
-    version: 1,
+    version: 2,
     generated: new Date().toISOString(),
-    rule: { qualityMinWords: QUALITY_MIN_WORDS, ticketMinReplies: TICKET_MIN_REPLIES },
+    rule: { qualityMinChars: QUALITY_MIN_CHARS, ticketMinReplies: TICKET_MIN_REPLIES },
+    week: {
+      startsOn: 'Friday 00:00',
+      start: new Date(ws).toISOString(),
+      end: new Date(nextReset()).toISOString(),
+      label: weekLabel(),
+      totalTickets: weekRows.reduce((s, r) => s + r.tickets, 0),
+      staff: weekRows,
+    },
     transcriptCount: Object.keys(store.transcripts()).length,
     totalTickets: rows.reduce((s, r) => s + r.tickets, 0),
-    staff: rows,               // all-time, one row per staff member
-    backfill: store.backfillStats(),
-    // Thursday -> Wednesday weeks, so the site can show a weekly board
-    weekResetDay: 'Thursday',
-    currentWeek: currentWeekKey(),
-    weeks: Object.fromEntries(
-      Object.entries(store.weeklyTotals()).map(([wk, per]) => [
-        wk,
-        Object.entries(per)
-          .map(([key, r]) => ({ key, name: r.name, rank: r.rank || '', tickets: r.tickets, replies: r.replies }))
-          .sort((a, b) => b.tickets - a.tickets || b.replies - a.replies),
-      ])
-    ),
+    staff: rows,
   };
 }
 
@@ -339,6 +336,22 @@ function schedulePublish(reason) {
   if (!publisher.isConfigured()) return;
   clearTimeout(publishTimer);
   publishTimer = setTimeout(() => publishNow(reason), 20_000); // batch rapid changes
+}
+
+// Fire exactly at the Friday 00:00 rollover so the website's weekly board resets
+// on time even if no new ticket comes in.
+let rolloverTimer = null;
+function scheduleWeeklyRollover() {
+  clearTimeout(rolloverTimer);
+  const ms = Math.max(1000, nextReset() - Date.now() + 2000); // +2s to land just past midnight
+  // setTimeout caps out around 24.8 days; our max is 7, so this is safe.
+  rolloverTimer = setTimeout(async () => {
+    console.log('weekly rollover — new week starts', weekLabel());
+    await publishNow('weekly reset');
+    scheduleWeeklyRollover();
+  }, ms);
+  const hrs = Math.round(ms / 3600_000);
+  console.log(`next weekly reset: ${new Date(nextReset()).toLocaleString()} (in ~${hrs}h)`);
 }
 
 // ---------- read every transcript in a channel's full history ----------
@@ -425,6 +438,8 @@ client.once(Events.ClientReady, async () => {
   console.log(`Logged in as ${client.user.tag}`);
   if (TRANSCRIPT_CHANNEL_IDS.size) console.log('Watching transcript channels:', [...TRANSCRIPT_CHANNEL_IDS].join(', '));
 
+  scheduleWeeklyRollover();
+
   if (!client.guilds.cache.size) {
     console.warn('\n⚠ I am not a member of any server.');
     console.warn('  Slash commands may still appear if the app was added as a "user app",');
@@ -502,66 +517,49 @@ client.on('interactionCreate', async (i) => {
 
   if (i.commandName === 'tickets') {
     const user = i.options.getUser('staff');
-    const totals = store.totals();
+    const period = i.options.getString('period') || 'week';
+    const since = period === 'all' ? 0 : weekStart();
+    const totals = store.totals(since);
+    const scope = period === 'all' ? 'All time' : `Week of ${weekLabel()}`;
+
     if (user) {
       const key = user.username.toLowerCase().replace(/[^a-z0-9]/g, '');
       const row = Object.values(totals).find((r) => r.name.toLowerCase().replace(/[^a-z0-9]/g, '') === key)
         || Object.entries(totals).find(([k]) => k === key)?.[1];
       const t = row ? row.tickets : 0, q = row ? row.replies : 0;
-      return i.reply(`**${user.username}** has handled **${t}** ticket${t !== 1 ? 's' : ''} (${q} quality replies).`);
+      const all = period === 'week'
+        ? Object.values(store.totals(0)).find((r) => r.name.toLowerCase().replace(/[^a-z0-9]/g, '') === key)
+        : null;
+      return i.reply(
+        `**${user.username}** — ${scope}: **${t}** ticket${t !== 1 ? 's' : ''} (${q} quality replies)`
+        + (all ? `\nAll time: **${all.tickets}** tickets.` : '')
+      );
     }
+
     const rows = Object.values(totals).sort((a, b) => b.tickets - a.tickets || b.replies - a.replies);
-    if (!rows.length) return i.reply('No tickets counted yet. Add staff with `/syncstaff`, then `/scan`.');
+    if (!rows.length) {
+      return i.reply(period === 'all'
+        ? 'No tickets counted yet. Add staff with `/syncstaff`, then `/scan`.'
+        : `No tickets yet this week (${weekLabel()}). Try \`/tickets period:All time\`.`);
+    }
     const shown = rows.slice(0, 40);
     let desc = shown.map((r, n) =>
       `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''} — **${r.tickets}** ticket${r.tickets !== 1 ? 's' : ''} · ${r.replies} replies`
     ).join('\n');
     if (rows.length > shown.length) desc += `\n\n…and ${rows.length - shown.length} more.`;
     if (desc.length > 4000) desc = desc.slice(0, 3990) + '\n…';
+
+    const resetIn = nextReset() - Date.now();
+    const hrs = Math.floor(resetIn / 3600_000);
+    const resetTxt = period === 'all'
+      ? `Rule: ${TICKET_MIN_REPLIES}+ quality replies (${QUALITY_MIN_CHARS}+ chars) = 1 ticket`
+      : `Resets Friday 12:00 AM · ${hrs < 24 ? `in ${hrs}h` : `in ${Math.floor(hrs / 24)}d ${hrs % 24}h`}`;
+
     const embed = new EmbedBuilder()
-      .setTitle('🎟️ Ticket Leaderboard')
+      .setTitle(`🎟️ Ticket Leaderboard — ${scope}`)
       .setColor(0xe6b345)
       .setDescription(desc)
-      .setFooter({ text: `Rule: ${TICKET_MIN_REPLIES}+ quality repl${TICKET_MIN_REPLIES === 1 ? 'y' : 'ies'} (${QUALITY_MIN_WORDS}+ helpful words) = 1 ticket` });
-    return i.reply({ embeds: [embed] });
-  }
-
-  if (i.commandName === 'weekly') {
-    const back = i.options.getInteger('back') || 0;
-    const d = new Date();
-    d.setDate(d.getDate() - back * 7);
-    const wk = weekKey(d);
-    const weeks = store.weeklyTotals();
-    const rows = Object.values(weeks[wk] || {})
-      .sort((a, b) => b.tickets - a.tickets || b.replies - a.replies)
-      .filter((r) => r.tickets > 0);
-
-    const embed = new EmbedBuilder()
-      .setTitle(`🗓️ Weekly Tickets — ${weekLabel(wk)}`)
-      .setColor(0xe6b345)
-      .setFooter({ text: back === 0 ? 'Resets Thursday · updates as transcripts come in' : 'Past week' });
-
-    if (!rows.length) {
-      embed.setDescription(back === 0
-        ? 'No tickets counted yet this week. The board resets every Thursday.'
-        : 'No tickets were counted that week.');
-      return i.reply({ embeds: [embed] });
-    }
-
-    const top = rows[0];
-    const tied = rows.filter((r) => r.tickets === top.tickets);
-    const leader = tied.map((r) => `**${r.name}**`).join(' & ');
-    embed.addFields({
-      name: tied.length > 1 ? '👑 Tied for most tickets' : '👑 Most tickets',
-      value: `${leader} — **${top.tickets}** ticket${top.tickets !== 1 ? 's' : ''}${tied.length > 1 ? ' each' : ''}`,
-    });
-
-    const shown = rows.slice(0, 25);
-    let desc = shown.map((r, n) =>
-      `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''} — **${r.tickets}** · ${r.replies} replies`
-    ).join('\n');
-    if (rows.length > shown.length) desc += `\n…and ${rows.length - shown.length} more.`;
-    embed.setDescription(desc);
+      .setFooter({ text: resetTxt });
     return i.reply({ embeds: [embed] });
   }
 
@@ -578,7 +576,7 @@ client.on('interactionCreate', async (i) => {
       const r = await processTranscript(html, label);
       if (!r.ok && r.reason === 'duplicate') return i.editReply('♻️ That transcript was already counted.');
       if (!r.ok) return i.editReply('⚠️ Couldn\'t read that transcript. Send Kat a sample so the parser can be tuned.');
-      if (!r.credited.length) return i.editReply(`Processed **${label}** — nobody left a quality reply (${QUALITY_MIN_WORDS}+ helpful words), so no credit.`);
+      if (!r.credited.length) return i.editReply(`Processed **${label}** — nobody hit ${TICKET_MIN_REPLIES}+ quality replies, so no credit.`);
       return i.editReply({ embeds: [creditEmbed(label, r.credited)] });
     } catch (e) {
       return i.editReply('⚠️ Fetch failed: ' + e.message + (url ? ' — hosted transcript links can be JS-rendered; try attaching the `.html` file instead.' : ''));
@@ -588,16 +586,8 @@ client.on('interactionCreate', async (i) => {
   if (i.commandName === 'scan') {
     if (!TRANSCRIPT_CHANNEL_IDS.size) return i.reply({ content: 'No transcript channels set. Add channel IDs to `TRANSCRIPT_CHANNEL_ID` in `.env` first.', ephemeral: true });
     if (!store.staff().length) return i.reply({ content: 'Add staff first (`/syncstaff` or `/staff add`) — that\'s who gets counted.', ephemeral: true });
-    const fresh = i.options.getBoolean('fresh') || false;
     await i.deferReply();
     try {
-      // `fresh` throws away the stored counts so every transcript is read again
-      // under the current rule, and each one is dated from its own messages.
-      // This is how you rebuild real weekly history after a rule change.
-      if (fresh) {
-        const wiped = store.resetTranscripts();
-        await i.editReply(`♻️ Cleared **${wiped}** stored transcripts — recounting everything from scratch. This can take a while…`);
-      }
       const guild = await resolveGuild(i);
       const samples = [];
       const r = await scanAll(guild, samples);
@@ -814,14 +804,6 @@ function creditEmbed(label, credited) {
 client.on('error', (e) => console.error('client error:', e.message));
 process.on('unhandledRejection', (e) => console.error('unhandled rejection:', e?.message || e));
 process.on('uncaughtException', (e) => console.error('uncaught exception:', e?.message || e));
-
-// One-time: everything scanned before per-ticket dating existed carries the
-// scan date, not the ticket date. Flag it so it stays in all-time totals but
-// never lands in a week it didn't happen in.
-try {
-  const n = store.markExistingAsBackfill();
-  if (n) console.log(`Marked ${n} pre-dating transcripts as backfill (all-time only).`);
-} catch (e) { console.error('backfill migration failed:', e.message); }
 
 // Register commands, but never let that stop the bot from logging in —
 // counting still works even if a slash command fails to register.

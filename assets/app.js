@@ -7,7 +7,7 @@
    run  localStorage.clear()  in the browser console.
 ===================================================== */
 const DEFAULT_USERS = [
-  { name:"kat",   pw:"blkkat",          role:"admin" },
+  { name:"kat",   pw:"Crown-Kat-9482",  role:"admin" },
   { name:"ace",   pw:"Empire-7Qm3-Ax",  role:"staff" },
   { name:"blaze", pw:"Empire-X4dR-Bz",  role:"staff" },
   { name:"nova",  pw:"Empire-K8pW-Nv",  role:"staff" },
@@ -34,112 +34,37 @@ const store = (() => {
 /* ---------- state ---------- */
 let users = store.get('users', null);
 if(!users || !users.length){ users = DEFAULT_USERS.slice(); store.set('users', users); }
-
-/* Users are saved in the browser the first time the portal loads, so changing
-   DEFAULT_USERS above would normally have no effect on a browser that has
-   already been used. Bump ADMIN_PW_REV whenever kat's password changes here
-   and it gets pushed out to everyone on their next page load. */
-const ADMIN_PW_REV = 'blkkat-1';
-if(store.get('adminPwRev', null) !== ADMIN_PW_REV){
-  const def  = DEFAULT_USERS.find(u => u.name.toLowerCase() === 'kat');
-  const kat  = users.find(u => String(u.name||'').toLowerCase() === 'kat');
-  if(kat && def) kat.pw = def.pw;
-  else if(def)   users.push({...def});
-  store.set('users', users);
-  store.set('adminPwRev', ADMIN_PW_REV);
-}
 let boosts  = store.get('boosts', []);
 let tickets = store.get('tickets', []);            // manual adjustments {staff,count,date}
 let staffList   = store.get('staffList', []);      // who counts as staff: [{name,id}]
 let transcripts = store.get('transcripts', []);    // parsed tickets: [{sig,label,date,counts:{key:{name,replies}}}]
 let botData     = store.get('botData', null);      // counts imported from the Discord bot's /export file
 let roster  = store.get('roster', [{name:"Kat", rank:"Owner"}]);
-let loa     = store.get('loa', []);                // leave of absence: [{name,rank,start,end,reason}]
 let tebex   = store.get('tebex', []);
 let apps    = store.get('apps', []);
 let events  = store.get('events', []);
 
 /* ---- shared counting rules (must match the Discord bot in /discord-bot) ---- */
-const QUALITY_MIN_WORDS  = 10;  // a "quality reply" = staff message with >= this many helpful words
-const TICKET_MIN_REPLIES = 1;   // >= this many quality replies in one transcript = 1 ticket handled
+const QUALITY_MIN_CHARS = 15;   // a "quality reply" = staff message with >= this many chars of real text
+const TICKET_MIN_REPLIES = 3;   // >= this many quality replies in one transcript = 1 ticket handled
 
-/* Phrases that are staff chatter / admin rather than help for the player.
-   These are REMOVED from a message before its words are counted, so a long
-   genuine answer that happens to end with "good to close?" still counts,
-   while a message that is nothing but this filler does not.
-   Add new phrases here — the Discord bot keeps the same list. */
-const NON_HELPFUL_PATTERNS = [
-  /\b(is|are|this|that|it|they|these)?\s*(ticket|one)?\s*(good|ok|okay|fine|safe|alright|clear)\s+to\s+(close|closing|be closed)\b/g,
-  /\b(can|could|should|shall|may|do)\s+(i|we|you)\s+close\b[^.?!]*/g,
-  /\bclos(e|ing)\s+(this|it|the ticket|now|out)\b[^.?!]*/g,
-  /\b(i'?ll|i will|let me|imma|ill)\s+(take|grab|claim|handle|get)\s+(this|it|that)(\s+one)?\b/g,
-  /\bclaim(ing|ed)?\s+(this|it)\b/g,
-  /\bany\s+updates?\s+(on\s+)?(this|it)\b/g,
-  /\b(bump|bumping)\b/g,
-  /\b(thanks|thank you|ty|tysm|np|no problem|no worries|got it|gotcha|sounds good|will do|okay|alright)\b/g,
-  /\b(hi|hey|hello|yo|hiya)\s+(there|again)?\b/g,
-];
-
-/* =====================================================
-   WEEKS — the ticket week runs Thursday → Wednesday.
-   Every week is identified by the date of its Thursday
-   ("YYYY-MM-DD"), so counts roll over on Thursday morning.
-===================================================== */
-const WEEK_RESET_DAY = 4;                                     // 0 Sun, 1 Mon … 4 Thu
-const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-
-function ymd(d){                                              // local YYYY-MM-DD (never UTC — avoids off-by-one)
-  const p = n => String(n).padStart(2,'0');
-  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+/* ---- weekly period: Friday 00:00 -> next Friday 00:00 (matches the bot) ---- */
+let tixView = store.get('tixView', 'week');   // 'week' or 'all'
+function weekStart(when){
+  const t = new Date(when===undefined?Date.now():when);
+  const d = new Date(t.getFullYear(), t.getMonth(), t.getDate(), 0,0,0,0);
+  d.setDate(d.getDate() - ((d.getDay() - 5 + 7) % 7));   // Fri=5
+  return d.getTime();
 }
-function toDate(v){                                           // accepts Date | "YYYY-MM-DD" | epoch ms
-  if(v instanceof Date) return new Date(v.getTime());
-  if(typeof v === 'number') return new Date(v);
-  const s = String(v||'');
-  return /^\d{4}-\d{2}-\d{2}$/.test(s) ? new Date(s+'T00:00') : new Date(s);
+function weekEnd(when){ return weekStart(when) + 7*864e5; }
+function weekLabel(when){
+  const f = d => d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+  return f(new Date(weekStart(when))) + ' – ' + f(new Date(weekEnd(when)-864e5));
 }
-function weekStart(v){                                        // the Thursday that starts this date's week
-  const d = toDate(v); if(isNaN(d)) return null;
-  d.setHours(0,0,0,0);
-  d.setDate(d.getDate() - ((d.getDay() - WEEK_RESET_DAY + 7) % 7));
-  return d;
-}
-function weekKey(v){ const d = weekStart(v); return d ? ymd(d) : ''; }
-function weekEnd(key){ const d = toDate(key); d.setDate(d.getDate()+6); return d; }   // the Wednesday
-function currentWeekKey(){ return weekKey(new Date()); }
-function weekLabel(key){
-  const a = toDate(key), b = weekEnd(key);
-  const f = d => d.toLocaleDateString(undefined,{month:'short',day:'numeric'});
-  return f(a)+' – '+f(b);
-}
-/* how long until the next Thursday reset */
-function nextResetIn(){
-  const next = weekStart(new Date()); next.setDate(next.getDate()+7);
-  const ms = next - new Date();
-  const days = Math.floor(ms/86400000), hrs = Math.floor(ms/3600000)%24;
-  if(days > 0) return days+'d '+hrs+'h';
-  return hrs+'h '+(Math.floor(ms/60000)%60)+'m';
-}
-
-/* =====================================================
-   LOA — leave of absence
-===================================================== */
-function loaStatus(l, on){                                    // 'active' | 'upcoming' | 'ended'
-  const today = ymd(on || new Date());
-  if(l.start && today < l.start) return 'upcoming';
-  if(l.end   && today > l.end)   return 'ended';
-  return 'active';
-}
-function loaFor(name, on){                                    // the active LOA record for this person, or null
-  const k = normName(name);
-  return loa.find(l => normName(l.name) === k && loaStatus(l, on) === 'active') || null;
-}
-function isOnLoa(name, on){ return !!loaFor(name, on); }
-function activeLoa(on){ return loa.filter(l => loaStatus(l, on) === 'active'); }
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const save = () => { store.set('boosts',boosts); store.set('tickets',tickets); store.set('staffList',staffList); store.set('transcripts',transcripts); store.set('botData',botData); store.set('roster',roster); store.set('loa',loa); store.set('tebex',tebex); store.set('apps',apps); store.set('events',events); store.set('users',users); };
+const save = () => { store.set('boosts',boosts); store.set('tickets',tickets); store.set('staffList',staffList); store.set('transcripts',transcripts); store.set('botData',botData); store.set('roster',roster); store.set('tebex',tebex); store.set('apps',apps); store.set('events',events); store.set('users',users); };
 
 /* ---------- auth (session survives page changes, ends when tab closes) ---------- */
 function sessionGet(){ try{ return JSON.parse(sessionStorage.getItem('emp_session')||'null'); }catch(e){ return null; } }
@@ -224,15 +149,10 @@ function renderDashCards(u){
   const appPend = apps.filter(a=>a.status==='pending').length;
   const upcoming = nextEvent();
   const tixHandled = Object.values(aggregateTix()).reduce((s,r)=>s+r.tickets,0);
-  const wk    = currentWeekKey();
-  const wkTop = Object.values(aggregateTixWeek(wk))
-    .filter(r=>r.tickets>0)
-    .sort((a,b)=> b.tickets-a.tickets || b.replies-a.replies)[0];
-  const onLoa = activeLoa().length;
   const cards = [
     {icon:'🔥', title:'Boost Tracker', desc:'Leaderboards & history', pill:'<span class="pill live"><span class="dot"></span>Boost live</span>', btn:'Open tracker', href:'boost.html'},
-    {icon:'🎟️', title:'Ticket Tracker', desc:'Weekly count resets Thursday', pill:wkTop?`<span class="pill live"><span class="dot"></span>👑 ${esc(wkTop.name)} · ${wkTop.tickets} this week</span>`:(tixHandled?`<span class="pill pending"><span class="dot"></span>${tixHandled} handled</span>`:'<span class="pill none"><span class="dot"></span>—</span>'), btn:'Open tracker', href:'tickets.html'},
-    {icon:'👥', title:'Staff Roster', desc:'Manage, track & LOA', pill:onLoa?`<span class="pill info"><span class="dot"></span>${onLoa} on LOA</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open roster', href:'roster.html'},
+    {icon:'🎟️', title:'Ticket Tracker', desc:'Auto-counted from transcripts', pill:tixHandled?`<span class="pill pending"><span class="dot"></span>${tixHandled} handled</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open tracker', href:'tickets.html'},
+    {icon:'👥', title:'Staff Roster', desc:'Manage & track staff', pill:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open roster', href:'roster.html'},
     {icon:'💳', title:'Tebex Logs', desc:'Purchase log & confirmations', pill:pend?`<span class="pill pending"><span class="dot"></span>${pend} pending</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'View logs', href:'tebex.html'},
     {icon:'📋', title:'Applications', desc:'Staff application review', pill:appPend?`<span class="pill pending"><span class="dot"></span>${appPend} pending</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'View applications', href:'applications.html'},
     {icon:'📅', title:'Calendar', desc:'Events & birthdays', pill:upcoming?`<span class="pill info"><span class="dot"></span>${esc(upcoming)}</span>`:'<span class="pill none"><span class="dot"></span>—</span>', btn:'Open calendar', href:'calendar.html'}
@@ -286,40 +206,15 @@ function renderBoost(){
 /* =====================================================
    TICKET TRACKER — auto-counts from Ticket Tool transcripts
    -----------------------------------------------------
-   Rule: a "quality reply" is a message from someone on the staff
-   list that still has >= QUALITY_MIN_WORDS words left once the
-   non-helpful filler is stripped out (so "is this good to close"
-   on its own never counts). A staff member who posts
-   >= TICKET_MIN_REPLIES quality replies inside one transcript is
-   credited with 1 ticket handled.
+   Rule: a "quality reply" is a message from someone on the
+   staff list containing >= QUALITY_MIN_CHARS characters of real
+   text. A staff member who posts >= TICKET_MIN_REPLIES quality
+   replies inside one transcript is credited with 1 ticket handled.
    The SAME logic runs in the Discord bot under /discord-bot.
 ===================================================== */
 
 /* ---- helpers shared by matching & counting ---- */
-/* Discord names are full of stylised Unicode — "𝕭𝕰𝕬𝕹", "Ｎｏｖａ", accents.
-   NFKC folds those look-alikes back to plain letters, then NFD + strip marks
-   removes accents. Without this a fully stylised name reduces to an empty key
-   and that person silently never gets credited for a single ticket.
-   Must stay identical to normName in discord-bot/lib/counter.js. */
-function normName(s){
-  const raw = String(s||'');
-  const folded = raw
-    .normalize('NFKC')
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g,'');
-  if(folded) return folded;
-  let h = 0;
-  for(let i=0;i<raw.length;i++) h = (h*31 + raw.charCodeAt(i)) >>> 0;
-  return raw.trim() ? 'u'+h.toString(36) : '';
-}
-
-/* Counts stored before a naming-rule change can sit under a stale key — most
-   often "id<discordid>", which is what a fully stylised name used to fall back
-   to. The display name is stored alongside the count, so re-deriving the key
-   from that name folds the old and new records onto one row.
-   Must stay identical to canonKey in discord-bot/lib/counter.js. */
-function canonKey(storedKey, name){ return normName(name) || String(storedKey||''); }
+function normName(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,''); }
 function hashSig(str){                       // tiny stable hash for de-duping transcripts
   let h = 5381; for(let i=0;i<str.length;i++){ h = ((h<<5)+h + str.charCodeAt(i))>>>0; }
   return 'h'+h.toString(16);
@@ -351,33 +246,6 @@ function textOnly(raw){
     .replace(/`[^`]*`/g,' ')
     .replace(/https?:\/\/\S+/g,' ')
     .replace(/\s+/g,' ').trim();
-}
-
-/* lower-case, strip punctuation/emoji, collapse whitespace */
-function normalizeText(s){
-  return String(s||'').toLowerCase().replace(/[^a-z0-9\s']/g,' ').replace(/\s+/g,' ').trim();
-}
-/* how many words are left once the non-helpful filler is removed */
-function helpfulWordCount(s){
-  let t = normalizeText(s);
-  if(!t) return 0;
-  for(const re of NON_HELPFUL_PATTERNS) t = t.replace(re,' ');
-  t = t.replace(/\s+/g,' ').trim();
-  return t ? t.split(' ').length : 0;
-}
-/* a message counts as a quality reply if enough helpful words remain */
-function isQualityReply(s){ return helpfulWordCount(s) >= QUALITY_MIN_WORDS; }
-
-/* When was this ticket actually handled? Ticket Tool stamps each message with
-   `created` (epoch ms) — use the newest one so the ticket lands in the week it
-   was closed. Formats without timestamps fall back to today. */
-function transcriptDate(messages){
-  let newest = 0;
-  for(const m of messages||[]){
-    const t = typeof m.created === 'number' ? m.created : Date.parse(m.created||'');
-    if(t && !isNaN(t) && t > newest) newest = t;
-  }
-  return newest ? ymd(new Date(newest)) : ymd(new Date());
 }
 
 /* ---- transcript parser ----
@@ -446,7 +314,7 @@ function countTranscript(messages){
   const tally = {};
   for(const m of messages){
     if(m.bot) continue;                                                // never count bot posts
-    if(!isQualityReply(m.content)) continue;                           // 10+ helpful words rule
+    if(!m.content || m.content.length < QUALITY_MIN_CHARS) continue;   // quality-reply length rule
     const st = matchStaff(m); if(!st) continue;                        // must be staff
     const key = normName(st.name) || 'id'+st.id;
     (tally[key] || (tally[key] = {name:st.name, replies:0})).replies++;
@@ -454,35 +322,49 @@ function countTranscript(messages){
   return tally;
 }
 
-/* ---- roll every source into per-staff totals ---- */
+/* ---- roll every source into per-staff totals for the selected period ---- */
 function aggregateTix(){
   const per = {};
+  const weekly = tixView === 'week';
+  const since = weekly ? weekStart() : 0;
 
-  // 1. counts imported from the Discord bot (/export)
-  if(botData && Array.isArray(botData.staff)){
-    botData.staff.forEach(r=>{
-      const k = canonKey(r.key, r.name);
-      const row = per[k] || (per[k]={name:r.name, rank:r.rank||'', tickets:0, replies:0, manual:0, fromBot:0});
-      row.name = r.name; row.rank = r.rank || row.rank;
-      row.tickets += (r.tickets||0);
-      row.replies += (r.replies||0);
-      row.fromBot += (r.tickets||0);
-    });
+  // 1. counts published by the Discord bot (weekly board comes pre-computed)
+  if(botData){
+    const list = weekly
+      ? (botData.week && Array.isArray(botData.week.staff) ? botData.week.staff : null)
+      : (Array.isArray(botData.staff) ? botData.staff : null);
+    if(list){
+      list.forEach(r=>{
+        const k = r.key || normName(r.name);
+        const row = per[k] || (per[k]={name:r.name, rank:r.rank||'', tickets:0, replies:0, manual:0, fromBot:0});
+        row.name = r.name; row.rank = r.rank || row.rank;
+        row.tickets += (r.tickets||0);
+        row.replies += (r.replies||0);
+        row.fromBot += (r.tickets||0);
+      });
+    }
   }
 
   // 2. transcripts imported here in the browser
   transcripts.forEach(t=>{
-    Object.entries(t.counts).forEach(([rawKey,v])=>{
-      const k = canonKey(rawKey, v.name);
+    if(weekly){
+      const ts = t.ts || (t.date ? Date.parse(t.date+'T12:00:00') : 0);
+      if(!ts || ts < since) return;
+    }
+    Object.entries(t.counts).forEach(([k,v])=>{
       const row = per[k] || (per[k]={name:v.name, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
       row.name = v.name;
       row.replies += v.replies;
-      if(v.replies >= TICKET_MIN_REPLIES) row.tickets += 1;            // a quality reply in a transcript = 1 ticket
+      if(v.replies >= TICKET_MIN_REPLIES) row.tickets += 1;            // 3+ quality replies = 1 ticket
     });
   });
 
   // 3. manual corrections
   tickets.forEach(t=>{
+    if(weekly){
+      const ts = t.date ? Date.parse(t.date+'T12:00:00') : 0;
+      if(!ts || ts < since) return;
+    }
     const k = normName(t.staff);
     const row = per[k] || (per[k]={name:t.staff, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
     row.tickets += (t.count||0); row.manual += (t.count||0);
@@ -490,127 +372,7 @@ function aggregateTix(){
   return per;
 }
 
-/* ---- the same roll-up, but limited to one Thursday→Wednesday week ---- */
-function aggregateTixWeek(wk){
-  const per = {};
-  const row = (k, name) => per[k] || (per[k] = {name, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
-
-  // 1. weekly counts published by the Discord bot
-  if(botData && botData.weeks && Array.isArray(botData.weeks[wk])){
-    botData.weeks[wk].forEach(r=>{
-      const k = canonKey(r.key, r.name);
-      const x = row(k, r.name);
-      x.name = r.name; x.rank = r.rank || x.rank;
-      x.tickets += (r.tickets||0); x.replies += (r.replies||0); x.fromBot += (r.tickets||0);
-    });
-  }
-
-  // 2. transcripts imported in the browser, dated into this week
-  transcripts.forEach(t=>{
-    if(weekKey(t.date) !== wk) return;
-    Object.entries(t.counts).forEach(([rawKey,v])=>{
-      const x = row(canonKey(rawKey, v.name), v.name);
-      x.name = v.name; x.replies += v.replies;
-      if(v.replies >= TICKET_MIN_REPLIES) x.tickets += 1;
-    });
-  });
-
-  // 3. manual corrections dated into this week
-  tickets.forEach(t=>{
-    if(weekKey(t.date) !== wk) return;
-    const x = row(normName(t.staff), t.staff);
-    x.tickets += (t.count||0); x.manual += (t.count||0);
-  });
-
-  // 4. everyone who should be showing up — staff list, roster and anyone on LOA,
-  //    so a quiet week reads as "0", not as a missing row
-  const known = [
-    ...staffList.map(s=>({name:s.name, rank:''})),
-    ...roster.map(r=>({name:r.name, rank:r.rank||''})),
-    ...loa.map(l=>({name:l.name, rank:l.rank||''})),
-  ];
-  known.forEach(p=>{
-    if(!p.name) return;
-    const x = row(normName(p.name), p.name);
-    if(!x.rank && p.rank) x.rank = p.rank;
-  });
-
-  // tag anyone currently on leave
-  Object.values(per).forEach(x=>{
-    const l = loaFor(x.name);
-    x.loa = !!l;
-    x.loaUntil = l && l.end ? l.end : '';
-  });
-  return per;
-}
-
-/* which weeks do we have anything for? newest first, current week always included */
-function knownWeeks(){
-  const set = new Set([currentWeekKey()]);
-  transcripts.forEach(t=>{ const k = weekKey(t.date); if(k) set.add(k); });
-  tickets.forEach(t=>{ const k = weekKey(t.date); if(k) set.add(k); });
-  if(botData && botData.weeks) Object.keys(botData.weeks).forEach(k=>set.add(k));
-  return [...set].sort().reverse();
-}
-
-/* =====================================================
-   PROMOTION BOARD
-   One row per staff member carrying BOTH numbers side by
-   side, because promotions are decided on ticket count:
-     week   — this Thursday→Wednesday week
-     last   — the week before
-     recent — rolling 4 weeks (this week + the 3 before)
-     all    — every ticket ever counted for them
-   Everyone known to the portal appears, including anyone
-   on LOA, so a 0 is visible rather than a missing row.
-===================================================== */
-function weekKeyBack(n){                                   // n weeks before the current one
-  const d = toDate(currentWeekKey()); d.setDate(d.getDate() - n*7); return ymd(d);
-}
-function promotionBoard(){
-  const rows = {};
-  const get = (k, name) => rows[k] || (rows[k] = {
-    key:k, name, rank:'', week:0, last:0, recent:0, all:0,
-    replies:0, manual:0, loa:false, loaUntil:'', loaReason:''
-  });
-
-  // all-time
-  Object.entries(aggregateTix()).forEach(([k,v])=>{
-    const r = get(k, v.name);
-    r.name = v.name; r.rank = v.rank || r.rank;
-    r.all = v.tickets; r.replies = v.replies; r.manual = v.manual;
-  });
-
-  // this week / last week / rolling 4 weeks
-  const thisWk = currentWeekKey(), lastWk = weekKeyBack(1);
-  for(let n=0; n<4; n++){
-    const wk = weekKeyBack(n);
-    Object.entries(aggregateTixWeek(wk)).forEach(([k,v])=>{
-      const r = get(k, v.name);
-      if(!r.rank && v.rank) r.rank = v.rank;
-      r.recent += v.tickets;
-      if(wk === thisWk) r.week = v.tickets;
-      if(wk === lastWk) r.last = v.tickets;
-    });
-  }
-
-  // make sure nobody on the roster or on leave is missing
-  [...roster, ...loa].forEach(p=>{
-    if(!p.name) return;
-    const r = get(normName(p.name), p.name);
-    if(!r.rank && p.rank) r.rank = p.rank;
-  });
-
-  // LOA tagging + trend vs last week
-  Object.values(rows).forEach(r=>{
-    const l = loaFor(r.name);
-    r.loa = !!l;
-    r.loaUntil  = l && l.end ? l.end : '';
-    r.loaReason = l && l.reason ? l.reason : '';
-    r.trend = r.week - r.last;
-  });
-  return Object.values(rows);
-}
+function setTixView(v){ tixView = v; store.set('tixView', v); renderTix(); }
 
 function initTix(){
   if(!requireAuth()) return;
@@ -684,9 +446,11 @@ function importFiles(fileList){
         else {
           const counts = countTranscript(msgs);
           const credited = Object.values(counts).filter(v=>v.replies>=TICKET_MIN_REPLIES).map(v=>v.name);
-          transcripts.push({ sig, label:f.name.replace(/\.html?$/i,''), date:transcriptDate(msgs), counts });
+          let ts=0; msgs.forEach(m=>{ const t=Number(m.created||0); if(t>ts) ts=t; });
+          if(!ts) ts = Date.now();
+          transcripts.push({ sig, label:f.name.replace(/\.html?$/i,''), date:new Date(ts).toISOString().slice(0,10), ts, counts });
           added++;
-          summaries.push(`<b>${esc(f.name)}</b> → ${credited.length? credited.map(esc).join(', ')+' credited' : 'no quality replies ('+QUALITY_MIN_WORDS+'+ helpful words)'}`);
+          summaries.push(`<b>${esc(f.name)}</b> → ${credited.length? credited.map(esc).join(', ')+' credited' : 'no one hit '+TICKET_MIN_REPLIES+'+ replies'}`);
         }
       }
       if(++done===files.length){
@@ -756,156 +520,7 @@ function delStaff(i){ staffList.splice(i,1); save(); renderTix(); }
 function delTranscript(i){ transcripts.splice(i,1); save(); renderTix(); }
 function delManual(){ tickets = []; save(); renderTix(); }
 
-/* ---- weekly view: Thursday → Wednesday, with the leader called out ---- */
-let viewWeek = null;                                  // null = current week
-function shiftWeek(delta){
-  const weeks = knownWeeks();
-  const cur = viewWeek || currentWeekKey();
-  const d = toDate(cur); d.setDate(d.getDate() + delta*7);
-  const k = ymd(d);
-  viewWeek = (k === currentWeekKey()) ? null : k;
-  if(!weeks.includes(k) && k > currentWeekKey()) viewWeek = null;   // never go past this week
-  renderWeek();
-}
-function renderWeek(){
-  if(!$('weekTable')) return;                          // not on the tickets page
-  const wk = viewWeek || currentWeekKey();
-  const isNow = wk === currentWeekKey();
-  const rows = Object.values(aggregateTixWeek(wk))
-    .sort((a,b)=> b.tickets-a.tickets || b.replies-a.replies || a.name.localeCompare(b.name));
-  const withTix = rows.filter(r=>r.tickets>0);
-  const total = rows.reduce((s,r)=>s+r.tickets,0);
-
-  if($('weekRange')) $('weekRange').innerHTML =
-    `<b>${esc(weekLabel(wk))}</b> — weeks run ${DAY_NAMES[WEEK_RESET_DAY]} to ${DAY_NAMES[(WEEK_RESET_DAY+6)%7]}.` +
-    (isNow ? ` Resets in <b>${esc(nextResetIn())}</b>.` : ' <span class="tag grey">past week</span>');
-
-  // who has the most this week
-  if($('weekLeader')){
-    if(!withTix.length){
-      $('weekLeader').innerHTML = `<div class="empty">No tickets counted ${isNow?'yet this week':'that week'}.</div>`;
-    } else {
-      const top = withTix[0];
-      const tied = withTix.filter(r=>r.tickets===top.tickets);
-      const names = tied.map(r=>esc(r.name)).join(' & ');
-      $('weekLeader').innerHTML =
-        `<div class="week-leader">
-           <div class="wl-crown">👑</div>
-           <div>
-             <div class="wl-name">${names}</div>
-             <div class="wl-sub">${top.tickets} ticket${top.tickets!==1?'s':''}${tied.length>1?' each — tied':''} · ${isNow?'leading this week':'won that week'}</div>
-           </div>
-         </div>`;
-    }
-  }
-
-  if($('weekTotal'))  $('weekTotal').textContent = total;
-  if($('weekStaffN')) $('weekStaffN').textContent = withTix.length;
-
-  $('weekTable').innerHTML = rows.length ? `<table>
-    <tr><th>#</th><th>Staff</th><th>Rank</th><th>Tickets</th><th>Quality replies</th></tr>${
-    rows.map((r,i)=>`<tr${r.loa?' style="opacity:.72"':''}>
-      <td class="num">${r.tickets>0?i+1:'—'}</td>
-      <td>${i===0&&r.tickets>0?'👑 ':''}${esc(r.name)}${r.loa?` <span class="tag grey" title="${r.loaUntil?'Back '+esc(r.loaUntil):'On leave'}">On LOA</span>`:''}</td>
-      <td style="color:var(--muted);font-size:13px">${r.rank?esc(r.rank):'—'}</td>
-      <td class="num">${r.tickets}${r.manual?` <span class="tag grey" title="includes ${r.manual} manual">+${r.manual}</span>`:''}</td>
-      <td class="num" style="color:var(--muted)">${r.replies}</td>
-    </tr>`).join('')
-  }</table>` : `<div class="empty">Nobody on the staff list yet — add staff below and they'll appear here.</div>`;
-
-  if($('weekNav')){
-    const weeks = knownWeeks();
-    const older = weeks.filter(k=>k < wk).length > 0;
-    $('weekNav').innerHTML =
-      `<button class="btn small ghost" ${older?'':'disabled'} onclick="shiftWeek(-1)">← Previous week</button>
-       <button class="btn small ghost" ${isNow?'disabled':''} onclick="shiftWeek(1)">Next week →</button>` +
-      (isNow ? '' : ` <button class="btn small ghost" onclick="viewWeek=null;renderWeek()">Jump to this week</button>`);
-  }
-}
-
-/* ---- promotion board: weekly and all-time, side by side ---- */
-let promoSort = 'all';                                  // 'all' | 'week' | 'last' | 'recent' | 'name'
-let promoHideEmpty = false;
-function setPromoSort(k){ promoSort = k; renderPromo(); }
-function togglePromoEmpty(){ promoHideEmpty = !promoHideEmpty; renderPromo(); }
-function renderPromo(){
-  if(!$('promoTable')) return;                          // not on the tickets page
-  let rows = promotionBoard();
-  if(promoHideEmpty) rows = rows.filter(r=>r.all>0 || r.week>0);
-
-  const cmp = {
-    all:    (a,b)=> b.all-a.all       || b.week-a.week || a.name.localeCompare(b.name),
-    week:   (a,b)=> b.week-a.week     || b.all-a.all   || a.name.localeCompare(b.name),
-    last:   (a,b)=> b.last-a.last     || b.all-a.all   || a.name.localeCompare(b.name),
-    recent: (a,b)=> b.recent-a.recent || b.all-a.all   || a.name.localeCompare(b.name),
-    name:   (a,b)=> a.name.localeCompare(b.name),
-  };
-  rows.sort(cmp[promoSort] || cmp.all);
-
-  const topWeek = Math.max(0, ...rows.map(r=>r.week));
-  const topAll  = Math.max(0, ...rows.map(r=>r.all));
-
-  // headline stats
-  const totWeek = rows.reduce((s,r)=>s+r.week,0);
-  const totAll  = rows.reduce((s,r)=>s+r.all,0);
-  if($('promoWeekTotal')) $('promoWeekTotal').textContent = totWeek;
-  if($('promoAllTotal'))  $('promoAllTotal').textContent  = totAll;
-  if($('promoActive'))    $('promoActive').textContent    = rows.filter(r=>r.week>0).length;
-  if($('promoLoaN'))      $('promoLoaN').textContent      = rows.filter(r=>r.loa).length;
-
-  if($('promoRange')) $('promoRange').innerHTML =
-    `<b>This week:</b> ${esc(weekLabel(currentWeekKey()))} — resets ${DAY_NAMES[WEEK_RESET_DAY]} in <b>${esc(nextResetIn())}</b>. ` +
-    `<b>All time</b> is every ticket ever counted. Sort by whichever number you promote on.`;
-
-  // If every stored transcript is undated history, the weekly column will read 0
-  // until new tickets come in. Say so plainly rather than letting it look like
-  // nobody worked this week.
-  const bf = botData && botData.backfill;
-  if($('promoNote')){
-    if(bf && bf.backfill > 0 && bf.dated === 0 && totWeek === 0){
-      $('promoNote').innerHTML =
-        `<div class="notice">⏳ <b>Weekly counts start from now.</b> All ${bf.backfill.toLocaleString()} transcripts already counted
-         came from the first bulk scan, which stamped them with the day it ran instead of the day each ticket happened —
-         so they can't be split into real weeks. They're all still in <b>All time</b>.
-         The weekly column fills in as new tickets are handled, or immediately if you run <code>/scan fresh:true</code> in Discord.</div>`;
-    } else {
-      $('promoNote').innerHTML = '';
-    }
-  }
-
-  const btn = (k,label) => `<button class="btn small ${promoSort===k?'':'ghost'}" onclick="setPromoSort('${k}')">${label}</button>`;
-  if($('promoSortBar')) $('promoSortBar').innerHTML =
-    `<span class="sort-lbl">Sort by</span> ${btn('all','All time')} ${btn('week','This week')} ${btn('last','Last week')} ${btn('recent','Last 4 weeks')} ${btn('name','Name')}
-     <button class="btn small ghost" onclick="togglePromoEmpty()">${promoHideEmpty?'Show everyone':'Hide 0-ticket staff'}</button>`;
-
-  const arrow = t => t>0 ? `<span class="trend up" title="up ${t} vs last week">▲${t}</span>`
-                   : t<0 ? `<span class="trend down" title="down ${-t} vs last week">▼${-t}</span>`
-                   : `<span class="trend flat">—</span>`;
-
-  $('promoTable').innerHTML = rows.length ? `<table class="promo">
-    <tr>
-      <th>#</th><th>Staff</th><th>Rank</th>
-      <th class="num">This week</th><th class="num">vs last</th>
-      <th class="num">Last 4 wks</th><th class="num">All time</th>
-      <th class="num">Quality replies</th>
-    </tr>${
-    rows.map((r,i)=>`<tr${r.loa?' class="is-loa"':''}>
-      <td class="num">${i+1}</td>
-      <td>${(promoSort==='week'&&r.week===topWeek&&topWeek>0)||(promoSort==='all'&&r.all===topAll&&topAll>0)?'👑 ':''}${esc(r.name)}${
-        r.loa?` <span class="tag grey" title="${r.loaUntil?'Back '+esc(r.loaUntil):'Open-ended'}${r.loaReason?' · '+esc(r.loaReason):''}">On LOA</span>`:''}</td>
-      <td class="rank-cell">${r.rank?esc(r.rank):'—'}</td>
-      <td class="num strong">${r.week}</td>
-      <td class="num">${arrow(r.trend)}</td>
-      <td class="num">${r.recent}</td>
-      <td class="num strong gold">${r.all}${r.manual?` <span class="tag grey" title="includes ${r.manual} manual">+${r.manual}</span>`:''}</td>
-      <td class="num muted">${r.replies}</td>
-    </tr>`).join('')
-  }</table>` : `<div class="empty">No staff yet. They appear automatically once the bot publishes counts.</div>`;
-}
-
 function renderTix(){
-  renderWeek();
-  renderPromo();
   const per = aggregateTix();
   const rows = Object.values(per).sort((a,b)=> b.tickets-a.tickets || b.replies-a.replies);
   const totalTickets = rows.reduce((s,r)=>s+r.tickets,0);
@@ -914,6 +529,22 @@ function renderTix(){
   $('tixHandled').textContent = totalTickets;
   $('tixStaffN').textContent  = credited;
   $('tixTransN').textContent  = (botData ? (botData.transcriptCount||0) : 0) + transcripts.length;
+
+  // period toggle + current week label
+  const pv = $('tixPeriod');
+  if(pv){
+    const ms = weekEnd() - Date.now();
+    const hrs = Math.floor(ms/36e5);
+    const left = hrs < 24 ? hrs + 'h' : Math.floor(hrs/24) + 'd ' + (hrs%24) + 'h';
+    pv.innerHTML =
+      `<button class="btn small ${tixView==='week'?'':'ghost'}" onclick="setTixView('week')">This week</button>
+       <button class="btn small ${tixView==='all'?'':'ghost'}" onclick="setTixView('all')">All time</button>
+       <span class="period-note">${tixView==='week'
+         ? `${esc(weekLabel())} · resets Friday 12:00 AM (in ${left})`
+         : 'Every ticket ever counted'}</span>`;
+  }
+  const lbl = $('tixStatLabel');
+  if(lbl) lbl.textContent = tixView==='week' ? 'Tickets this week' : 'Tickets handled';
 
   const bs = $('botStatus');
   if(bs){
@@ -965,147 +596,24 @@ function renderTix(){
 }
 
 /* ---------- staff roster ---------- */
-/* =====================================================
-   ROSTER AUTO-SYNC
-   The bot publishes the staff list straight from Discord
-   roles, so the roster keeps itself up to date instead of
-   being typed in by hand. Anyone on LOA is kept and still
-   listed — leave is a status, not a removal.
-===================================================== */
-function syncRosterFromBot(){
-  if(!botData || !Array.isArray(botData.staff)) return 0;
-  let changed = 0;
-
-  botData.staff.forEach(s=>{
-    if(!s.name) return;
-    const k = normName(s.name);
-    const row = roster.find(r=>normName(r.name)===k);
-    if(row){
-      if(s.rank && row.rank !== s.rank){ row.rank = s.rank; changed++; }   // promotions land here
-      if(row.name !== s.name){ row.name = s.name; changed++; }             // name changes too
-    }else{
-      roster.push({name:s.name, rank:s.rank||'Support', auto:true});
-      changed++;
-    }
-  });
-
-  // keep LOA entries pointing at the current name/rank
-  loa.forEach(l=>{
-    const m = roster.find(r=>normName(r.name)===normName(l.name));
-    if(m && m.rank && l.rank !== m.rank){ l.rank = m.rank; changed++; }
-  });
-
-  // drop auto-added people who are no longer staff — but never drop
-  // someone on leave, and never touch manually added rows
-  const live = new Set(botData.staff.map(s=>normName(s.name)));
-  const before = roster.length;
-  roster = roster.filter(r => !r.auto || live.has(normName(r.name)) || isOnLoa(r.name));
-  changed += before - roster.length;
-
-  if(changed) save();
-  return changed;
-}
-
 function initRoster(){
   if(!requireAuth()) return;
-
-  // pull the latest published staff list, then mirror it into the roster
-  syncRosterFromBot();
-  fetch('data/tickets.json?t=' + Date.now(), {cache:'no-store'})
-    .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
-    .then(data => {
-      if(data.source !== 'empire-ticket-counter' || !Array.isArray(data.staff)) return;
-      const haveTime = botData && botData.generated ? Date.parse(botData.generated) : 0;
-      const newTime  = data.generated ? Date.parse(data.generated) : Date.now();
-      if(newTime >= haveTime){ botData = data; save(); }
-      const n = syncRosterFromBot();
-      renderRoster();
-      const el = $('rosterSync');
-      if(el){
-        const when = botData.generated ? new Date(botData.generated).toLocaleString() : 'unknown';
-        el.innerHTML = `<span class="tag ok">Auto-synced</span> ${botData.staff.length} staff from Discord roles`
-          + (n ? ` · <b>${n}</b> update${n!==1?'s':''} applied` : ' · already up to date')
-          + ` <span style="opacity:.7">· ${esc(when)}</span>`;
-      }
-    })
-    .catch(()=>{
-      const el = $('rosterSync');
-      if(el) el.innerHTML = botData
-        ? `<span class="tag grey">Offline</span> showing the last synced roster.`
-        : `<span class="tag grey">Not synced</span> run <code>/syncstaff</code> then <code>/publish</code> in Discord.`;
-    });
-
   $('rosterForm').addEventListener('submit', e=>{
     e.preventDefault();
     const name = $('rosterName').value.trim(); if(!name) return;
     roster.push({name, rank:$('rosterRank').value});
     save(); $('rosterName').value=''; renderRoster();
   });
-
-  // leave of absence
-  const lf = $('loaForm');
-  if(lf){
-    lf.addEventListener('submit', e=>{
-      e.preventDefault();
-      const name = $('loaName').value.trim(); if(!name) return;
-      const start = $('loaStart').value || ymd(new Date());
-      const end   = $('loaEnd').value || '';
-      if(end && end < start){ $('loaErr').textContent = 'The return date is before the start date.'; return; }
-      $('loaErr').textContent = '';
-      const known = roster.find(r=>normName(r.name)===normName(name));
-      loa.push({name, rank: known ? known.rank : '', start, end, reason:$('loaReason').value.trim()});
-      save();
-      $('loaName').value=''; $('loaReason').value=''; $('loaEnd').value='';
-      renderRoster();
-    });
-    $('loaStart').value = ymd(new Date());
-  }
   renderRoster();
 }
 function delRoster(i){ roster.splice(i,1); save(); renderRoster(); }
-function delLoa(i){ loa.splice(i,1); save(); renderRoster(); }
-function endLoaNow(i){ loa[i].end = ymd(new Date()); save(); renderRoster(); }
 function renderRoster(){
   const order = ["Owner","Co-Owner","Head Admin","Admin","Moderator","Trial Mod","Support"];
   roster.sort((a,b)=>order.indexOf(a.rank)-order.indexOf(b.rank));
-  $('rosterTable').innerHTML = roster.length ? `<table><tr><th>Name</th><th>Rank</th><th>Status</th><th></th></tr>${
-    roster.map((r,i)=>{
-      const l = loaFor(r.name);
-      return `<tr${l?' style="opacity:.75"':''}><td>${esc(r.name)}${r.auto?' <span class="tag grey" title="Synced from Discord roles">auto</span>':''}</td>
-      <td><span class="tag gold">${esc(r.rank)}</span></td>
-      <td>${l ? `<span class="tag grey">On LOA${l.end?' · back '+esc(l.end):''}</span>` : '<span class="tag ok">Active</span>'}</td>
-      <td style="text-align:right"><button class="btn small danger" onclick="delRoster(${i})">Remove</button></td></tr>`;
-    }).join('')
+  $('rosterTable').innerHTML = roster.length ? `<table><tr><th>Name</th><th>Rank</th><th></th></tr>${
+    roster.map((r,i)=>`<tr><td>${esc(r.name)}</td><td><span class="tag gold">${esc(r.rank)}</span></td>
+    <td style="text-align:right"><button class="btn small danger" onclick="delRoster(${i})">Remove</button></td></tr>`).join('')
   }</table>` : `<div class="empty">Roster is empty. Add your first staff member above.</div>`;
-
-  if(!$('loaTable')) return;
-
-  // name suggestions from the roster
-  const dl = $('loaNames');
-  if(dl) dl.innerHTML = roster.map(r=>`<option value="${esc(r.name)}">`).join('');
-
-  const rank = {active:0, upcoming:1, ended:2};
-  const list = loa.map((l,i)=>({l, i, st:loaStatus(l)}))
-                  .sort((a,b)=> rank[a.st]-rank[b.st] || String(a.l.start).localeCompare(b.l.start));
-  const nActive = list.filter(x=>x.st==='active').length;
-
-  if($('loaCount')) $('loaCount').textContent = nActive;
-  $('loaTable').innerHTML = list.length ? `<table>
-    <tr><th>Name</th><th>Status</th><th>From</th><th>Back</th><th>Reason</th><th></th></tr>${
-    list.map(({l,i,st})=>`<tr${st==='ended'?' style="opacity:.6"':''}>
-      <td>${esc(l.name)}${l.rank?` <span class="tag gold">${esc(l.rank)}</span>`:''}</td>
-      <td>${st==='active' ? '<span class="tag grey">On LOA</span>'
-            : st==='upcoming' ? '<span class="tag info">Upcoming</span>'
-            : '<span class="tag ok">Back</span>'}</td>
-      <td style="font-size:13px">${esc(l.start||'—')}</td>
-      <td style="font-size:13px">${l.end?esc(l.end):'<span style="color:var(--muted)">open-ended</span>'}</td>
-      <td style="color:var(--muted);font-size:13px">${l.reason?esc(l.reason):'—'}</td>
-      <td style="text-align:right;white-space:nowrap">
-        ${st!=='ended'?`<button class="btn small ghost" onclick="endLoaNow(${i})" title="Mark them back today">Back now</button> `:''}
-        <button class="btn small danger" onclick="delLoa(${i})">✕</button>
-      </td>
-    </tr>`).join('')
-  }</table>` : `<div class="empty">Nobody is on leave. Add someone above and they'll show as On LOA across the portal.</div>`;
 }
 
 /* ---------- tebex logs ---------- */

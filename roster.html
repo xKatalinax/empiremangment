@@ -48,24 +48,7 @@
 
   <div class="panel">
     <h2>Roster</h2>
-    <div class="rule-note">The roster mirrors the bot&rsquo;s staff list from Discord roles, so ranks and new hires update themselves. Rows marked <b>auto</b> came from Discord; anyone you add by hand stays put, and nobody on LOA is ever removed.</div>
-    <div id="rosterSync" style="font-size:13px;color:var(--muted);margin-bottom:14px"></div>
     <div id="rosterTable"></div>
-  </div>
-
-  <div class="panel">
-    <h2>Leave of absence &mdash; <span id="loaCount">0</span> away</h2>
-    <div class="rule-note">Anyone on LOA still appears on the weekly ticket board, tagged so a quiet week isn&rsquo;t held against them. Leave the return date empty for an open-ended LOA.</div>
-    <form class="row-form" id="loaForm" style="margin-top:14px">
-      <input type="text" id="loaName" placeholder="Name" list="loaNames" required>
-      <datalist id="loaNames"></datalist>
-      <input type="date" id="loaStart" title="First day away" required>
-      <input type="date" id="loaEnd" title="Return date (optional)">
-      <input type="text" id="loaReason" placeholder="Reason (optional)">
-      <button class="btn" type="submit">Add to LOA</button>
-    </form>
-    <div class="err" id="loaErr" style="margin-top:8px"></div>
-    <div id="loaTable" style="margin-top:14px"></div>
   </div>
   <a class="back" href="index.html">← Back to portal</a>
 </main>

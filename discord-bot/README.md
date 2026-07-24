@@ -18,8 +18,9 @@ Two ways to feed it transcripts:
 
 | Command | What it does |
 | --- | --- |
-| `/tickets` | Show the ticket leaderboard |
-| `/tickets staff:@user` | Show one person's count |
+| `/tickets` | Weekly leaderboard (Friday 12:00 AM reset) |
+| `/tickets period:All time` | Every ticket ever counted |
+| `/tickets staff:@user` | Show one person's week + all-time count |
 | `/scan` | **Read every transcript in the watched channels** — full history, no uploading |
 | `/syncstaff` | **Rebuild the staff list from Discord roles**, tagged with each highest rank |
 | `/sync file:` *(or)* `url:` | Count a single transcript |
@@ -31,6 +32,22 @@ Two ways to feed it transcripts:
 | `/diagnose` | Inspect one transcript if something can't be read |
 
 `/staff` requires the **Manage Server** permission.
+
+---
+
+## Weekly counts
+
+The week runs **Friday 12:00 AM to the following Friday 12:00 AM**, on the dot. A ticket
+is filed by the time of the last message in its transcript, so a ticket closed at
+11:59 PM Thursday belongs to the outgoing week and one at 12:00 AM Friday starts the new one.
+
+`/tickets` shows the current week by default; `/tickets period:All time` shows everything.
+The website has the same **This week / All time** toggle and displays the countdown to the
+next reset. Nothing is deleted at rollover — the all-time board keeps every ticket.
+
+Timing uses the clock of the machine running the bot. If you host it in another timezone,
+set `WEEK_TZ_OFFSET` in `.env` to the hours from UTC you want the reset judged in
+(US Eastern is `-5` in winter, `-4` in summer).
 
 ---
 

@@ -75,7 +75,7 @@ const commands = [
   new SlashCommandBuilder()
     .setName('tickets')
     .setDescription('Show the ticket leaderboard, or one staff member\'s count')
-    .addStringOption((o) => o.setName('period').setDescription('This week (default) or all time').setRequired(false)
+    .addStringOption((o) => o.setName('period').setDescription('Sort by this week (default) or all time — both counts always shown').setRequired(false)
       .addChoices({ name: 'This week', value: 'week' }, { name: 'All time', value: 'all' }))
     .addUserOption((o) => o.setName('staff').setDescription('Show just this staff member').setRequired(false)),
 
@@ -521,71 +521,62 @@ client.on('interactionCreate', async (i) => {
   if (i.commandName === 'tickets') {
     const user = i.options.getUser('staff');
     const period = i.options.getString('period') || 'week';
-    const since = period === 'all' ? 0 : weekStart();
-    const totals = store.totals(since);
     const scope = period === 'all' ? 'All time' : `Week of ${weekLabel()}`;
 
+    // Both periods are always computed, then merged on the staff key, so every
+    // staff member carries a separate weekly total and all-time total.
+    const norm = (x) => String(x || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const weekTotals = store.totals(weekStart());
+    const allTotals = store.totals(0);
+    const merged = {};
+    for (const [k, r] of Object.entries(allTotals)) {
+      merged[k] = { key: k, name: r.name, rank: r.rank || '', week: 0, all: r.tickets, weekReplies: 0, allReplies: r.replies };
+    }
+    for (const [k, r] of Object.entries(weekTotals)) {
+      const row = merged[k] || (merged[k] = { key: k, name: r.name, rank: r.rank || '', week: 0, all: 0, weekReplies: 0, allReplies: 0 });
+      row.week = r.tickets;
+      row.weekReplies = r.replies;
+      row.rank = row.rank || r.rank || '';
+    }
+
     if (user) {
-      const key = user.username.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const row = Object.values(totals).find((r) => r.name.toLowerCase().replace(/[^a-z0-9]/g, '') === key)
-        || Object.entries(totals).find(([k]) => k === key)?.[1];
-      const t = row ? row.tickets : 0, q = row ? row.replies : 0;
-      const all = period === 'week'
-        ? Object.values(store.totals(0)).find((r) => r.name.toLowerCase().replace(/[^a-z0-9]/g, '') === key)
-        : null;
+      const key = norm(user.username);
+      const row = merged[key] || Object.values(merged).find((r) => norm(r.name) === key);
+      const wk = row ? row.week : 0;
+      const at = row ? row.all : 0;
       return i.reply(
-        `**${user.username}** — ${scope}: **${t}** ticket${t !== 1 ? 's' : ''} (${q} quality replies)`
-        + (all ? `\nAll time: **${all.tickets}** tickets.` : '')
+        `**${user.username}**\n`
+        + `• This week (${weekLabel()}): **${wk}** ticket${wk !== 1 ? 's' : ''}${row ? ` · ${row.weekReplies} replies` : ''}\n`
+        + `• All time: **${at}** ticket${at !== 1 ? 's' : ''}${row ? ` · ${row.allReplies} replies` : ''}`
       );
     }
 
-    const rows = Object.entries(totals)
-      .map(([key, r]) => ({ key, ...r }))
-      .sort((a, b) => b.tickets - a.tickets || b.replies - a.replies);
+    const rows = Object.values(merged).sort((a, b) => period === 'all'
+      ? (b.all - a.all) || (b.week - a.week)
+      : (b.week - a.week) || (b.all - a.all));
+
     if (!rows.length) {
-      return i.reply(period === 'all'
-        ? 'No tickets counted yet. Add staff with `/syncstaff`, then `/scan`.'
-        : `No tickets yet this week (${weekLabel()}). Try \`/tickets period:All time\`.`);
+      return i.reply('No tickets counted yet. Add staff with `/syncstaff`, then `/scan`.');
     }
-    // On the weekly board, show each person's all-time total next to the week's,
-    // and a combined all-time figure at the bottom.
-    const allTotals = period === 'week' ? store.totals(0) : null;
-    const allTimeFor = (key, name) => {
-      if (!allTotals) return null;
-      const n = name.toLowerCase().replace(/[^a-z0-9]/g, '');
-      const row = allTotals[key] || Object.values(allTotals).find((r) => r.name.toLowerCase().replace(/[^a-z0-9]/g, '') === n);
-      return row ? row.tickets : 0;
-    };
 
     const shown = rows.slice(0, 40);
-    let desc = shown.map((r, n) => {
-      const at = allTimeFor(r.key, r.name);
-      return `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''} — **${r.tickets}** ticket${r.tickets !== 1 ? 's' : ''} · ${r.replies} replies`
-        + (at === null ? '' : ` · ${at} all time`);
-    }).join('\n');
+    let desc = shown.map((r, n) =>
+      `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''}\n`
+      + `\u2003└ **${r.week}** this week · **${r.all}** all time`
+    ).join('\n');
     if (rows.length > shown.length) desc += `\n\n…and ${rows.length - shown.length} more.`;
 
-    const weekTotal = rows.reduce((s, r) => s + r.tickets, 0);
-    const grandTotal = allTotals
-      ? Object.values(allTotals).reduce((s, r) => s + r.tickets, 0)
-      : weekTotal;
-    desc += allTotals
-      ? `\n\n**${weekTotal}** ticket${weekTotal !== 1 ? 's' : ''} this week · **${grandTotal}** all time`
-      : `\n\n**${grandTotal}** ticket${grandTotal !== 1 ? 's' : ''} all time`;
-
+    const weekSum = rows.reduce((s, r) => s + r.week, 0);
+    const allSum = rows.reduce((s, r) => s + r.all, 0);
+    desc += `\n\n**Team total —** ${weekSum} this week · ${allSum} all time`;
     if (desc.length > 4000) desc = desc.slice(0, 3990) + '\n…';
 
-    const resetIn = nextReset() - Date.now();
-    const hrs = Math.floor(resetIn / 3600_000);
-    const resetTxt = period === 'all'
-      ? `Rule: ${TICKET_MIN_REPLIES}+ helpful replies (${QUALITY_MIN_WORDS}+ words each) = 1 ticket`
-      : `Resets Friday ${resetLabel()} · ${hrs < 24 ? `in ${hrs}h` : `in ${Math.floor(hrs / 24)}d ${hrs % 24}h`}`;
-
+    const hrs = Math.floor((nextReset() - Date.now()) / 3600_000);
     const embed = new EmbedBuilder()
-      .setTitle(`🎟️ Ticket Leaderboard — ${scope}`)
+      .setTitle(`\u{1F39F}\uFE0F Ticket Leaderboard — sorted by ${period === 'all' ? 'all time' : 'this week'}`)
       .setColor(0xe6b345)
       .setDescription(desc)
-      .setFooter({ text: resetTxt });
+      .setFooter({ text: `${scope} · resets Friday ${resetLabel()} in ${hrs < 24 ? `${hrs}h` : `${Math.floor(hrs / 24)}d ${hrs % 24}h`} · ${TICKET_MIN_REPLIES}+ helpful replies (${QUALITY_MIN_WORDS}+ words) = 1 ticket` });
     return i.reply({ embeds: [embed] });
   }
 

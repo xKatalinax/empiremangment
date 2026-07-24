@@ -18,7 +18,7 @@ Two ways to feed it transcripts:
 
 | Command | What it does |
 | --- | --- |
-| `/tickets` | Weekly leaderboard (Friday 12:00 AM reset) — also shows all-time totals |
+| `/tickets` | Leaderboard — every staff member with their weekly count and all-time count listed separately |
 | `/tickets period:All time` | Every ticket ever counted |
 | `/tickets staff:@user` | Show one person's week + all-time count |
 | `/scan` | **Read every transcript in the watched channels** — full history, no uploading |
@@ -41,18 +41,27 @@ The week runs **Friday 12:00 AM (midnight) to the following Friday 12:00 AM**, o
 A ticket is filed by the time of the last message in its transcript, so a ticket closed at
 11:59 PM Thursday belongs to the outgoing week and one at 12:00 AM Friday starts the new one.
 
-`/tickets` shows the current week by default and now prints each person's all-time total
-next to their weekly one, plus a combined "X this week · Y all time" line. `/tickets
-period:All time` still shows the all-time board on its own. The website shows both at once:
-a **Tickets this week** and a **Tickets all time** stat, an **All time** column in the
-per-staff table, and the **This week / All time** toggle. Nothing is deleted at rollover —
-the all-time board keeps every ticket.
+Every staff member carries **two separate counts**: how many tickets they handled this
+week, and how many they have handled in total. Both are always shown together — the
+`period` option on `/tickets` and the **This week / All time** toggle on the website only
+change which column the list is *sorted* by, never which numbers appear.
+
+Because the two are merged rather than filtered, someone who handled nothing this week
+still appears with their all-time total instead of dropping off the board. Nothing is
+deleted at rollover — the weekly column resets, the all-time column keeps growing.
+
+`/tickets staff:@someone` gives one person's two numbers on their own.
 
 Timing uses the clock of the machine running the bot. If you host it in another timezone,
 set `WEEK_TZ_OFFSET` in `.env` to the hours from UTC you want the reset judged in
-(US Eastern is `-5` in winter, `-4` in summer). To move the rollover off midday, set
-`WEEK_RESET_HOUR` (`0` = midnight, `12` = midday) and change `WEEK_RESET_HOUR` at the top
-of `assets/app.js` to match.
+(US Eastern is `-5` in winter, `-4` in summer). To move the rollover off midnight, set
+`WEEK_RESET_HOUR` (`0` = midnight, `12` = midday).
+
+`assets/app.js` has matching `WEEK_RESET_HOUR` and `WEEK_TZ_OFFSET` constants at the top.
+**Keep them in step with the bot.** The website falls back to the viewer's own browser
+clock when `WEEK_TZ_OFFSET` is `null`, so if the bot is hosted in UTC and your staff are in
+Eastern, the two will disagree about where the week ends by several hours. Setting the same
+fixed offset on both sides removes the ambiguity entirely.
 
 ---
 

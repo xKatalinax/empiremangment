@@ -296,7 +296,30 @@ function renderBoost(){
 ===================================================== */
 
 /* ---- helpers shared by matching & counting ---- */
-function normName(s){ return String(s||'').toLowerCase().replace(/[^a-z0-9]/g,''); }
+/* Discord names are full of stylised Unicode — "𝕭𝕰𝕬𝕹", "Ｎｏｖａ", accents.
+   NFKC folds those look-alikes back to plain letters, then NFD + strip marks
+   removes accents. Without this a fully stylised name reduces to an empty key
+   and that person silently never gets credited for a single ticket.
+   Must stay identical to normName in discord-bot/lib/counter.js. */
+function normName(s){
+  const raw = String(s||'');
+  const folded = raw
+    .normalize('NFKC')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g,'');
+  if(folded) return folded;
+  let h = 0;
+  for(let i=0;i<raw.length;i++) h = (h*31 + raw.charCodeAt(i)) >>> 0;
+  return raw.trim() ? 'u'+h.toString(36) : '';
+}
+
+/* Counts stored before a naming-rule change can sit under a stale key — most
+   often "id<discordid>", which is what a fully stylised name used to fall back
+   to. The display name is stored alongside the count, so re-deriving the key
+   from that name folds the old and new records onto one row.
+   Must stay identical to canonKey in discord-bot/lib/counter.js. */
+function canonKey(storedKey, name){ return normName(name) || String(storedKey||''); }
 function hashSig(str){                       // tiny stable hash for de-duping transcripts
   let h = 5381; for(let i=0;i<str.length;i++){ h = ((h<<5)+h + str.charCodeAt(i))>>>0; }
   return 'h'+h.toString(16);
@@ -438,7 +461,7 @@ function aggregateTix(){
   // 1. counts imported from the Discord bot (/export)
   if(botData && Array.isArray(botData.staff)){
     botData.staff.forEach(r=>{
-      const k = r.key || normName(r.name);
+      const k = canonKey(r.key, r.name);
       const row = per[k] || (per[k]={name:r.name, rank:r.rank||'', tickets:0, replies:0, manual:0, fromBot:0});
       row.name = r.name; row.rank = r.rank || row.rank;
       row.tickets += (r.tickets||0);
@@ -449,7 +472,8 @@ function aggregateTix(){
 
   // 2. transcripts imported here in the browser
   transcripts.forEach(t=>{
-    Object.entries(t.counts).forEach(([k,v])=>{
+    Object.entries(t.counts).forEach(([rawKey,v])=>{
+      const k = canonKey(rawKey, v.name);
       const row = per[k] || (per[k]={name:v.name, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
       row.name = v.name;
       row.replies += v.replies;
@@ -474,7 +498,7 @@ function aggregateTixWeek(wk){
   // 1. weekly counts published by the Discord bot
   if(botData && botData.weeks && Array.isArray(botData.weeks[wk])){
     botData.weeks[wk].forEach(r=>{
-      const k = r.key || normName(r.name);
+      const k = canonKey(r.key, r.name);
       const x = row(k, r.name);
       x.name = r.name; x.rank = r.rank || x.rank;
       x.tickets += (r.tickets||0); x.replies += (r.replies||0); x.fromBot += (r.tickets||0);
@@ -484,8 +508,8 @@ function aggregateTixWeek(wk){
   // 2. transcripts imported in the browser, dated into this week
   transcripts.forEach(t=>{
     if(weekKey(t.date) !== wk) return;
-    Object.entries(t.counts).forEach(([k,v])=>{
-      const x = row(k, v.name);
+    Object.entries(t.counts).forEach(([rawKey,v])=>{
+      const x = row(canonKey(rawKey, v.name), v.name);
       x.name = v.name; x.replies += v.replies;
       if(v.replies >= TICKET_MIN_REPLIES) x.tickets += 1;
     });
@@ -527,6 +551,65 @@ function knownWeeks(){
   tickets.forEach(t=>{ const k = weekKey(t.date); if(k) set.add(k); });
   if(botData && botData.weeks) Object.keys(botData.weeks).forEach(k=>set.add(k));
   return [...set].sort().reverse();
+}
+
+/* =====================================================
+   PROMOTION BOARD
+   One row per staff member carrying BOTH numbers side by
+   side, because promotions are decided on ticket count:
+     week   — this Thursday→Wednesday week
+     last   — the week before
+     recent — rolling 4 weeks (this week + the 3 before)
+     all    — every ticket ever counted for them
+   Everyone known to the portal appears, including anyone
+   on LOA, so a 0 is visible rather than a missing row.
+===================================================== */
+function weekKeyBack(n){                                   // n weeks before the current one
+  const d = toDate(currentWeekKey()); d.setDate(d.getDate() - n*7); return ymd(d);
+}
+function promotionBoard(){
+  const rows = {};
+  const get = (k, name) => rows[k] || (rows[k] = {
+    key:k, name, rank:'', week:0, last:0, recent:0, all:0,
+    replies:0, manual:0, loa:false, loaUntil:'', loaReason:''
+  });
+
+  // all-time
+  Object.entries(aggregateTix()).forEach(([k,v])=>{
+    const r = get(k, v.name);
+    r.name = v.name; r.rank = v.rank || r.rank;
+    r.all = v.tickets; r.replies = v.replies; r.manual = v.manual;
+  });
+
+  // this week / last week / rolling 4 weeks
+  const thisWk = currentWeekKey(), lastWk = weekKeyBack(1);
+  for(let n=0; n<4; n++){
+    const wk = weekKeyBack(n);
+    Object.entries(aggregateTixWeek(wk)).forEach(([k,v])=>{
+      const r = get(k, v.name);
+      if(!r.rank && v.rank) r.rank = v.rank;
+      r.recent += v.tickets;
+      if(wk === thisWk) r.week = v.tickets;
+      if(wk === lastWk) r.last = v.tickets;
+    });
+  }
+
+  // make sure nobody on the roster or on leave is missing
+  [...roster, ...loa].forEach(p=>{
+    if(!p.name) return;
+    const r = get(normName(p.name), p.name);
+    if(!r.rank && p.rank) r.rank = p.rank;
+  });
+
+  // LOA tagging + trend vs last week
+  Object.values(rows).forEach(r=>{
+    const l = loaFor(r.name);
+    r.loa = !!l;
+    r.loaUntil  = l && l.end ? l.end : '';
+    r.loaReason = l && l.reason ? l.reason : '';
+    r.trend = r.week - r.last;
+  });
+  return Object.values(rows);
 }
 
 function initTix(){
@@ -740,8 +823,89 @@ function renderWeek(){
   }
 }
 
+/* ---- promotion board: weekly and all-time, side by side ---- */
+let promoSort = 'all';                                  // 'all' | 'week' | 'last' | 'recent' | 'name'
+let promoHideEmpty = false;
+function setPromoSort(k){ promoSort = k; renderPromo(); }
+function togglePromoEmpty(){ promoHideEmpty = !promoHideEmpty; renderPromo(); }
+function renderPromo(){
+  if(!$('promoTable')) return;                          // not on the tickets page
+  let rows = promotionBoard();
+  if(promoHideEmpty) rows = rows.filter(r=>r.all>0 || r.week>0);
+
+  const cmp = {
+    all:    (a,b)=> b.all-a.all       || b.week-a.week || a.name.localeCompare(b.name),
+    week:   (a,b)=> b.week-a.week     || b.all-a.all   || a.name.localeCompare(b.name),
+    last:   (a,b)=> b.last-a.last     || b.all-a.all   || a.name.localeCompare(b.name),
+    recent: (a,b)=> b.recent-a.recent || b.all-a.all   || a.name.localeCompare(b.name),
+    name:   (a,b)=> a.name.localeCompare(b.name),
+  };
+  rows.sort(cmp[promoSort] || cmp.all);
+
+  const topWeek = Math.max(0, ...rows.map(r=>r.week));
+  const topAll  = Math.max(0, ...rows.map(r=>r.all));
+
+  // headline stats
+  const totWeek = rows.reduce((s,r)=>s+r.week,0);
+  const totAll  = rows.reduce((s,r)=>s+r.all,0);
+  if($('promoWeekTotal')) $('promoWeekTotal').textContent = totWeek;
+  if($('promoAllTotal'))  $('promoAllTotal').textContent  = totAll;
+  if($('promoActive'))    $('promoActive').textContent    = rows.filter(r=>r.week>0).length;
+  if($('promoLoaN'))      $('promoLoaN').textContent      = rows.filter(r=>r.loa).length;
+
+  if($('promoRange')) $('promoRange').innerHTML =
+    `<b>This week:</b> ${esc(weekLabel(currentWeekKey()))} — resets ${DAY_NAMES[WEEK_RESET_DAY]} in <b>${esc(nextResetIn())}</b>. ` +
+    `<b>All time</b> is every ticket ever counted. Sort by whichever number you promote on.`;
+
+  // If every stored transcript is undated history, the weekly column will read 0
+  // until new tickets come in. Say so plainly rather than letting it look like
+  // nobody worked this week.
+  const bf = botData && botData.backfill;
+  if($('promoNote')){
+    if(bf && bf.backfill > 0 && bf.dated === 0 && totWeek === 0){
+      $('promoNote').innerHTML =
+        `<div class="notice">⏳ <b>Weekly counts start from now.</b> All ${bf.backfill.toLocaleString()} transcripts already counted
+         came from the first bulk scan, which stamped them with the day it ran instead of the day each ticket happened —
+         so they can't be split into real weeks. They're all still in <b>All time</b>.
+         The weekly column fills in as new tickets are handled, or immediately if you run <code>/scan fresh:true</code> in Discord.</div>`;
+    } else {
+      $('promoNote').innerHTML = '';
+    }
+  }
+
+  const btn = (k,label) => `<button class="btn small ${promoSort===k?'':'ghost'}" onclick="setPromoSort('${k}')">${label}</button>`;
+  if($('promoSortBar')) $('promoSortBar').innerHTML =
+    `<span class="sort-lbl">Sort by</span> ${btn('all','All time')} ${btn('week','This week')} ${btn('last','Last week')} ${btn('recent','Last 4 weeks')} ${btn('name','Name')}
+     <button class="btn small ghost" onclick="togglePromoEmpty()">${promoHideEmpty?'Show everyone':'Hide 0-ticket staff'}</button>`;
+
+  const arrow = t => t>0 ? `<span class="trend up" title="up ${t} vs last week">▲${t}</span>`
+                   : t<0 ? `<span class="trend down" title="down ${-t} vs last week">▼${-t}</span>`
+                   : `<span class="trend flat">—</span>`;
+
+  $('promoTable').innerHTML = rows.length ? `<table class="promo">
+    <tr>
+      <th>#</th><th>Staff</th><th>Rank</th>
+      <th class="num">This week</th><th class="num">vs last</th>
+      <th class="num">Last 4 wks</th><th class="num">All time</th>
+      <th class="num">Quality replies</th>
+    </tr>${
+    rows.map((r,i)=>`<tr${r.loa?' class="is-loa"':''}>
+      <td class="num">${i+1}</td>
+      <td>${(promoSort==='week'&&r.week===topWeek&&topWeek>0)||(promoSort==='all'&&r.all===topAll&&topAll>0)?'👑 ':''}${esc(r.name)}${
+        r.loa?` <span class="tag grey" title="${r.loaUntil?'Back '+esc(r.loaUntil):'Open-ended'}${r.loaReason?' · '+esc(r.loaReason):''}">On LOA</span>`:''}</td>
+      <td class="rank-cell">${r.rank?esc(r.rank):'—'}</td>
+      <td class="num strong">${r.week}</td>
+      <td class="num">${arrow(r.trend)}</td>
+      <td class="num">${r.recent}</td>
+      <td class="num strong gold">${r.all}${r.manual?` <span class="tag grey" title="includes ${r.manual} manual">+${r.manual}</span>`:''}</td>
+      <td class="num muted">${r.replies}</td>
+    </tr>`).join('')
+  }</table>` : `<div class="empty">No staff yet. They appear automatically once the bot publishes counts.</div>`;
+}
+
 function renderTix(){
   renderWeek();
+  renderPromo();
   const per = aggregateTix();
   const rows = Object.values(per).sort((a,b)=> b.tickets-a.tickets || b.replies-a.replies);
   const totalTickets = rows.reduce((s,r)=>s+r.tickets,0);
@@ -801,8 +965,76 @@ function renderTix(){
 }
 
 /* ---------- staff roster ---------- */
+/* =====================================================
+   ROSTER AUTO-SYNC
+   The bot publishes the staff list straight from Discord
+   roles, so the roster keeps itself up to date instead of
+   being typed in by hand. Anyone on LOA is kept and still
+   listed — leave is a status, not a removal.
+===================================================== */
+function syncRosterFromBot(){
+  if(!botData || !Array.isArray(botData.staff)) return 0;
+  let changed = 0;
+
+  botData.staff.forEach(s=>{
+    if(!s.name) return;
+    const k = normName(s.name);
+    const row = roster.find(r=>normName(r.name)===k);
+    if(row){
+      if(s.rank && row.rank !== s.rank){ row.rank = s.rank; changed++; }   // promotions land here
+      if(row.name !== s.name){ row.name = s.name; changed++; }             // name changes too
+    }else{
+      roster.push({name:s.name, rank:s.rank||'Support', auto:true});
+      changed++;
+    }
+  });
+
+  // keep LOA entries pointing at the current name/rank
+  loa.forEach(l=>{
+    const m = roster.find(r=>normName(r.name)===normName(l.name));
+    if(m && m.rank && l.rank !== m.rank){ l.rank = m.rank; changed++; }
+  });
+
+  // drop auto-added people who are no longer staff — but never drop
+  // someone on leave, and never touch manually added rows
+  const live = new Set(botData.staff.map(s=>normName(s.name)));
+  const before = roster.length;
+  roster = roster.filter(r => !r.auto || live.has(normName(r.name)) || isOnLoa(r.name));
+  changed += before - roster.length;
+
+  if(changed) save();
+  return changed;
+}
+
 function initRoster(){
   if(!requireAuth()) return;
+
+  // pull the latest published staff list, then mirror it into the roster
+  syncRosterFromBot();
+  fetch('data/tickets.json?t=' + Date.now(), {cache:'no-store'})
+    .then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)))
+    .then(data => {
+      if(data.source !== 'empire-ticket-counter' || !Array.isArray(data.staff)) return;
+      const haveTime = botData && botData.generated ? Date.parse(botData.generated) : 0;
+      const newTime  = data.generated ? Date.parse(data.generated) : Date.now();
+      if(newTime >= haveTime){ botData = data; save(); }
+      const n = syncRosterFromBot();
+      renderRoster();
+      const el = $('rosterSync');
+      if(el){
+        const when = botData.generated ? new Date(botData.generated).toLocaleString() : 'unknown';
+        el.innerHTML = `<span class="tag ok">Auto-synced</span> ${botData.staff.length} staff from Discord roles`
+          + (n ? ` · <b>${n}</b> update${n!==1?'s':''} applied` : ' · already up to date')
+          + ` <span style="opacity:.7">· ${esc(when)}</span>`;
+      }
+    })
+    .catch(()=>{
+      const el = $('rosterSync');
+      if(el) el.innerHTML = botData
+        ? `<span class="tag grey">Offline</span> showing the last synced roster.`
+        : `<span class="tag grey">Not synced</span> run <code>/syncstaff</code> then <code>/publish</code> in Discord.`;
+    });
+
   $('rosterForm').addEventListener('submit', e=>{
     e.preventDefault();
     const name = $('rosterName').value.trim(); if(!name) return;
@@ -839,7 +1071,8 @@ function renderRoster(){
   $('rosterTable').innerHTML = roster.length ? `<table><tr><th>Name</th><th>Rank</th><th>Status</th><th></th></tr>${
     roster.map((r,i)=>{
       const l = loaFor(r.name);
-      return `<tr${l?' style="opacity:.75"':''}><td>${esc(r.name)}</td><td><span class="tag gold">${esc(r.rank)}</span></td>
+      return `<tr${l?' style="opacity:.75"':''}><td>${esc(r.name)}${r.auto?' <span class="tag grey" title="Synced from Discord roles">auto</span>':''}</td>
+      <td><span class="tag gold">${esc(r.rank)}</span></td>
       <td>${l ? `<span class="tag grey">On LOA${l.end?' · back '+esc(l.end):''}</span>` : '<span class="tag ok">Active</span>'}</td>
       <td style="text-align:right"><button class="btn small danger" onclick="delRoster(${i})">Remove</button></td></tr>`;
     }).join('')

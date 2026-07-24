@@ -95,6 +95,9 @@ const commands = [
   new SlashCommandBuilder()
     .setName('scan')
     .setDescription('Read EVERY transcript in the watched channel(s) — no uploading one by one')
+    .addBooleanOption((o) => o.setName('fresh')
+      .setDescription('Wipe stored counts first and recount everything under the current rule')
+      .setRequired(false))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
   new SlashCommandBuilder()
@@ -286,7 +289,8 @@ function buildExport() {
     rule: { qualityMinWords: QUALITY_MIN_WORDS, ticketMinReplies: TICKET_MIN_REPLIES },
     transcriptCount: Object.keys(store.transcripts()).length,
     totalTickets: rows.reduce((s, r) => s + r.tickets, 0),
-    staff: rows,
+    staff: rows,               // all-time, one row per staff member
+    backfill: store.backfillStats(),
     // Thursday -> Wednesday weeks, so the site can show a weekly board
     weekResetDay: 'Thursday',
     currentWeek: currentWeekKey(),
@@ -584,8 +588,16 @@ client.on('interactionCreate', async (i) => {
   if (i.commandName === 'scan') {
     if (!TRANSCRIPT_CHANNEL_IDS.size) return i.reply({ content: 'No transcript channels set. Add channel IDs to `TRANSCRIPT_CHANNEL_ID` in `.env` first.', ephemeral: true });
     if (!store.staff().length) return i.reply({ content: 'Add staff first (`/syncstaff` or `/staff add`) — that\'s who gets counted.', ephemeral: true });
+    const fresh = i.options.getBoolean('fresh') || false;
     await i.deferReply();
     try {
+      // `fresh` throws away the stored counts so every transcript is read again
+      // under the current rule, and each one is dated from its own messages.
+      // This is how you rebuild real weekly history after a rule change.
+      if (fresh) {
+        const wiped = store.resetTranscripts();
+        await i.editReply(`♻️ Cleared **${wiped}** stored transcripts — recounting everything from scratch. This can take a while…`);
+      }
       const guild = await resolveGuild(i);
       const samples = [];
       const r = await scanAll(guild, samples);
@@ -802,6 +814,14 @@ function creditEmbed(label, credited) {
 client.on('error', (e) => console.error('client error:', e.message));
 process.on('unhandledRejection', (e) => console.error('unhandled rejection:', e?.message || e));
 process.on('uncaughtException', (e) => console.error('uncaught exception:', e?.message || e));
+
+// One-time: everything scanned before per-ticket dating existed carries the
+// scan date, not the ticket date. Flag it so it stays in all-time totals but
+// never lands in a week it didn't happen in.
+try {
+  const n = store.markExistingAsBackfill();
+  if (n) console.log(`Marked ${n} pre-dating transcripts as backfill (all-time only).`);
+} catch (e) { console.error('backfill migration failed:', e.message); }
 
 // Register commands, but never let that stop the bot from logging in —
 // counting still works even if a slash command fails to register.

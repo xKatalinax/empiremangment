@@ -54,15 +54,18 @@ module.exports = {
 
   // roll everything up into per-staff totals { key: {name, rank, tickets, replies} }
   totals() {
-    const { TICKET_MIN_REPLIES } = require('./counter');
-    const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const { TICKET_MIN_REPLIES, normName: norm, canonKey } = require('./counter');
     const rankOf = (key, name) => {
       const m = db.staff.find((s) => norm(s.name) === key || norm(s.name) === norm(name));
       return m ? (m.rank || '') : '';
     };
     const per = {};
     for (const rec of Object.values(db.transcripts)) {
-      for (const [k, v] of Object.entries(rec.counts)) {
+      for (const [rawKey, v] of Object.entries(rec.counts)) {
+        // Old records may be filed under a key from a previous naming rule
+        // (e.g. "id<discordid>" for a fully stylised name). Fold them onto the
+        // person's current key so one human is never split across two rows.
+        const k = canonKey(rawKey, v.name);
         const row = per[k] || (per[k] = { name: v.name, rank: rankOf(k, v.name), tickets: 0, replies: 0 });
         row.name = v.name;
         row.replies += v.replies;
@@ -74,18 +77,25 @@ module.exports = {
 
   // same roll-up, but split into Thursday→Wednesday weeks:
   //   { 'YYYY-MM-DD': { key: {name, rank, tickets, replies} } }
+  //
+  // Transcripts flagged `backfill` are skipped here. Those came from the first
+  // bulk /scan, which stamped every one of them with the day it ran rather than
+  // the day the ticket happened — dumping years of history into a single fake
+  // week. They still count towards all-time totals; they just can't be placed
+  // in a real week, so the weekly board starts clean from the first new ticket.
   weeklyTotals(limit = 12) {
-    const { TICKET_MIN_REPLIES, weekKey, currentWeekKey } = require('./counter');
-    const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const { TICKET_MIN_REPLIES, weekKey, currentWeekKey, normName: norm, canonKey } = require('./counter');
     const rankOf = (key, name) => {
       const m = db.staff.find((s) => norm(s.name) === key || norm(s.name) === norm(name));
       return m ? (m.rank || '') : '';
     };
     const weeks = {};
     for (const rec of Object.values(db.transcripts)) {
+      if (rec.backfill) continue;                              // undated history — all-time only
       const wk = weekKey(rec.date) || currentWeekKey();
       const per = weeks[wk] || (weeks[wk] = {});
-      for (const [k, v] of Object.entries(rec.counts)) {
+      for (const [rawKey, v] of Object.entries(rec.counts)) {
+        const k = canonKey(rawKey, v.name);
         const row = per[k] || (per[k] = { name: v.name, rank: rankOf(k, v.name), tickets: 0, replies: 0 });
         row.name = v.name;
         row.replies += v.replies;
@@ -98,5 +108,37 @@ module.exports = {
     const out = {};
     for (const k of keep) out[k] = weeks[k];
     return out;
+  },
+
+  // How many transcripts are undated history vs properly dated?
+  backfillStats() {
+    const all = Object.values(db.transcripts);
+    const back = all.filter((r) => r.backfill).length;
+    return { total: all.length, backfill: back, dated: all.length - back };
+  },
+
+  // Throw away every stored transcript so /scan can recount from scratch.
+  // Staff list is kept. Used after a counting-rule change, and it also clears
+  // the backfill flag so the rebuilt data carries real per-ticket dates.
+  resetTranscripts() {
+    const n = Object.keys(db.transcripts).length;
+    db.transcripts = {};
+    delete db.backfilledAt;
+    persist();
+    return n;
+  },
+
+  // One-time migration: everything already in the database predates per-ticket
+  // dating, so mark it as backfill. Safe to run repeatedly — it only ever
+  // touches records that have no flag yet, and only on the first run.
+  markExistingAsBackfill() {
+    if (db.backfilledAt) return 0;
+    let n = 0;
+    for (const rec of Object.values(db.transcripts)) {
+      if (!rec.backfill) { rec.backfill = true; n++; }
+    }
+    db.backfilledAt = new Date().toISOString();
+    persist();
+    return n;
   },
 };

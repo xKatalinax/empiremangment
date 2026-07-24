@@ -245,3 +245,45 @@ details.panel[open] summary::before{content:"▾ ";}
   .week-leader .wl-crown{font-size:26px;}
   .week-leader .wl-name{font-size:18px;}
 }
+
+/* ============ promotion board (weekly + all time) ============ */
+.stat-row.inner{width:100%;margin-top:16px;}
+.stat-row.inner .stat{padding:14px 16px;min-width:120px;}
+.stat-row.inner .stat .n{font-size:24px;}
+
+.sort-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0 14px;}
+.sort-bar .sort-lbl{
+  font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);margin-right:2px;
+}
+
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+table.promo{width:100%;min-width:640px;}
+table.promo th.num,table.promo td.num{text-align:right;white-space:nowrap;}
+table.promo td.strong{font-weight:800;font-size:15px;}
+table.promo td.gold{color:var(--gold-bright);text-shadow:0 0 14px rgba(230,179,69,.30);}
+table.promo td.muted{color:var(--muted);}
+table.promo td.rank-cell{color:var(--muted);font-size:13px;white-space:nowrap;}
+table.promo tr.is-loa{opacity:.7;}
+table.promo tr.is-loa td.gold{text-shadow:none;}
+
+.trend{font-size:12px;font-weight:800;}
+.trend.up{color:var(--green);}
+.trend.down{color:var(--red);}
+.trend.flat{color:var(--muted);opacity:.6;}
+
+@media (max-width:560px){
+  .stat-row.inner .stat{min-width:calc(50% - 7px);}
+  .sort-bar{gap:6px;}
+}
+
+.notice{
+  margin-top:16px;padding:14px 16px;border-radius:12px;font-size:13px;line-height:1.6;
+  background:rgba(230,179,69,.07);border:1px solid rgba(230,179,69,.28);color:var(--text);
+}
+.notice b{color:var(--gold-bright);}
+.notice code{
+  background:rgba(0,0,0,.35);padding:2px 6px;border-radius:5px;
+  font-size:12px;color:var(--gold);
+}

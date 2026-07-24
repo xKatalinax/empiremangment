@@ -35,7 +35,25 @@ const NON_HELPFUL_PATTERNS = [
 // date of its Thursday, so counts roll over on Thursday morning.
 const WEEK_RESET_DAY = 4; // 0 Sun, 1 Mon ... 4 Thu
 
-const normName = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+const normName = (s) => {
+  const raw = String(s || '');
+  // Discord names are full of stylised Unicode — "𝕭𝕰𝕬𝕹", "Ｎｏｖａ", accents.
+  // NFKC folds those look-alikes back to plain letters, then NFD + strip marks
+  // removes accents. Without this a fully stylised name reduces to an empty
+  // key and that person silently never gets credited for a single ticket.
+  const folded = raw
+    .normalize('NFKC')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+  if (folded) return folded;
+  // Still nothing (e.g. a name that is only emoji)? Fall back to a stable
+  // key derived from the raw codepoints so they stay distinct from everyone
+  // else instead of all collapsing onto the same empty key.
+  let h = 0;
+  for (let i = 0; i < raw.length; i++) h = (h * 31 + raw.charCodeAt(i)) >>> 0;
+  return raw.trim() ? 'u' + h.toString(36) : '';
+};
 
 function ymd(d) {
   const p = (n) => String(n).padStart(2, '0');
@@ -137,6 +155,15 @@ function matchStaff(msg, staffList) {
   return null;
 }
 
+// Counts stored before a naming-rule change can sit under a stale key — most
+// often "id<discordid>", which is what a fully stylised name used to fall back
+// to. The person's display name is stored alongside the count, so re-deriving
+// the key from that name folds the old and new records onto one row. Falls back
+// to the stored key when there's no usable name.
+function canonKey(storedKey, name) {
+  return normName(name) || String(storedKey || '');
+}
+
 // count one parsed transcript -> { key: { name, replies } }
 function countTranscript(messages, staffList) {
   const tally = {};
@@ -159,6 +186,6 @@ function creditedFrom(counts) {
 module.exports = {
   QUALITY_MIN_WORDS, TICKET_MIN_REPLIES, NON_HELPFUL_PATTERNS, WEEK_RESET_DAY,
   normName, normalizeText, helpfulWordCount, isQualityReply,
-  ymd, toDate, weekStart, weekKey, currentWeekKey, weekLabel, transcriptDate,
+  ymd, toDate, weekStart, weekKey, currentWeekKey, weekLabel, transcriptDate, canonKey,
   hashSig, transcriptSig, matchStaff, countTranscript, creditedFrom,
 };

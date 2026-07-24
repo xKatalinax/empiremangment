@@ -2,21 +2,7 @@
 //  Empire Roleplay — Ticket Counter bot
 //  Auto-counts tickets from Ticket Tool transcripts using the
 //  same rule as the web portal: a staff member with 2+ quality
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 //  replies (10+ words, filler filtered out) in a transcript = 1 ticket.
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-//  replies (15+ char messages) in a transcript = 1 ticket handled.
-=======
-//  replies (10+ words, filler filtered out) in a transcript = 1 ticket.
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 // =====================================================
 
 require('dotenv').config();
@@ -31,21 +17,7 @@ const { parseTranscript } = require('./lib/parser');
 const {
   countTranscript, creditedFrom, transcriptSig,
   weekStart, weekLabel, nextReset, resetLabel,
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
   QUALITY_MIN_WORDS, TICKET_MIN_REPLIES,
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-  QUALITY_MIN_CHARS, TICKET_MIN_REPLIES,
-=======
-  QUALITY_MIN_WORDS, TICKET_MIN_REPLIES,
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 } = require('./lib/counter');
 const store = require('./lib/store');
 const publisher = require('./lib/publish');
@@ -606,21 +578,7 @@ client.on('interactionCreate', async (i) => {
     const resetIn = nextReset() - Date.now();
     const hrs = Math.floor(resetIn / 3600_000);
     const resetTxt = period === 'all'
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
       ? `Rule: ${TICKET_MIN_REPLIES}+ helpful replies (${QUALITY_MIN_WORDS}+ words each) = 1 ticket`
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-      ? `Rule: ${TICKET_MIN_REPLIES}+ quality replies (${QUALITY_MIN_CHARS}+ chars) = 1 ticket`
-=======
-      ? `Rule: ${TICKET_MIN_REPLIES}+ helpful replies (${QUALITY_MIN_WORDS}+ words each) = 1 ticket`
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
       : `Resets Friday ${resetLabel()} · ${hrs < 24 ? `in ${hrs}h` : `in ${Math.floor(hrs / 24)}d ${hrs % 24}h`}`;
 
     const embed = new EmbedBuilder()

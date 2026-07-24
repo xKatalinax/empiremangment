@@ -9,19 +9,6 @@
 //                   the same staff member inside one transcript
 // =====================================================
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-const QUALITY_MIN_CHARS = 15;
-const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 const QUALITY_MIN_WORDS = 10;   // a reply must be at least this many words
 const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
 const HELPFUL_MIN_CONTENT_WORDS = 4;  // distinct meaningful words needed on top of the length
@@ -101,14 +88,6 @@ function isQualityReply(text) {
   );
   return content.size >= HELPFUL_MIN_CONTENT_WORDS;
 }
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 
 const normName = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -170,43 +149,15 @@ function creditedFrom(counts) {
   return Object.values(counts).filter((v) => v.replies >= TICKET_MIN_REPLIES);
 }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-// ---- weekly periods: a week runs Friday 12:00 PM -> next Friday 12:00 PM ----
-// Anchored to Friday midday exactly. Uses the machine's local time unless
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 // ---- weekly periods: a week runs Friday 12:00 AM -> next Friday 12:00 AM ----
 // Anchored to Friday midnight exactly. Uses the machine's local time unless
->>>>>>> Stashed changes
 // WEEK_TZ_OFFSET is set (hours from UTC, e.g. -5 for US Eastern standard time).
 //
 // To move the rollover somewhere else, change RESET_HOUR (0 = midnight,
 // 12 = noon) or set WEEK_RESET_HOUR in the environment. The web portal has the
 // same constant at the top of assets/app.js — keep the two in sync.
 const RESET_HOUR = process.env.WEEK_RESET_HOUR === undefined || process.env.WEEK_RESET_HOUR === ''
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
   ? 0
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-  ? 12
-=======
-  ? 0
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
   : Number(process.env.WEEK_RESET_HOUR);
 
 const TZ_OFFSET = process.env.WEEK_TZ_OFFSET === undefined || process.env.WEEK_TZ_OFFSET === ''
@@ -250,21 +201,7 @@ function weekEnd(when = Date.now()) {
   return weekStart(weekStart(when) + 7 * 86_400_000 + 12 * 3600_000);
 }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 // Label like "Fri 18 Jul 12:00 AM – Fri 25 Jul 12:00 AM"
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-// Label like "Fri 18 Jul 12:00 PM – Fri 25 Jul 12:00 PM"
-=======
-// Label like "Fri 18 Jul 12:00 AM – Fri 25 Jul 12:00 AM"
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 function weekLabel(when = Date.now()) {
   const s = new Date(weekStart(when));
   const e = new Date(weekEnd(when));
@@ -278,23 +215,8 @@ function nextReset(when = Date.now()) {
 }
 
 module.exports = {
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
   QUALITY_MIN_WORDS, TICKET_MIN_REPLIES, HELPFUL_MIN_CONTENT_WORDS,
   RESET_HOUR, resetLabel, isQualityReply, wordsOf,
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-  QUALITY_MIN_CHARS, TICKET_MIN_REPLIES, RESET_HOUR, resetLabel,
-=======
-  QUALITY_MIN_WORDS, TICKET_MIN_REPLIES, HELPFUL_MIN_CONTENT_WORDS,
-  RESET_HOUR, resetLabel, isQualityReply, wordsOf,
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
   normName, hashSig, transcriptSig, matchStaff, countTranscript, creditedFrom,
   weekStart, weekEnd, weekLabel, nextReset,
 };

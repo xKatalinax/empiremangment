@@ -4,21 +4,7 @@ Auto-counts staff tickets from **Ticket Tool** transcripts, using the exact same
 rule as the web portal:
 
 > A **quality reply** is a staff message with **15+ characters** of real text.
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 > A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**. A quality reply is **10+ words** and has to look like actual help.
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**.
-=======
-> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**. A quality reply is **10+ words** and has to look like actual help.
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 
 Two ways to feed it transcripts:
 
@@ -32,21 +18,7 @@ Two ways to feed it transcripts:
 
 | Command | What it does |
 | --- | --- |
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 | `/tickets` | Weekly leaderboard (Friday 12:00 AM reset) — also shows all-time totals |
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-| `/tickets` | Weekly leaderboard (Friday 12:00 PM reset) — also shows all-time totals |
-=======
-| `/tickets` | Weekly leaderboard (Friday 12:00 AM reset) — also shows all-time totals |
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 | `/tickets period:All time` | Every ticket ever counted |
 | `/tickets staff:@user` | Show one person's week + all-time count |
 | `/scan` | **Read every transcript in the watched channels** — full history, no uploading |
@@ -65,24 +37,9 @@ Two ways to feed it transcripts:
 
 ## Weekly counts
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-<<<<<<< Updated upstream
-The week runs **Friday 12:00 PM (midday) to the following Friday 12:00 PM**, on the dot.
-A ticket is filed by the time of the last message in its transcript, so a ticket closed at
-11:59 AM Friday belongs to the outgoing week and one at 12:00 PM Friday starts the new one.
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
->>>>>>> Stashed changes
 The week runs **Friday 12:00 AM (midnight) to the following Friday 12:00 AM**, on the dot.
 A ticket is filed by the time of the last message in its transcript, so a ticket closed at
 11:59 PM Thursday belongs to the outgoing week and one at 12:00 AM Friday starts the new one.
->>>>>>> Stashed changes
 
 `/tickets` shows the current week by default and now prints each person's all-time total
 next to their weekly one, plus a combined "X this week · Y all time" line. `/tickets

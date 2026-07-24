@@ -16,7 +16,7 @@ const {
 const { parseTranscript } = require('./lib/parser');
 const {
   countTranscript, creditedFrom, transcriptSig,
-  weekStart, weekLabel, nextReset, resetLabel,
+  weekStart, weekEnd, weekLabel, nextReset, resetLabel, weekStartAgo, recentWeeks,
   QUALITY_MIN_WORDS, TICKET_MIN_REPLIES,
 } = require('./lib/counter');
 const store = require('./lib/store');
@@ -77,6 +77,9 @@ const commands = [
     .setDescription('Show the ticket leaderboard, or one staff member\'s count')
     .addStringOption((o) => o.setName('period').setDescription('Sort by this week (default) or all time — both counts always shown').setRequired(false)
       .addChoices({ name: 'This week', value: 'week' }, { name: 'All time', value: 'all' }))
+    .addIntegerOption((o) => o.setName('weeksago')
+      .setDescription('How many weeks back to look. 0 = this week (default), 1 = last week, 2 = the week before…')
+      .setMinValue(0).setMaxValue(103).setRequired(false))
     .addUserOption((o) => o.setName('staff').setDescription('Show just this staff member').setRequired(false)),
 
   new SlashCommandBuilder()
@@ -84,6 +87,16 @@ const commands = [
     .setDescription('Process a Ticket Tool transcript (attach the .html file or paste its URL)')
     .addAttachmentOption((o) => o.setName('file').setDescription('The transcript .html file').setRequired(false))
     .addStringOption((o) => o.setName('url').setDescription('A transcript URL').setRequired(false)),
+
+  new SlashCommandBuilder()
+    .setName('weeks')
+    .setDescription('Week-by-week history — what each week counted, so you can go back and check')
+    .addIntegerOption((o) => o.setName('count')
+      .setDescription('How many weeks to list (default 12, max 52)')
+      .setMinValue(1).setMaxValue(52).setRequired(false))
+    .addUserOption((o) => o.setName('staff')
+      .setDescription('Show one person\'s week-by-week counts instead of the team totals')
+      .setRequired(false)),
 
   new SlashCommandBuilder()
     .setName('scan')
@@ -275,10 +288,14 @@ async function syncStaffFromRoles(guild) {
 }
 
 // ---------- export for the website ----------
+// How many weeks of history to publish. 26 keeps half a year browsable on the
+// site while keeping the JSON a sensible size.
+const EXPORT_HISTORY_WEEKS = 26;
+
 // The website is a static site with no backend, so the bridge is a file:
 // the bot writes this JSON, the Ticket Tracker page imports it.
 function buildExport() {
-  const mkRows = (since) => Object.entries(store.totals(since)).map(([key, r]) => ({
+  const mkRows = (since, until) => Object.entries(store.totals(since, until)).map(([key, r]) => ({
     key, name: r.name, rank: r.rank || '', tickets: r.tickets, replies: r.replies,
   })).sort((a, b) => b.tickets - a.tickets || b.replies - a.replies);
 
@@ -286,9 +303,24 @@ function buildExport() {
   const ws = weekStart();
   const weekRows = mkRows(ws);
 
+  // Week-by-week archive so the site can show closed weeks without the bot.
+  // Each week is tallied over its own window, so a past week never changes.
+  const history = recentWeeks(EXPORT_HISTORY_WEEKS).map((w) => {
+    const staff = mkRows(w.start, w.end);
+    return {
+      index: w.index,
+      start: new Date(w.start).toISOString(),
+      end: new Date(w.end).toISOString(),
+      label: w.label,
+      inProgress: w.index === 0,
+      totalTickets: staff.reduce((s2, r) => s2 + r.tickets, 0),
+      staff,
+    };
+  });
+
   return {
     source: 'empire-ticket-counter',
-    version: 2,
+    version: 3,
     generated: new Date().toISOString(),
     rule: { qualityMinWords: QUALITY_MIN_WORDS, ticketMinReplies: TICKET_MIN_REPLIES, helpfulnessFilter: true },
     week: {
@@ -299,6 +331,7 @@ function buildExport() {
       totalTickets: weekRows.reduce((s, r) => s + r.tickets, 0),
       staff: weekRows,
     },
+    history,
     transcriptCount: Object.keys(store.transcripts()).length,
     totalTickets: rows.reduce((s, r) => s + r.tickets, 0),
     staff: rows,
@@ -521,12 +554,16 @@ client.on('interactionCreate', async (i) => {
   if (i.commandName === 'tickets') {
     const user = i.options.getUser('staff');
     const period = i.options.getString('period') || 'week';
-    const scope = period === 'all' ? 'All time' : `Week of ${weekLabel()}`;
+    const back = i.options.getInteger('weeksago') || 0;
+    const wkStart = weekStartAgo(back);
+    const wkEnd = weekEnd(wkStart);
+    const wkName = back === 0 ? 'This week' : back === 1 ? 'Last week' : `${back} weeks ago`;
+    const scope = period === 'all' ? 'All time' : `${wkName} — ${weekLabel(wkStart)}`;
 
     // Both periods are always computed, then merged on the staff key, so every
     // staff member carries a separate weekly total and all-time total.
     const norm = (x) => String(x || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-    const weekTotals = store.totals(weekStart());
+    const weekTotals = store.totals(wkStart, wkEnd);
     const allTotals = store.totals(0);
     const merged = {};
     for (const [k, r] of Object.entries(allTotals)) {
@@ -546,7 +583,7 @@ client.on('interactionCreate', async (i) => {
       const at = row ? row.all : 0;
       return i.reply(
         `**${user.username}**\n`
-        + `• This week (${weekLabel()}): **${wk}** ticket${wk !== 1 ? 's' : ''}${row ? ` · ${row.weekReplies} replies` : ''}\n`
+        + `• ${wkName} (${weekLabel(wkStart)}): **${wk}** ticket${wk !== 1 ? 's' : ''}${row ? ` · ${row.weekReplies} replies` : ''}\n`
         + `• All time: **${at}** ticket${at !== 1 ? 's' : ''}${row ? ` · ${row.allReplies} replies` : ''}`
       );
     }
@@ -562,21 +599,71 @@ client.on('interactionCreate', async (i) => {
     const shown = rows.slice(0, 40);
     let desc = shown.map((r, n) =>
       `**${n + 1}.** ${n === 0 ? '👑 ' : ''}${r.name}${r.rank ? ` *(${r.rank})*` : ''}\n`
-      + `\u2003└ **${r.week}** this week · **${r.all}** all time`
+      + `\u2003└ **${r.week}** ${back === 0 ? 'this week' : 'that week'} · **${r.all}** all time`
     ).join('\n');
     if (rows.length > shown.length) desc += `\n\n…and ${rows.length - shown.length} more.`;
 
     const weekSum = rows.reduce((s, r) => s + r.week, 0);
     const allSum = rows.reduce((s, r) => s + r.all, 0);
-    desc += `\n\n**Team total —** ${weekSum} this week · ${allSum} all time`;
+    desc += `\n\n**Team total —** ${weekSum} ${back === 0 ? 'this week' : 'that week'} · ${allSum} all time`;
     if (desc.length > 4000) desc = desc.slice(0, 3990) + '\n…';
 
     const hrs = Math.floor((nextReset() - Date.now()) / 3600_000);
     const embed = new EmbedBuilder()
-      .setTitle(`\u{1F39F}\uFE0F Ticket Leaderboard — sorted by ${period === 'all' ? 'all time' : 'this week'}`)
+      .setTitle(`\u{1F39F}\uFE0F Ticket Leaderboard — sorted by ${period === 'all' ? 'all time' : wkName.toLowerCase()}`)
       .setColor(0xe6b345)
       .setDescription(desc)
-      .setFooter({ text: `${scope} · resets Friday ${resetLabel()} in ${hrs < 24 ? `${hrs}h` : `${Math.floor(hrs / 24)}d ${hrs % 24}h`} · ${TICKET_MIN_REPLIES}+ helpful replies (${QUALITY_MIN_WORDS}+ words) = 1 ticket` });
+      .setFooter({ text: back === 0
+        ? `${scope} · resets Friday ${resetLabel()} in ${hrs < 24 ? `${hrs}h` : `${Math.floor(hrs / 24)}d ${hrs % 24}h`} · /weeks for history`
+        : `${scope} · closed week · /weeks for the full history` });
+    return i.reply({ embeds: [embed] });
+  }
+
+  if (i.commandName === 'weeks') {
+    const count = i.options.getInteger('count') || 12;
+    const user = i.options.getUser('staff');
+    const norm = (x) => String(x || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const weeks = recentWeeks(count);
+
+    // Each week is tallied over its own [start, end) window, so a closed week
+    // always reports the same number no matter when you ask for it.
+    const rowsFor = (w) => store.totals(w.start, w.end);
+
+    if (user) {
+      const key = norm(user.username);
+      const lines = weeks.map((w) => {
+        const t = rowsFor(w);
+        const row = t[key] || Object.values(t).find((r) => norm(r.name) === key);
+        const n = row ? row.tickets : 0;
+        const tag = w.index === 0 ? ' *(in progress)*' : '';
+        return `\`${String(n).padStart(4)}\` · ${w.label.replace(/ 12:00 [AP]M/g, '')}${tag}`;
+      });
+      const total = lines.length;
+      const embed = new EmbedBuilder()
+        .setTitle(`\u{1F4C5} ${user.username} — week by week`)
+        .setColor(0xe6b345)
+        .setDescription(lines.join('\n') || 'No weeks recorded yet.')
+        .setFooter({ text: `Last ${total} weeks · /tickets weeksago:<n> for one week in full` });
+      return i.reply({ embeds: [embed] });
+    }
+
+    const lines = weeks.map((w) => {
+      const t = rowsFor(w);
+      const total = Object.values(t).reduce((s2, r) => s2 + r.tickets, 0);
+      const top = Object.values(t).sort((a, b) => b.tickets - a.tickets)[0];
+      const tag = w.index === 0 ? ' *(in progress)*' : '';
+      return `\`${String(total).padStart(4)}\` · ${w.label.replace(/ 12:00 [AP]M/g, '')}${tag}`
+        + (top && top.tickets ? `\n\u2003└ top: ${top.name} (${top.tickets})` : '');
+    });
+
+    let desc = lines.join('\n');
+    if (desc.length > 4000) desc = desc.slice(0, 3990) + '\n…';
+
+    const embed = new EmbedBuilder()
+      .setTitle('\u{1F4C5} Weekly history')
+      .setColor(0xe6b345)
+      .setDescription(desc || 'No weeks recorded yet.')
+      .setFooter({ text: `Weeks run Friday ${resetLabel()} to Friday ${resetLabel()} · /tickets weeksago:<n> to open one · /weeks staff:@user for one person` });
     return i.reply({ embeds: [embed] });
   }
 

@@ -226,3 +226,84 @@ details.panel[open] summary::before{content:"▾ ";}
 #botStatus code{background:rgba(230,179,69,.12);padding:2px 6px;border-radius:6px;color:var(--gold-bright);font-size:12px;}
 .period-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 18px;}
 .period-bar .period-note{font-size:12.5px;color:var(--muted);margin-left:4px;}
+
+/* ---- weekly history + week navigation (ticket tracker) ---- */
+.week-nav{display:inline-flex;gap:6px;align-items:center;margin-left:6px}
+.week-nav .btn[disabled]{opacity:.35;pointer-events:none}
+tr.row-active{background:rgba(230,179,69,.07)}
+tr.row-active td:first-child{box-shadow:inset 2px 0 0 var(--gold,#e6b345)}
+.bar{display:block;height:3px;margin-top:5px;border-radius:2px;
+  background:linear-gradient(90deg,var(--gold,#e6b345),rgba(230,179,69,.25));min-width:2px}
+.hint{margin-top:10px;font-size:12px;color:var(--muted)}
+
+/* ============ leaderboard ============
+   Two figures per person — the selected week and the all-time total — so the
+   week column carries the share bar and trend, and all-time stays plain. */
+.panel-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;}
+.table-tools{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.search{
+  background:rgba(12,7,11,.7);border:1px solid var(--card-border);color:var(--text);
+  border-radius:10px;padding:9px 12px;font-size:13px;font-family:inherit;width:190px;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.search::placeholder{color:var(--muted);}
+.search:focus{outline:none;border-color:rgba(230,179,69,.55);box-shadow:0 0 0 3px rgba(230,179,69,.12);}
+.search:focus-visible{outline:2px solid var(--gold-bright);outline-offset:1px;}
+.tools-count{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+
+table.board{margin-top:6px;}
+table.board th.sortable{cursor:pointer;user-select:none;white-space:nowrap;}
+table.board th.sortable:hover{color:var(--gold);}
+table.board th.sortable:focus-visible{outline:2px solid var(--gold-bright);outline-offset:-2px;border-radius:4px;}
+table.board th.is-sorted{color:var(--gold);}
+.sort-arrow{margin-left:4px;font-size:9px;vertical-align:1px;}
+table.board tbody tr{transition:background .12s ease;}
+table.board tbody tr:hover{background:rgba(230,179,69,.045);}
+table.board tr.is-me{background:rgba(158,31,60,.14);}
+table.board tr.is-me td:first-child{box-shadow:inset 2px 0 0 var(--crimson-soft);}
+.tag.you{margin-left:8px;padding:2px 8px;font-size:9.5px;}
+
+/* position markers: only the top three get weight, the rest stay quiet */
+.c-pos{width:46px;}
+.pos{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;
+  border-radius:7px;font-size:12px;font-weight:800;color:var(--muted);}
+.pos.medal{color:#1a0f16;}
+.pos.m1{background:linear-gradient(140deg,#ffdf8e,#c98a2e);box-shadow:0 0 14px rgba(230,179,69,.4);}
+.pos.m2{background:linear-gradient(140deg,#e4e4ea,#9a9aa6);}
+.pos.m3{background:linear-gradient(140deg,#dda06a,#a2652f);}
+.c-name .who{font-weight:600;}
+.c-rank{color:var(--muted);font-size:13px;}
+.c-week{position:relative;}
+.c-week .fig{font-size:15px;}
+.c-week .bar{display:block;height:3px;margin-top:6px;border-radius:2px;min-width:2px;
+  background:linear-gradient(90deg,var(--gold),rgba(230,179,69,.2));}
+.c-rep{color:var(--muted);font-weight:600;}
+.c-rep .of{opacity:.6;}
+.trend{margin-left:7px;font-size:11px;font-weight:800;letter-spacing:.3px;}
+.trend.up{color:var(--green);}
+.trend.down{color:var(--red);}
+.trend.flat{color:var(--muted);opacity:.6;}
+tfoot td{border-bottom:none;border-top:1px solid var(--card-border);color:var(--text);}
+
+/* ---- narrow screens: the table becomes one card per person ---- */
+@media (max-width:720px){
+  .table-tools{width:100%;margin-left:0;}
+  .search{flex:1;width:auto;}
+  table.board thead{display:none;}
+  table.board,table.board tbody,table.board tfoot,table.board tr,table.board td{display:block;width:100%;}
+  table.board tr{border:1px solid var(--card-border);border-radius:12px;padding:12px 14px;margin-bottom:10px;
+    display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center;}
+  table.board td{border:none;padding:3px 0;}
+  table.board .c-pos{grid-row:1;grid-column:1;}
+  table.board .c-name{grid-row:1;grid-column:2;font-size:15px;}
+  table.board .c-rank{grid-row:2;grid-column:2;padding-bottom:8px;}
+  table.board .c-week,table.board .c-all,table.board .c-rep{grid-column:1 / -1;
+    display:flex;justify-content:space-between;align-items:baseline;
+    border-top:1px solid rgba(44,30,40,.6);padding:7px 0 4px;}
+  table.board .c-week::before,table.board .c-all::before,table.board .c-rep::before{
+    content:attr(data-label);font-size:10.5px;font-weight:800;letter-spacing:1.2px;
+    text-transform:uppercase;color:var(--muted);}
+  table.board .c-week .bar{position:absolute;left:0;right:0;bottom:0;margin:0;}
+  table.board tr.is-me td:first-child{box-shadow:none;}
+  table.board tr.is-me{border-color:rgba(214,72,106,.5);}
+}

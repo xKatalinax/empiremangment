@@ -9,7 +9,7 @@
 //                   the same staff member inside one transcript
 // =====================================================
 
-const QUALITY_MIN_WORDS = 3;    // a reply must be at least this many words
+const QUALITY_MIN_WORDS = 2;    // a reply must be at least this many words
 const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
 const HELPFUL_MIN_CONTENT_WORDS = 2;   // meaningful words a normal reply needs
 const QUESTION_MIN_CONTENT_WORDS = 4;  // questions need more — "is this gtc?" isn't help
@@ -48,7 +48,7 @@ const CHITCHAT = new Set(`
 doing hope hoping wondering thinking thought feel feeling felt guess suppose
 sure alright cool awesome perfect fine okay great lovely brilliant amazing
 wait waiting hold holding moment minute sec second soon shortly
-hows how's whats what's hey'a sup
+hows how's whats what's hey'a sup sounds sound
 makes make made sense seems seem means mean understood understand
 gotcha exactly indeed correct agree agreed noted alright
 `.trim().split(/\s+/));
@@ -279,6 +279,25 @@ function weekEnd(when = Date.now()) {
   return weekStart(weekStart(when) + 7 * 86_400_000 + 12 * 3600_000);
 }
 
+// Start of the week `n` weeks before the one containing `when`.
+// n = 0 is the current week, 1 is last week, and so on. Steps back one boundary
+// at a time (1ms before a start is inside the previous week) so DST can't drift it.
+function weekStartAgo(n = 0, when = Date.now()) {
+  let s = weekStart(when);
+  for (let i = 0; i < Math.max(0, n); i++) s = weekStart(s - 1);
+  return s;
+}
+
+// The last `count` completed-or-current weeks, newest first.
+function recentWeeks(count = 12, when = Date.now()) {
+  const out = [];
+  for (let i = 0; i < count; i++) {
+    const start = weekStartAgo(i, when);
+    out.push({ index: i, start, end: weekEnd(start), label: weekLabel(start) });
+  }
+  return out;
+}
+
 // Label like "Fri 18 Jul 12:00 AM – Fri 25 Jul 12:00 AM"
 function weekLabel(when = Date.now()) {
   const s = new Date(weekStart(when));
@@ -296,5 +315,5 @@ module.exports = {
   QUALITY_MIN_WORDS, TICKET_MIN_REPLIES, HELPFUL_MIN_CONTENT_WORDS, QUESTION_MIN_CONTENT_WORDS,
   RESET_HOUR, resetLabel, isQualityReply, wordsOf,
   normName, hashSig, transcriptSig, matchStaff, countTranscript, creditedFrom,
-  weekStart, weekEnd, weekLabel, nextReset,
+  weekStart, weekEnd, weekLabel, nextReset, weekStartAgo, recentWeeks,
 };

@@ -74,8 +74,9 @@ module.exports = {
   },
 
   // roll everything up into per-staff totals { key: {name, rank, tickets, replies} }
-  // Pass a millisecond timestamp to count only transcripts from then onwards.
-  totals(sinceTs = 0) {
+  // sinceTs / untilTs bound the window in milliseconds: [since, until). Leave
+  // untilTs off for "everything from then on"; pass both to isolate one week.
+  totals(sinceTs = 0, untilTs = Infinity) {
     const { TICKET_MIN_REPLIES } = require('./counter');
     const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
     const rankOf = (key, name) => {
@@ -84,9 +85,9 @@ module.exports = {
     };
     const per = {};
     for (const rec of Object.values(db.transcripts)) {
-      if (sinceTs) {
+      if (sinceTs || untilTs !== Infinity) {
         const ts = recordTime(rec);
-        if (!ts || ts < sinceTs) continue;
+        if (!ts || ts < sinceTs || ts >= untilTs) continue;
       }
       for (const [k, v] of Object.entries(rec.counts)) {
         const row = per[k] || (per[k] = { name: v.name, rank: rankOf(k, v.name), tickets: 0, replies: 0 });

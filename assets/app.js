@@ -1,7 +1,7 @@
 /* Build stamp — bump this and the ?v= in the HTML whenever app.js changes.
    Open the browser console on the live site: if it doesn't print this exact
    string, you are looking at a cached copy of an older app.js. */
-const APP_BUILD = '2026-07-24-6';
+const APP_BUILD = '2026-07-24-8';
 console.log('%cEmpire portal build ' + APP_BUILD, 'color:#e6b345;font-weight:700');
 
 /* =====================================================
@@ -221,6 +221,11 @@ function isQualityReply(text) {
 const WEEK_RESET_HOUR = 0;
 const WEEK_TZ_OFFSET = null;
 let tixView = store.get('tixView', 'week');   // 'week' or 'all'
+/* Which week is on screen: 0 = the current one, 1 = last week, 2 = the week
+   before, and so on. Past weeks stay browsable so nothing is lost at rollover. */
+let tixWeekBack = 0;
+let tixFilter = '';                    // staff search box
+let tixSort = { key:'auto', dir:-1 };  // 'auto' follows the selected period
 function resetLabel(){
   const h = ((WEEK_RESET_HOUR % 24) + 24) % 24;
   return (h % 12 === 0 ? 12 : h % 12) + ':00 ' + (h < 12 ? 'AM' : 'PM');
@@ -245,6 +250,14 @@ function weekStart(when){
 /* Step into the middle of the next week and re-floor, so a DST change can't
    drift the rollover by an hour. */
 function weekEnd(when){ return weekStart(weekStart(when) + 7*864e5 + 12*36e5); }
+/* Start of the week `n` weeks before the one containing `when`. Steps back one
+   boundary at a time (1ms before a start sits inside the previous week), so a
+   daylight-saving change can't drift it. */
+function weekStartAgo(n, when){
+  let st = weekStart(when);
+  for(let i=0;i<Math.max(0, n||0);i++) st = weekStart(st - 1);
+  return st;
+}
 function weekLabel(when){
   const f = d => d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
   return f(new Date(weekStart(when))) + ' ' + resetLabel() + ' – ' + f(new Date(weekEnd(when))) + ' ' + resetLabel();
@@ -513,16 +526,21 @@ function countTranscript(messages){
 }
 
 /* ---- roll every source into per-staff totals for the selected period ---- */
-function aggregateTix(view){
+function aggregateTix(view, weekBack){
   const per = {};
   const weekly = (view || tixView) === 'week';
-  const since = weekly ? weekStart() : 0;
+  const back = weekBack === undefined ? tixWeekBack : weekBack;
+  const since = weekly ? weekStartAgo(back) : 0;
+  const until = weekly ? weekEnd(since) : Infinity;
 
-  // 1. counts published by the Discord bot (weekly board comes pre-computed)
+  // 1. counts published by the Discord bot. The current week is pre-computed;
+  //    older weeks come from the published history archive.
   if(botData){
-    const list = weekly
+    const hist = Array.isArray(botData.history) ? botData.history : null;
+    const wk = back === 0
       ? (botData.week && Array.isArray(botData.week.staff) ? botData.week.staff : null)
-      : (Array.isArray(botData.staff) ? botData.staff : null);
+      : (hist && hist[back] && Array.isArray(hist[back].staff) ? hist[back].staff : []);
+    const list = weekly ? wk : (Array.isArray(botData.staff) ? botData.staff : null);
     if(list){
       list.forEach(r=>{
         const k = r.key || normName(r.name);
@@ -539,7 +557,7 @@ function aggregateTix(view){
   transcripts.forEach(t=>{
     if(weekly){
       const ts = t.ts || (t.date ? Date.parse(t.date+'T12:00:00') : 0);
-      if(!ts || ts < since) return;
+      if(!ts || ts < since || ts >= until) return;
     }
     Object.entries(t.counts).forEach(([k,v])=>{
       const row = per[k] || (per[k]={name:v.name, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
@@ -553,7 +571,7 @@ function aggregateTix(view){
   tickets.forEach(t=>{
     if(weekly){
       const ts = t.date ? Date.parse(t.date+'T12:00:00') : 0;
-      if(!ts || ts < since) return;
+      if(!ts || ts < since || ts >= until) return;
     }
     const k = normName(t.staff);
     const row = per[k] || (per[k]={name:t.staff, rank:'', tickets:0, replies:0, manual:0, fromBot:0});
@@ -563,32 +581,63 @@ function aggregateTix(view){
 }
 
 function setTixView(v){ tixView = v; store.set('tixView', v); renderTix(); }
+/* Week navigation. `back` is clamped to how much history we actually hold, so
+   the arrows can't walk off into empty weeks. */
+function tixWeeksAvailable(){
+  const h = botData && Array.isArray(botData.history) ? botData.history.length : 1;
+  return Math.max(h, 1);
+}
+function goTixWeek(back){
+  tixWeekBack = Math.min(Math.max(0, back), tixWeeksAvailable() - 1);
+  if(tixView !== 'week'){ tixView = 'week'; store.set('tixView','week'); }
+  renderTix();
+}
 
 /* ---- one row per staff member, carrying BOTH counts side by side ----
    Merges the weekly and all-time aggregates on the staff key, so someone who
    handled nothing this week still shows up with their all-time total (and vice
    versa, for a manual adjustment dated inside this week). */
 function tixRows(){
-  const wk  = aggregateTix('week');
-  const all = aggregateTix('all');
+  const wk   = aggregateTix('week');
+  const all  = aggregateTix('all');
+  const prev = aggregateTix('week', tixWeekBack + 1);   // for the trend arrow
   const keys = new Set([...Object.keys(wk), ...Object.keys(all)]);
   return [...keys].map(k=>{
-    const w = wk[k] || {}, a = all[k] || {};
+    const w = wk[k] || {}, a = all[k] || {}, p = prev[k] || {};
+    const week = w.tickets || 0, before = p.tickets || 0;
     return {
       key: k,
       name: a.name || w.name || k,
       rank: a.rank || w.rank || '',
-      week: w.tickets || 0,
-      all:  a.tickets || 0,
+      week, all: a.tickets || 0,
+      prev: before,
+      delta: week - before,
       weekReplies: w.replies || 0,
       allReplies:  a.replies || 0,
       weekManual:  w.manual  || 0,
       allManual:   a.manual  || 0
     };
-  }).sort((x,y)=> tixView==='week'
-    ? (y.week - x.week) || (y.all - x.all) || (y.weekReplies - x.weekReplies)
-    : (y.all - x.all)   || (y.week - x.week) || (y.allReplies - x.allReplies));
+  }).sort(tixComparator());
 }
+
+/* Sorting. 'auto' tracks whichever period is selected, so the board always opens
+   on the number the person came to look at; clicking a header pins it instead. */
+function tixComparator(){
+  const key = tixSort.key === 'auto' ? (tixView==='week' ? 'week' : 'all') : tixSort.key;
+  const dir = tixSort.dir;
+  return (x,y)=>{
+    if(key === 'name') return dir * x.name.localeCompare(y.name, undefined, {sensitivity:'base'});
+    if(key === 'rank') return dir * String(x.rank).localeCompare(String(y.rank)) || y.week - x.week;
+    const d = dir * ((x[key]||0) - (y[key]||0));
+    return d || (y.week - x.week) || (y.all - x.all);
+  };
+}
+function setTixSort(key){
+  if(tixSort.key === key) tixSort.dir = -tixSort.dir;
+  else tixSort = { key, dir: key==='name' ? 1 : -1 };
+  renderTixTable();
+}
+function setTixFilter(v){ tixFilter = String(v||'').trim().toLowerCase(); renderTixTable(); }
 
 function initTix(){
   if(!requireAuth()) return;
@@ -736,6 +785,140 @@ function delStaff(i){ staffList.splice(i,1); save(); renderTix(); }
 function delTranscript(i){ transcripts.splice(i,1); save(); renderTix(); }
 function delManual(){ tickets = []; save(); renderTix(); }
 
+/* ---- weekly history ----------------------------------------------------
+   Every closed week stays on the books. The bot publishes an archive in
+   botData.history (one entry per week, each tallied over its own Friday-to-
+   Friday window), and anything imported locally is bucketed the same way, so a
+   past week reports the same number no matter when you look at it. */
+function tixHistory(){
+  const weeks = tixWeeksAvailable();
+  const out = [];
+  for(let i=0;i<weeks;i++){
+    const st = weekStartAgo(i);
+    const rows = Object.values(aggregateTix('week', i));
+    const total = rows.reduce((s,r)=>s+r.tickets,0);
+    const top = rows.slice().sort((a,b)=>b.tickets-a.tickets)[0];
+    out.push({
+      back: i, start: st, label: weekLabel(st),
+      short: new Date(st).toLocaleDateString('en-GB',{day:'numeric',month:'short'})
+             + ' – ' + new Date(weekEnd(st)).toLocaleDateString('en-GB',{day:'numeric',month:'short'}),
+      total, staffN: rows.filter(r=>r.tickets>0).length,
+      top: top && top.tickets ? top : null,
+      inProgress: i===0
+    });
+  }
+  return out;
+}
+
+/* ---- the leaderboard table ------------------------------------------------
+   Split out from renderTix so filtering and sorting only redraw the table and
+   the search box keeps focus. Each row shows the selected week and the all-time
+   total side by side, with a share bar under the week figure and a trend arrow
+   against the week before. */
+function renderTixTable(){
+  const el = $('tixTable');
+  if(!el) return;
+  const all = tixRows();
+  const rows = tixFilter
+    ? all.filter(r => r.name.toLowerCase().includes(tixFilter) || String(r.rank).toLowerCase().includes(tixFilter))
+    : all;
+
+  const weekTotal = all.reduce((s,r)=>s+r.week,0);
+  const allTotal  = all.reduce((s,r)=>s+r.all,0);
+  const peak = Math.max(1, ...all.map(r => tixView==='week' ? r.week : r.all));
+  const me = (currentUser() && currentUser().name) ? normName(currentUser().name) : '';
+
+  const count = $('tixCount');
+  if(count) count.textContent = tixFilter
+    ? `${rows.length} of ${all.length} staff`
+    : `${all.length} staff`;
+
+  if(!all.length){
+    el.innerHTML = '<div class="empty">No tickets counted yet. The bot publishes counts automatically — or import an export under Manual import.</div>';
+    return;
+  }
+  if(!rows.length){
+    el.innerHTML = `<div class="empty">Nobody matches “${esc(tixFilter)}”. <button class="btn small ghost" onclick="clearTixFilter()">Clear search</button></div>`;
+    return;
+  }
+
+  const wkHead = tixWeekBack===0 ? 'This week' : tixWeekBack===1 ? 'Last week' : tixWeekBack+'w ago';
+  const arrow = k => {
+    const active = (tixSort.key==='auto' ? (tixView==='week'?'week':'all') : tixSort.key) === k;
+    return active ? `<span class="sort-arrow">${tixSort.dir<0?'▾':'▴'}</span>` : '';
+  };
+  const th = (k,label,cls) => `<th class="sortable ${cls||''} ${((tixSort.key==='auto'?(tixView==='week'?'week':'all'):tixSort.key)===k)?'is-sorted':''}"
+      tabindex="0" role="button" onclick="setTixSort('${k}')"
+      onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setTixSort('${k}')}">${label}${arrow(k)}</th>`;
+
+  const mTag = n => n ? `<span class="tag grey" title="includes ${n} manual">+${n}</span>` : '';
+  const trend = r => {
+    if(tixWeekBack >= tixWeeksAvailable()-1) return '';         // no earlier week to compare
+    if(r.delta === 0) return '<span class="trend flat" title="Same as the week before">—</span>';
+    const up = r.delta > 0;
+    return `<span class="trend ${up?'up':'down'}" title="${up?'Up':'Down'} ${Math.abs(r.delta)} on the week before (${r.prev})">${up?'▲':'▼'}${Math.abs(r.delta)}</span>`;
+  };
+  const medal = i => i<3 && !tixFilter && tixSort.key==='auto' ? ` medal m${i+1}` : '';
+
+  el.innerHTML = `<table class="board">
+    <thead><tr>
+      <th class="c-pos">#</th>
+      ${th('name','Staff')}
+      ${th('rank','Rank','c-rank')}
+      ${th('week',wkHead,'num')}
+      ${th('all','All time','num')}
+      ${th('weekReplies','Replies','num c-rep')}
+    </tr></thead>
+    <tbody>${
+    rows.map((r,i)=>`<tr class="${r.key===me?'is-me':''}">
+      <td class="c-pos"><span class="pos${medal(i)}">${i+1}</span></td>
+      <td class="c-name"><span class="who">${esc(r.name)}</span>${r.key===me?'<span class="tag gold you">You</span>':''}</td>
+      <td class="c-rank">${r.rank?esc(r.rank):'—'}</td>
+      <td class="num c-week" data-label="${esc(wkHead)}">
+        <span class="fig">${r.week}</span>${mTag(r.weekManual)}${trend(r)}
+        <span class="bar" style="width:${Math.round((tixView==='week'?r.week:r.all)/peak*100)}%"></span>
+      </td>
+      <td class="num c-all" data-label="All time"><span class="fig">${r.all}</span>${mTag(r.allManual)}</td>
+      <td class="num c-rep" data-label="Replies">${r.weekReplies} <span class="of">/ ${r.allReplies}</span></td>
+    </tr>`).join('')
+  }</tbody>
+    <tfoot><tr>
+      <td class="c-pos"></td><td class="c-name"><b>Total</b></td><td class="c-rank"></td>
+      <td class="num" data-label="${esc(wkHead)}"><b>${weekTotal}</b></td>
+      <td class="num" data-label="All time"><b>${allTotal}</b></td>
+      <td class="num c-rep"></td>
+    </tr></tfoot>
+  </table>`;
+}
+function clearTixFilter(){
+  tixFilter = '';
+  const b = $('tixSearch'); if(b) b.value = '';
+  renderTixTable();
+}
+
+function renderTixHistory(){
+  const el = $('tixHistory');
+  if(!el) return;
+  const hist = tixHistory();
+  if(hist.length <= 1 && !hist[0].total){
+    el.innerHTML = '<div class="empty">No weeks recorded yet. Once the bot publishes an export, every completed week is archived here.</div>';
+    return;
+  }
+  const peak = Math.max(1, ...hist.map(h=>h.total));
+  el.innerHTML = `<table>
+    <tr><th>Week</th><th>Tickets</th><th>Staff</th><th>Top</th><th></th></tr>${
+    hist.map(h=>`<tr class="${h.back===tixWeekBack?'row-active':''}">
+      <td>${esc(h.short)}${h.inProgress?' <span class="tag grey">in progress</span>':''}</td>
+      <td class="num"><b>${h.total}</b>
+        <span class="bar" style="width:${Math.round(h.total/peak*100)}%"></span></td>
+      <td class="num" style="color:var(--muted)">${h.staffN}</td>
+      <td style="color:var(--muted);font-size:13px">${h.top?esc(h.top.name)+' ('+h.top.tickets+')':'—'}</td>
+      <td><button class="btn small ghost" onclick="goTixWeek(${h.back})">Open</button></td>
+    </tr>`).join('')
+  }</table>
+  <div class="hint">Weeks run Friday ${resetLabel()} to Friday ${resetLabel()}. Closed weeks are fixed — the numbers above don't change once a week ends.</div>`;
+}
+
 function renderTix(){
   const rows = tixRows();
   const weekTotal = rows.reduce((s,r)=>s+r.week,0);
@@ -754,15 +937,27 @@ function renderTix(){
     const ms = weekEnd() - Date.now();
     const hrs = Math.floor(ms/36e5);
     const left = hrs < 24 ? hrs + 'h' : Math.floor(hrs/24) + 'd ' + (hrs%24) + 'h';
+    const maxBack = tixWeeksAvailable() - 1;
+    const wkStart = weekStartAgo(tixWeekBack);
+    const wkName = tixWeekBack===0 ? 'This week' : tixWeekBack===1 ? 'Last week' : tixWeekBack+' weeks ago';
     pv.innerHTML =
-      `<button class="btn small ${tixView==='week'?'':'ghost'}" onclick="setTixView('week')">This week</button>
+      `<button class="btn small ${tixView==='week'?'':'ghost'}" onclick="setTixView('week')">${tixWeekBack===0?'This week':esc(wkName)}</button>
        <button class="btn small ${tixView==='all'?'':'ghost'}" onclick="setTixView('all')">All time</button>
+       ${tixView==='week' ? `<span class="week-nav">
+         <button class="btn small ghost" title="Older week" ${tixWeekBack>=maxBack?'disabled':''} onclick="goTixWeek(${tixWeekBack+1})">‹</button>
+         <button class="btn small ghost" title="Newer week" ${tixWeekBack<=0?'disabled':''} onclick="goTixWeek(${tixWeekBack-1})">›</button>
+         ${tixWeekBack>0?`<button class="btn small ghost" onclick="goTixWeek(0)">Jump to now</button>`:''}
+       </span>` : ''}
        <span class="period-note">${tixView==='week'
-         ? `${esc(weekLabel())} · resets Friday ${resetLabel()} (in ${left}) · both counts always shown, sorted by this week`
-         : 'Every ticket ever counted · both counts always shown, sorted by all time'}</span>`;
+         ? `${esc(weekLabel(wkStart))}${tixWeekBack===0 ? ` · resets Friday ${resetLabel()} (in ${left})` : ' · closed week'}`
+         : 'Every ticket ever counted · sorted by all time'}</span>`;
   }
   const lbl = $('tixStatLabel');
-  if(lbl) lbl.textContent = tixView==='week' ? 'Tickets this week' : 'Tickets handled';
+  if(lbl) lbl.textContent = tixView!=='week' ? 'Tickets handled'
+    : tixWeekBack===0 ? 'Tickets this week'
+    : tixWeekBack===1 ? 'Tickets last week' : 'Tickets that week';
+
+  renderTixHistory();
 
   const bs = $('botStatus');
   if(bs){
@@ -779,27 +974,7 @@ function renderTix(){
   }
 
   // per-staff leaderboard (the automatic ticket count)
-  // per-staff leaderboard — the two ticket counts are always shown side by side
-  const mTag = n => n ? ` <span class="tag grey" title="includes ${n} manual">+${n}</span>` : '';
-  $('tixTable').innerHTML = rows.length ? `<table>
-    <tr>
-      <th>#</th><th>Staff</th><th>Rank</th>
-      <th>This week</th><th>All time</th><th>Replies (week / all)</th>
-    </tr>${
-    rows.map((r,i)=>`<tr>
-      <td class="num">${i+1}</td>
-      <td>${i===0&&(tixView==='week'?r.week:r.all)>0?'👑 ':''}${esc(r.name)}</td>
-      <td style="color:var(--muted);font-size:13px">${r.rank?esc(r.rank):'—'}</td>
-      <td class="num"${tixView==='week'?' style="font-weight:800"':''}>${r.week}${mTag(r.weekManual)}</td>
-      <td class="num"${tixView==='all'?' style="font-weight:800"':''}>${r.all}${mTag(r.allManual)}</td>
-      <td class="num" style="color:var(--muted)">${r.weekReplies} / ${r.allReplies}</td>
-    </tr>`).join('')
-  }<tr>
-      <td></td><td><b>Total</b></td><td></td>
-      <td class="num"><b>${weekTotal}</b></td>
-      <td class="num"><b>${allTimeTotal}</b></td>
-      <td></td>
-    </tr></table>` : `<div class="empty">No tickets counted yet. Import the bot's export above, or add staff and import transcripts.</div>`;
+  renderTixTable();
 
   // staff list
   $('staffTable').innerHTML = staffList.length ? `<table><tr><th>Staff member</th><th>Discord ID (optional)</th><th></th></tr>${

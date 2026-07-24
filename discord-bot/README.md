@@ -4,7 +4,7 @@ Auto-counts staff tickets from **Ticket Tool** transcripts, using the exact same
 rule as the web portal:
 
 > A **quality reply** is a staff message with **15+ characters** of real text.
-> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**. A quality reply is **3+ words** and has to look like actual help rather than a question or filler.
+> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**. A quality reply is **2+ words** and has to look like actual help rather than a question or filler.
 
 Two ways to feed it transcripts:
 
@@ -19,6 +19,9 @@ Two ways to feed it transcripts:
 | Command | What it does |
 | --- | --- |
 | `/tickets` | Leaderboard — every staff member with their weekly count and all-time count listed separately |
+| `/tickets weeksago:3` | The same board for a past week |
+| `/weeks` | Week-by-week history — what every week counted |
+| `/weeks staff:@user` | One person's week-by-week counts |
 | `/tickets period:All time` | Every ticket ever counted |
 | `/tickets staff:@user` | Show one person's week + all-time count |
 | `/scan` | **Read every transcript in the watched channels** — full history, no uploading |
@@ -51,6 +54,29 @@ still appears with their all-time total instead of dropping off the board. Nothi
 deleted at rollover — the weekly column resets, the all-time column keeps growing.
 
 `/tickets staff:@someone` gives one person's two numbers on their own.
+
+### Going back to a past week
+
+Nothing is thrown away at rollover. Every transcript keeps the timestamp of its
+last message, so any past week can be re-tallied over its own Friday-to-Friday
+window — which means a closed week always reports the same figure, whenever you
+ask for it.
+
+* `/weeks` lists recent weeks with the total and the top handler for each.
+* `/weeks count:26` goes back further (up to 52).
+* `/weeks staff:@someone` shows one person's count for each week.
+* `/tickets weeksago:1` opens last week's full leaderboard, `weeksago:2` the one
+  before, and so on.
+
+On the website, the Ticket Tracker has a **Weekly history** panel listing every
+archived week with its total, how many staff were credited and who topped it.
+**Open** on any row loads that week into the main table, and the `‹ ›` arrows next
+to the period buttons step between weeks. Closed weeks are marked as such, and the
+current one is tagged *in progress*.
+
+The bot publishes the last `EXPORT_HISTORY_WEEKS` weeks (26 by default, set near
+the top of the export section in `index.js`) into `empire-tickets.json`, so the
+site can show history without the bot being reachable.
 
 Timing uses the clock of the machine running the bot. If you host it in another timezone,
 set `WEEK_TZ_OFFSET` in `.env` to the hours from UTC you want the reset judged in
@@ -218,12 +244,12 @@ ephemeral disks, attach a volume or the counts reset on redeploy.
 
 A staff message counts only if **both** are true:
 
-1. It is **3 or more words** long (mentions, emoji, links and code blocks are
+1. It is **2 or more words** long (mentions, emoji, links and code blocks are
    stripped out first, so they can't pad the count).
 2. It passes the **helpfulness check** in `isQualityReply()`
    (`discord-bot/lib/counter.js`).
 
-At a 3-word floor the length test barely filters anything, so the helpfulness
+At a 2-word floor the length test filters almost nothing, so the helpfulness
 check does the real work. It is a heuristic, not comprehension. It strips filler
 phrases ("give me a moment", "let me check", "reaching out") and formula openers
 ("hey", "thanks", "bump", "on it", "closing this"), removes stopwords,
@@ -254,7 +280,7 @@ in `assets/app.js`):
 
 | Constant | Default | Effect |
 | --- | --- | --- |
-| `QUALITY_MIN_WORDS` | `3` | Minimum words in a reply |
+| `QUALITY_MIN_WORDS` | `2` | Minimum words in a reply |
 | `HELPFUL_MIN_CONTENT_WORDS` | `2` | Content words a normal reply needs — raise to catch more filler, lower if real replies are missed |
 | `QUESTION_MIN_CONTENT_WORDS` | `4` | Bar for questions. Lower it if you want clarifying questions to count |
 | `SHORT_REPLY_MAX_WORDS` | `8` | Longest reply allowed to pass on the help-verb shortcut |
@@ -290,3 +316,28 @@ To check which build is live: open the site, press F12, and look at the Console 
 It prints `Empire portal build <version>` on load. If that version is older than the
 one in your files, the upload did not land or the cache has not cleared — hard-refresh
 with Ctrl+Shift+R, and confirm `assets/app.js` itself was committed, not just the HTML.
+
+
+---
+
+## The leaderboard on the website
+
+The per-staff board is built for one question: who handled what, and is that
+going up or down.
+
+* **Two figures per person** — the selected week and the all-time total, always
+  side by side. The week figure carries a share bar so the spread is readable at
+  a glance without reading every number.
+* **Trend arrow** against the week before, e.g. `▲12` or `▼40`. Hover it for the
+  previous week's actual count. It's hidden on the oldest week held, where
+  there's nothing to compare against.
+* **Search** filters by name or rank as you type.
+* **Sortable columns** — click any header (or tab to it and press Enter) to sort
+  by that column; click again to flip the direction. Sorting defaults to
+  whichever period is selected.
+* **Your own row is highlighted** and tagged *You*, so you don't have to hunt for
+  yourself in a list of fifty.
+* **Top three get position medals.** They're hidden while searching or custom
+  sorting, since "3rd alphabetically" isn't a podium.
+* **On phones the table becomes one card per person**, with each figure labelled,
+  rather than a six-column table squeezed into 380px.

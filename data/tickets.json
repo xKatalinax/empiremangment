@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-24T12:22:04.572Z",
+  "generated": "2026-07-24T13:31:46.822Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 26,
+    "totalTickets": 27,
     "staff": [
       {
         "key": "kat",
@@ -54,7 +54,7 @@
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Moderator",
         "tickets": 1,
-        "replies": 9
+        "replies": 10
       },
       {
         "key": "mira",
@@ -106,6 +106,13 @@
         "replies": 3
       },
       {
+        "key": "iaderekwalsh",
+        "name": "IA | Derek Walsh",
+        "rank": "Senior Administrator",
+        "tickets": 1,
+        "replies": 3
+      },
+      {
         "key": "giyu",
         "name": "Giyu",
         "rank": "Support",
@@ -118,13 +125,6 @@
         "rank": "Senior Administrator",
         "tickets": 1,
         "replies": 2
-      },
-      {
-        "key": "iaderekwalsh",
-        "name": "IA | Derek Walsh",
-        "rank": "Senior Administrator",
-        "tickets": 0,
-        "replies": 1
       },
       {
         "key": "clarksmith",
@@ -156,7 +156,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 26,
+      "totalTickets": 27,
       "staff": [
         {
           "key": "kat",
@@ -198,7 +198,7 @@
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Moderator",
           "tickets": 1,
-          "replies": 9
+          "replies": 10
         },
         {
           "key": "mira",
@@ -250,6 +250,13 @@
           "replies": 3
         },
         {
+          "key": "iaderekwalsh",
+          "name": "IA | Derek Walsh",
+          "rank": "Senior Administrator",
+          "tickets": 1,
+          "replies": 3
+        },
+        {
           "key": "giyu",
           "name": "Giyu",
           "rank": "Support",
@@ -262,13 +269,6 @@
           "rank": "Senior Administrator",
           "tickets": 1,
           "replies": 2
-        },
-        {
-          "key": "iaderekwalsh",
-          "name": "IA | Derek Walsh",
-          "rank": "Senior Administrator",
-          "tickets": 0,
-          "replies": 1
         },
         {
           "key": "clarksmith",
@@ -3130,8 +3130,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9352,
-  "totalTickets": 5118,
+  "transcriptCount": 9353,
+  "totalTickets": 5119,
   "staff": [
     {
       "key": "mira",
@@ -3211,18 +3211,18 @@
       "replies": 748
     },
     {
+      "key": "iaderekwalsh",
+      "name": "IA | Derek Walsh",
+      "rank": "Senior Administrator",
+      "tickets": 129,
+      "replies": 544
+    },
+    {
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Moderator",
       "tickets": 128,
-      "replies": 706
-    },
-    {
-      "key": "iaderekwalsh",
-      "name": "IA | Derek Walsh",
-      "rank": "Senior Administrator",
-      "tickets": 128,
-      "replies": 542
+      "replies": 707
     },
     {
       "key": "fazehazard13",

@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 2,
-  "generated": "2026-07-24T06:20:53.677Z",
+  "generated": "2026-07-24T06:23:35.976Z",
   "rule": {
     "qualityMinChars": 15,
     "ticketMinReplies": 3
@@ -11,7 +11,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul – Thu 30 Jul",
-    "totalTickets": 11,
+    "totalTickets": 12,
     "staff": [
       {
         "key": "poptart",
@@ -21,18 +21,18 @@
         "replies": 16
       },
       {
+        "key": "commissionercrispymcchicken",
+        "name": "commissioner crispy mcchicken ツ",
+        "rank": "Senior Administrator",
+        "tickets": 2,
+        "replies": 39
+      },
+      {
         "key": "lunasmith",
         "name": "Luna Smith",
         "rank": "Administrator",
         "tickets": 2,
         "replies": 17
-      },
-      {
-        "key": "commissionercrispymcchicken",
-        "name": "commissioner crispy mcchicken ツ",
-        "rank": "Senior Administrator",
-        "tickets": 1,
-        "replies": 24
       },
       {
         "key": "rainecassano",
@@ -92,8 +92,8 @@
       }
     ]
   },
-  "transcriptCount": 7230,
-  "totalTickets": 3913,
+  "transcriptCount": 7231,
+  "totalTickets": 3914,
   "staff": [
     {
       "key": "mira",
@@ -225,8 +225,8 @@
       "key": "commissionercrispymcchicken",
       "name": "commissioner crispy mcchicken ツ",
       "rank": "Senior Administrator",
-      "tickets": 78,
-      "replies": 619
+      "tickets": 79,
+      "replies": 634
     },
     {
       "key": "angel",

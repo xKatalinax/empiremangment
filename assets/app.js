@@ -45,6 +45,18 @@ let apps    = store.get('apps', []);
 let events  = store.get('events', []);
 
 <<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+/* ---- shared counting rules (must match the Discord bot in /discord-bot) ----
+   This block is a straight copy of the top of discord-bot/lib/counter.js.
+   If you change one, change the other or the website and Discord will disagree. */
+const QUALITY_MIN_WORDS = 10;   // a reply must be at least this many words
+const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
+const HELPFUL_MIN_CONTENT_WORDS = 4;  // distinct meaningful words needed on top of the length
+
+=======
+>>>>>>> Stashed changes
+<<<<<<< Updated upstream
 /* ---- shared counting rules (must match the Discord bot in /discord-bot) ---- */
 const QUALITY_MIN_CHARS = 15;   // a "quality reply" = staff message with >= this many chars of real text
 const TICKET_MIN_REPLIES = 2;   // >= this many quality replies in one transcript = 1 ticket handled
@@ -61,6 +73,10 @@ const QUALITY_MIN_WORDS = 10;   // a reply must be at least this many words
 const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
 const HELPFUL_MIN_CONTENT_WORDS = 4;  // distinct meaningful words needed on top of the length
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
+>>>>>>> Stashed changes
 // Common words that carry no support value by themselves. A message made
 // entirely of these is padding, however long it is.
 const STOPWORDS = new Set(`
@@ -141,6 +157,13 @@ function isQualityReply(text) {
    WEEK_RESET_HOUR is the hour the week rolls over: 0 = midnight, 12 = midday.
    The bot has the same constant in discord-bot/lib/counter.js — keep them in sync. */
 const WEEK_RESET_HOUR = 0;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> ed9b3b7979a93a3b2f4a931c4e44b450fc7235c0
 >>>>>>> Stashed changes
 let tixView = store.get('tixView', 'week');   // 'week' or 'all'
 function resetLabel(){

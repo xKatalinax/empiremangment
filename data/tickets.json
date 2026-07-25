@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-24T13:31:46.822Z",
+  "generated": "2026-07-25T06:16:47.103Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -19,7 +19,7 @@
         "name": "kat",
         "rank": "LOA",
         "tickets": 7,
-        "replies": 24
+        "replies": 25
       },
       {
         "key": "poptart",
@@ -163,7 +163,7 @@
           "name": "kat",
           "rank": "LOA",
           "tickets": 7,
-          "replies": 24
+          "replies": 25
         },
         {
           "key": "poptart",
@@ -3130,7 +3130,7 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9353,
+  "transcriptCount": 9354,
   "totalTickets": 5119,
   "staff": [
     {
@@ -3145,7 +3145,7 @@
       "name": "kat",
       "rank": "LOA",
       "tickets": 573,
-      "replies": 2931
+      "replies": 2932
     },
     {
       "key": "clarksmith",

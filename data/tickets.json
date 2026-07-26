@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-25T06:41:58.731Z",
+  "generated": "2026-07-26T02:15:37.304Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -146,6 +146,13 @@
         "rank": "LOA",
         "tickets": 0,
         "replies": 1
+      },
+      {
+        "key": "carlitos",
+        "name": "Carlitos",
+        "rank": "Administrator",
+        "tickets": 0,
+        "replies": 1
       }
     ]
   },
@@ -288,6 +295,13 @@
           "key": "kolton",
           "name": "Kolton",
           "rank": "LOA",
+          "tickets": 0,
+          "replies": 1
+        },
+        {
+          "key": "carlitos",
+          "name": "Carlitos",
+          "rank": "Administrator",
           "tickets": 0,
           "replies": 1
         }
@@ -3130,7 +3144,7 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9356,
+  "transcriptCount": 9357,
   "totalTickets": 5119,
   "staff": [
     {
@@ -3306,7 +3320,7 @@
       "name": "Carlitos",
       "rank": "Administrator",
       "tickets": 84,
-      "replies": 339
+      "replies": 340
     },
     {
       "key": "que",

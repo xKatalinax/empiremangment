@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-26T15:27:18.314Z",
+  "generated": "2026-07-26T22:06:51.392Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -43,18 +43,18 @@
         "replies": 11
       },
       {
+        "key": "savi",
+        "name": "Savi",
+        "rank": "Senior Administrator",
+        "tickets": 2,
+        "replies": 8
+      },
+      {
         "key": "charliewatleh",
         "name": "Charlie Watleh",
         "rank": "Moderator",
         "tickets": 2,
         "replies": 8
-      },
-      {
-        "key": "savi",
-        "name": "Savi",
-        "rank": "Senior Administrator",
-        "tickets": 2,
-        "replies": 7
       },
       {
         "key": "snq",
@@ -153,6 +153,13 @@
         "rank": "Administrator",
         "tickets": 0,
         "replies": 1
+      },
+      {
+        "key": "spazzktlsquad",
+        "name": "spazz[KTL squad]",
+        "rank": "Moderator",
+        "tickets": 0,
+        "replies": 1
       }
     ]
   },
@@ -194,18 +201,18 @@
           "replies": 11
         },
         {
+          "key": "savi",
+          "name": "Savi",
+          "rank": "Senior Administrator",
+          "tickets": 2,
+          "replies": 8
+        },
+        {
           "key": "charliewatleh",
           "name": "Charlie Watleh",
           "rank": "Moderator",
           "tickets": 2,
           "replies": 8
-        },
-        {
-          "key": "savi",
-          "name": "Savi",
-          "rank": "Senior Administrator",
-          "tickets": 2,
-          "replies": 7
         },
         {
           "key": "snq",
@@ -302,6 +309,13 @@
           "key": "carlitos",
           "name": "Carlitos",
           "rank": "Administrator",
+          "tickets": 0,
+          "replies": 1
+        },
+        {
+          "key": "spazzktlsquad",
+          "name": "spazz[KTL squad]",
+          "rank": "Moderator",
           "tickets": 0,
           "replies": 1
         }
@@ -3144,7 +3158,7 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9362,
+  "transcriptCount": 9363,
   "totalTickets": 5120,
   "staff": [
     {
@@ -3208,7 +3222,7 @@
       "name": "Savi",
       "rank": "Senior Administrator",
       "tickets": 161,
-      "replies": 789
+      "replies": 790
     },
     {
       "key": "blaze",
@@ -3355,7 +3369,7 @@
       "name": "spazz[KTL squad]",
       "rank": "Moderator",
       "tickets": 44,
-      "replies": 200
+      "replies": 201
     },
     {
       "key": "ewock",

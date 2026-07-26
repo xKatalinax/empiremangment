@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-26T22:31:27.133Z",
+  "generated": "2026-07-26T22:32:54.317Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -78,16 +78,16 @@
         "replies": 10
       },
       {
-        "key": "harrisonford",
-        "name": "Harrison Ford",
-        "rank": "Support",
-        "tickets": 1,
-        "replies": 6
-      },
-      {
         "key": "pluplu",
         "name": "PLU PLU",
         "rank": "Administrator",
+        "tickets": 1,
+        "replies": 7
+      },
+      {
+        "key": "harrisonford",
+        "name": "Harrison Ford",
+        "rank": "Support",
         "tickets": 1,
         "replies": 6
       },
@@ -243,16 +243,16 @@
           "replies": 10
         },
         {
-          "key": "harrisonford",
-          "name": "Harrison Ford",
-          "rank": "Support",
-          "tickets": 1,
-          "replies": 6
-        },
-        {
           "key": "pluplu",
           "name": "PLU PLU",
           "rank": "Administrator",
+          "tickets": 1,
+          "replies": 7
+        },
+        {
+          "key": "harrisonford",
+          "name": "Harrison Ford",
+          "rank": "Support",
           "tickets": 1,
           "replies": 6
         },
@@ -3172,7 +3172,7 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9366,
+  "transcriptCount": 9368,
   "totalTickets": 5124,
   "staff": [
     {
@@ -3250,7 +3250,7 @@
       "name": "PLU PLU",
       "rank": "Administrator",
       "tickets": 142,
-      "replies": 754
+      "replies": 755
     },
     {
       "key": "snq",

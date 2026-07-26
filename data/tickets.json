@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-26T22:27:02.114Z",
+  "generated": "2026-07-26T22:29:23.986Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 29,
+    "totalTickets": 30,
     "staff": [
       {
         "key": "kat",
@@ -34,6 +34,13 @@
         "rank": "Senior Administrator",
         "tickets": 2,
         "replies": 29
+      },
+      {
+        "key": "snq",
+        "name": "ʇsɹnʍʇɐɹq",
+        "rank": "Moderator",
+        "tickets": 2,
+        "replies": 13
       },
       {
         "key": "lunasmith",
@@ -67,13 +74,6 @@
         "key": "mira",
         "name": "Mira",
         "rank": "Administrator",
-        "tickets": 1,
-        "replies": 10
-      },
-      {
-        "key": "snq",
-        "name": "ʇsɹnʍʇɐɹq",
-        "rank": "Moderator",
         "tickets": 1,
         "replies": 10
       },
@@ -170,7 +170,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 29,
+      "totalTickets": 30,
       "staff": [
         {
           "key": "kat",
@@ -192,6 +192,13 @@
           "rank": "Senior Administrator",
           "tickets": 2,
           "replies": 29
+        },
+        {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Moderator",
+          "tickets": 2,
+          "replies": 13
         },
         {
           "key": "lunasmith",
@@ -225,13 +232,6 @@
           "key": "mira",
           "name": "Mira",
           "rank": "Administrator",
-          "tickets": 1,
-          "replies": 10
-        },
-        {
-          "key": "snq",
-          "name": "ʇsɹnʍʇɐɹq",
-          "rank": "Moderator",
           "tickets": 1,
           "replies": 10
         },
@@ -3158,8 +3158,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9364,
-  "totalTickets": 5121,
+  "transcriptCount": 9365,
+  "totalTickets": 5122,
   "staff": [
     {
       "key": "mira",
@@ -3239,18 +3239,18 @@
       "replies": 748
     },
     {
+      "key": "snq",
+      "name": "ʇsɹnʍʇɐɹq",
+      "rank": "Moderator",
+      "tickets": 129,
+      "replies": 710
+    },
+    {
       "key": "iaderekwalsh",
       "name": "IA | Derek Walsh",
       "rank": "Senior Administrator",
       "tickets": 129,
       "replies": 544
-    },
-    {
-      "key": "snq",
-      "name": "ʇsɹnʍʇɐɹq",
-      "rank": "Moderator",
-      "tickets": 128,
-      "replies": 707
     },
     {
       "key": "fazehazard13",

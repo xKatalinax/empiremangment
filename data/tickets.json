@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-26T22:06:51.392Z",
+  "generated": "2026-07-26T22:27:02.114Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 28,
+    "totalTickets": 29,
     "staff": [
       {
         "key": "kat",
@@ -57,18 +57,25 @@
         "replies": 8
       },
       {
-        "key": "snq",
-        "name": "ʇsɹnʍʇɐɹq",
+        "key": "id1505031327035035698",
+        "name": "🅡🅐🅘🅝🅔",
         "rank": "Moderator",
-        "tickets": 1,
-        "replies": 10
+        "tickets": 2,
+        "replies": 6
       },
       {
         "key": "mira",
         "name": "Mira",
         "rank": "Administrator",
         "tickets": 1,
-        "replies": 9
+        "replies": 10
+      },
+      {
+        "key": "snq",
+        "name": "ʇsɹnʍʇɐɹq",
+        "rank": "Moderator",
+        "tickets": 1,
+        "replies": 10
       },
       {
         "key": "harrisonford",
@@ -88,13 +95,6 @@
         "key": "bonnie",
         "name": "Bonnie",
         "rank": "Senior Administrator",
-        "tickets": 1,
-        "replies": 4
-      },
-      {
-        "key": "id1505031327035035698",
-        "name": "🅡🅐🅘🅝🅔",
-        "rank": "Moderator",
         "tickets": 1,
         "replies": 4
       },
@@ -170,7 +170,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 28,
+      "totalTickets": 29,
       "staff": [
         {
           "key": "kat",
@@ -215,18 +215,25 @@
           "replies": 8
         },
         {
-          "key": "snq",
-          "name": "ʇsɹnʍʇɐɹq",
+          "key": "id1505031327035035698",
+          "name": "🅡🅐🅘🅝🅔",
           "rank": "Moderator",
-          "tickets": 1,
-          "replies": 10
+          "tickets": 2,
+          "replies": 6
         },
         {
           "key": "mira",
           "name": "Mira",
           "rank": "Administrator",
           "tickets": 1,
-          "replies": 9
+          "replies": 10
+        },
+        {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Moderator",
+          "tickets": 1,
+          "replies": 10
         },
         {
           "key": "harrisonford",
@@ -246,13 +253,6 @@
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Senior Administrator",
-          "tickets": 1,
-          "replies": 4
-        },
-        {
-          "key": "id1505031327035035698",
-          "name": "🅡🅐🅘🅝🅔",
-          "rank": "Moderator",
           "tickets": 1,
           "replies": 4
         },
@@ -3158,15 +3158,15 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9363,
-  "totalTickets": 5120,
+  "transcriptCount": 9364,
+  "totalTickets": 5121,
   "staff": [
     {
       "key": "mira",
       "name": "Mira",
       "rank": "Administrator",
       "tickets": 597,
-      "replies": 2969
+      "replies": 2970
     },
     {
       "key": "kat",
@@ -3193,8 +3193,8 @@
       "key": "id1505031327035035698",
       "name": "🅡🅐🅘🅝🅔",
       "rank": "Moderator",
-      "tickets": 279,
-      "replies": 1148
+      "tickets": 280,
+      "replies": 1150
     },
     {
       "key": "lyraquinn",

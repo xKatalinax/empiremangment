@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-27T15:57:51.265Z",
+  "generated": "2026-07-27T16:19:09.072Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,14 +12,14 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 41,
+    "totalTickets": 42,
     "staff": [
       {
         "key": "kat",
         "name": "kat",
         "rank": "LOA",
         "tickets": 7,
-        "replies": 26
+        "replies": 27
       },
       {
         "key": "id1505031327035035698",
@@ -32,8 +32,15 @@
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Moderator",
+        "tickets": 4,
+        "replies": 23
+      },
+      {
+        "key": "poptart",
+        "name": "Poptart",
+        "rank": "Administrator",
         "tickets": 3,
-        "replies": 19
+        "replies": 13
       },
       {
         "key": "lunasmith",
@@ -41,13 +48,6 @@
         "rank": "Administrator",
         "tickets": 3,
         "replies": 13
-      },
-      {
-        "key": "poptart",
-        "name": "Poptart",
-        "rank": "Administrator",
-        "tickets": 3,
-        "replies": 12
       },
       {
         "key": "commissionercrispymcchicken",
@@ -145,7 +145,7 @@
         "name": "Carlitos",
         "rank": "Administrator",
         "tickets": 0,
-        "replies": 3
+        "replies": 4
       },
       {
         "key": "clarksmith",
@@ -184,14 +184,14 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 41,
+      "totalTickets": 42,
       "staff": [
         {
           "key": "kat",
           "name": "kat",
           "rank": "LOA",
           "tickets": 7,
-          "replies": 26
+          "replies": 27
         },
         {
           "key": "id1505031327035035698",
@@ -204,8 +204,15 @@
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Moderator",
+          "tickets": 4,
+          "replies": 23
+        },
+        {
+          "key": "poptart",
+          "name": "Poptart",
+          "rank": "Administrator",
           "tickets": 3,
-          "replies": 19
+          "replies": 13
         },
         {
           "key": "lunasmith",
@@ -213,13 +220,6 @@
           "rank": "Administrator",
           "tickets": 3,
           "replies": 13
-        },
-        {
-          "key": "poptart",
-          "name": "Poptart",
-          "rank": "Administrator",
-          "tickets": 3,
-          "replies": 12
         },
         {
           "key": "commissionercrispymcchicken",
@@ -317,7 +317,7 @@
           "name": "Carlitos",
           "rank": "Administrator",
           "tickets": 0,
-          "replies": 3
+          "replies": 4
         },
         {
           "key": "clarksmith",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9383,
-  "totalTickets": 5133,
+  "transcriptCount": 9385,
+  "totalTickets": 5134,
   "staff": [
     {
       "key": "mira",
@@ -3201,7 +3201,7 @@
       "name": "kat",
       "rank": "LOA",
       "tickets": 573,
-      "replies": 2933
+      "replies": 2934
     },
     {
       "key": "clarksmith",
@@ -3270,8 +3270,8 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Moderator",
-      "tickets": 130,
-      "replies": 716
+      "tickets": 131,
+      "replies": 720
     },
     {
       "key": "iaderekwalsh",
@@ -3306,7 +3306,7 @@
       "name": "Poptart",
       "rank": "Administrator",
       "tickets": 108,
-      "replies": 461
+      "replies": 462
     },
     {
       "key": "b07majpaddymalone",
@@ -3362,7 +3362,7 @@
       "name": "Carlitos",
       "rank": "Administrator",
       "tickets": 84,
-      "replies": 342
+      "replies": 343
     },
     {
       "key": "que",

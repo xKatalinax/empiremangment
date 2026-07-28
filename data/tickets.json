@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-28T19:20:53.720Z",
+  "generated": "2026-07-28T19:23:00.225Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,14 +12,14 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 47,
+    "totalTickets": 48,
     "staff": [
       {
         "key": "kat",
         "name": "kat",
         "rank": "LOA",
         "tickets": 8,
-        "replies": 30
+        "replies": 31
       },
       {
         "key": "snq",
@@ -39,8 +39,8 @@
         "key": "angel",
         "name": "Angel",
         "rank": "Administrator",
-        "tickets": 3,
-        "replies": 24
+        "tickets": 4,
+        "replies": 26
       },
       {
         "key": "poptart",
@@ -184,14 +184,14 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 47,
+      "totalTickets": 48,
       "staff": [
         {
           "key": "kat",
           "name": "kat",
           "rank": "LOA",
           "tickets": 8,
-          "replies": 30
+          "replies": 31
         },
         {
           "key": "snq",
@@ -211,8 +211,8 @@
           "key": "angel",
           "name": "Angel",
           "rank": "Administrator",
-          "tickets": 3,
-          "replies": 24
+          "tickets": 4,
+          "replies": 26
         },
         {
           "key": "poptart",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9389,
-  "totalTickets": 5139,
+  "transcriptCount": 9390,
+  "totalTickets": 5140,
   "staff": [
     {
       "key": "mira",
@@ -3201,7 +3201,7 @@
       "name": "kat",
       "rank": "LOA",
       "tickets": 574,
-      "replies": 2937
+      "replies": 2938
     },
     {
       "key": "clarksmith",
@@ -3235,8 +3235,8 @@
       "key": "angel",
       "name": "Angel",
       "rank": "Administrator",
-      "tickets": 171,
-      "replies": 833
+      "tickets": 172,
+      "replies": 835
     },
     {
       "key": "esrie",

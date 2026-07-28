@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-28T19:23:42.590Z",
+  "generated": "2026-07-28T19:24:26.659Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,14 +12,14 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 50,
+    "totalTickets": 52,
     "staff": [
       {
         "key": "kat",
         "name": "kat",
         "rank": "LOA",
-        "tickets": 9,
-        "replies": 33
+        "tickets": 10,
+        "replies": 35
       },
       {
         "key": "snq",
@@ -43,6 +43,13 @@
         "replies": 29
       },
       {
+        "key": "mira",
+        "name": "Mira",
+        "rank": "Administrator",
+        "tickets": 3,
+        "replies": 18
+      },
+      {
         "key": "poptart",
         "name": "Poptart",
         "rank": "Administrator",
@@ -62,13 +69,6 @@
         "rank": "Senior Administrator",
         "tickets": 2,
         "replies": 30
-      },
-      {
-        "key": "mira",
-        "name": "Mira",
-        "rank": "Administrator",
-        "tickets": 2,
-        "replies": 12
       },
       {
         "key": "pluplu",
@@ -184,14 +184,14 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 50,
+      "totalTickets": 52,
       "staff": [
         {
           "key": "kat",
           "name": "kat",
           "rank": "LOA",
-          "tickets": 9,
-          "replies": 33
+          "tickets": 10,
+          "replies": 35
         },
         {
           "key": "snq",
@@ -215,6 +215,13 @@
           "replies": 29
         },
         {
+          "key": "mira",
+          "name": "Mira",
+          "rank": "Administrator",
+          "tickets": 3,
+          "replies": 18
+        },
+        {
           "key": "poptart",
           "name": "Poptart",
           "rank": "Administrator",
@@ -234,13 +241,6 @@
           "rank": "Senior Administrator",
           "tickets": 2,
           "replies": 30
-        },
-        {
-          "key": "mira",
-          "name": "Mira",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 12
         },
         {
           "key": "pluplu",
@@ -3186,22 +3186,22 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9391,
-  "totalTickets": 5142,
+  "transcriptCount": 9392,
+  "totalTickets": 5144,
   "staff": [
     {
       "key": "mira",
       "name": "Mira",
       "rank": "Administrator",
-      "tickets": 598,
-      "replies": 2972
+      "tickets": 599,
+      "replies": 2978
     },
     {
       "key": "kat",
       "name": "kat",
       "rank": "LOA",
-      "tickets": 575,
-      "replies": 2940
+      "tickets": 576,
+      "replies": 2942
     },
     {
       "key": "clarksmith",

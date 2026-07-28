@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-28T19:23:00.225Z",
+  "generated": "2026-07-28T19:23:42.590Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,14 +12,14 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 48,
+    "totalTickets": 50,
     "staff": [
       {
         "key": "kat",
         "name": "kat",
         "rank": "LOA",
-        "tickets": 8,
-        "replies": 31
+        "tickets": 9,
+        "replies": 33
       },
       {
         "key": "snq",
@@ -39,8 +39,8 @@
         "key": "angel",
         "name": "Angel",
         "rank": "Administrator",
-        "tickets": 4,
-        "replies": 26
+        "tickets": 5,
+        "replies": 29
       },
       {
         "key": "poptart",
@@ -184,14 +184,14 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 48,
+      "totalTickets": 50,
       "staff": [
         {
           "key": "kat",
           "name": "kat",
           "rank": "LOA",
-          "tickets": 8,
-          "replies": 31
+          "tickets": 9,
+          "replies": 33
         },
         {
           "key": "snq",
@@ -211,8 +211,8 @@
           "key": "angel",
           "name": "Angel",
           "rank": "Administrator",
-          "tickets": 4,
-          "replies": 26
+          "tickets": 5,
+          "replies": 29
         },
         {
           "key": "poptart",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9390,
-  "totalTickets": 5140,
+  "transcriptCount": 9391,
+  "totalTickets": 5142,
   "staff": [
     {
       "key": "mira",
@@ -3200,8 +3200,8 @@
       "key": "kat",
       "name": "kat",
       "rank": "LOA",
-      "tickets": 574,
-      "replies": 2938
+      "tickets": 575,
+      "replies": 2940
     },
     {
       "key": "clarksmith",
@@ -3235,8 +3235,8 @@
       "key": "angel",
       "name": "Angel",
       "rank": "Administrator",
-      "tickets": 172,
-      "replies": 835
+      "tickets": 173,
+      "replies": 838
     },
     {
       "key": "esrie",

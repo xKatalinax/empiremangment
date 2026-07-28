@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-27T16:47:57.467Z",
+  "generated": "2026-07-28T19:20:53.720Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,8 +12,15 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 45,
+    "totalTickets": 47,
     "staff": [
+      {
+        "key": "kat",
+        "name": "kat",
+        "rank": "LOA",
+        "tickets": 8,
+        "replies": 30
+      },
       {
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
@@ -22,18 +29,18 @@
         "replies": 35
       },
       {
-        "key": "kat",
-        "name": "kat",
-        "rank": "LOA",
-        "tickets": 7,
-        "replies": 27
-      },
-      {
         "key": "id1505031327035035698",
         "name": "🅡🅐🅘🅝🅔",
         "rank": "Moderator",
         "tickets": 6,
         "replies": 48
+      },
+      {
+        "key": "angel",
+        "name": "Angel",
+        "rank": "Administrator",
+        "tickets": 3,
+        "replies": 24
       },
       {
         "key": "poptart",
@@ -55,13 +62,6 @@
         "rank": "Senior Administrator",
         "tickets": 2,
         "replies": 30
-      },
-      {
-        "key": "angel",
-        "name": "Angel",
-        "rank": "Administrator",
-        "tickets": 2,
-        "replies": 21
       },
       {
         "key": "mira",
@@ -184,8 +184,15 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 45,
+      "totalTickets": 47,
       "staff": [
+        {
+          "key": "kat",
+          "name": "kat",
+          "rank": "LOA",
+          "tickets": 8,
+          "replies": 30
+        },
         {
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
@@ -194,18 +201,18 @@
           "replies": 35
         },
         {
-          "key": "kat",
-          "name": "kat",
-          "rank": "LOA",
-          "tickets": 7,
-          "replies": 27
-        },
-        {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
           "rank": "Moderator",
           "tickets": 6,
           "replies": 48
+        },
+        {
+          "key": "angel",
+          "name": "Angel",
+          "rank": "Administrator",
+          "tickets": 3,
+          "replies": 24
         },
         {
           "key": "poptart",
@@ -227,13 +234,6 @@
           "rank": "Senior Administrator",
           "tickets": 2,
           "replies": 30
-        },
-        {
-          "key": "angel",
-          "name": "Angel",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 21
         },
         {
           "key": "mira",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9388,
-  "totalTickets": 5137,
+  "transcriptCount": 9389,
+  "totalTickets": 5139,
   "staff": [
     {
       "key": "mira",
@@ -3200,8 +3200,8 @@
       "key": "kat",
       "name": "kat",
       "rank": "LOA",
-      "tickets": 573,
-      "replies": 2934
+      "tickets": 574,
+      "replies": 2937
     },
     {
       "key": "clarksmith",
@@ -3235,8 +3235,8 @@
       "key": "angel",
       "name": "Angel",
       "rank": "Administrator",
-      "tickets": 170,
-      "replies": 830
+      "tickets": 171,
+      "replies": 833
     },
     {
       "key": "esrie",

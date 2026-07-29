@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T00:54:32.768Z",
+  "generated": "2026-07-29T00:58:32.643Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 53,
+    "totalTickets": 54,
     "staff": [
       {
         "key": "kat",
@@ -71,11 +71,18 @@
         "replies": 30
       },
       {
+        "key": "ace",
+        "name": "Ace",
+        "rank": "Moderator",
+        "tickets": 2,
+        "replies": 12
+      },
+      {
         "key": "bonnie",
         "name": "Bonnie",
         "rank": "Senior Administrator",
         "tickets": 2,
-        "replies": 9
+        "replies": 10
       },
       {
         "key": "pluplu",
@@ -134,13 +141,6 @@
         "replies": 2
       },
       {
-        "key": "ace",
-        "name": "Ace",
-        "rank": "Moderator",
-        "tickets": 1,
-        "replies": 2
-      },
-      {
         "key": "carlitos",
         "name": "Carlitos",
         "rank": "Administrator",
@@ -184,7 +184,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 53,
+      "totalTickets": 54,
       "staff": [
         {
           "key": "kat",
@@ -243,11 +243,18 @@
           "replies": 30
         },
         {
+          "key": "ace",
+          "name": "Ace",
+          "rank": "Moderator",
+          "tickets": 2,
+          "replies": 12
+        },
+        {
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Senior Administrator",
           "tickets": 2,
-          "replies": 9
+          "replies": 10
         },
         {
           "key": "pluplu",
@@ -302,13 +309,6 @@
           "key": "nini",
           "name": "nini",
           "rank": "Senior Administrator",
-          "tickets": 1,
-          "replies": 2
-        },
-        {
-          "key": "ace",
-          "name": "Ace",
-          "rank": "Moderator",
           "tickets": 1,
           "replies": 2
         },
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9396,
-  "totalTickets": 5145,
+  "transcriptCount": 9397,
+  "totalTickets": 5146,
   "staff": [
     {
       "key": "mira",
@@ -3222,7 +3222,7 @@
       "name": "Bonnie",
       "rank": "Senior Administrator",
       "tickets": 283,
-      "replies": 1535
+      "replies": 1536
     },
     {
       "key": "lyraquinn",
@@ -3354,8 +3354,8 @@
       "key": "ace",
       "name": "Ace",
       "rank": "Moderator",
-      "tickets": 85,
-      "replies": 485
+      "tickets": 86,
+      "replies": 495
     },
     {
       "key": "carlitos",

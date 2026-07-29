@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T04:14:25.695Z",
+  "generated": "2026-07-29T04:18:34.742Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 70,
+    "totalTickets": 71,
     "staff": [
       {
         "key": "kat",
@@ -148,6 +148,13 @@
         "replies": 3
       },
       {
+        "key": "que",
+        "name": "que",
+        "rank": "LOA",
+        "tickets": 1,
+        "replies": 3
+      },
+      {
         "key": "nini",
         "name": "nini",
         "rank": "Senior Administrator",
@@ -184,7 +191,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 70,
+      "totalTickets": 71,
       "staff": [
         {
           "key": "kat",
@@ -316,6 +323,13 @@
           "key": "iaderekwalsh",
           "name": "IA | Derek Walsh",
           "rank": "Senior Administrator",
+          "tickets": 1,
+          "replies": 3
+        },
+        {
+          "key": "que",
+          "name": "que",
+          "rank": "LOA",
           "tickets": 1,
           "replies": 3
         },
@@ -3186,8 +3200,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9419,
-  "totalTickets": 5162,
+  "transcriptCount": 9420,
+  "totalTickets": 5163,
   "staff": [
     {
       "key": "mira",
@@ -3368,8 +3382,8 @@
       "key": "que",
       "name": "que",
       "rank": "LOA",
-      "tickets": 72,
-      "replies": 433
+      "tickets": 73,
+      "replies": 436
     },
     {
       "key": "xjhani",

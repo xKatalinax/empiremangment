@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T01:45:42.539Z",
+  "generated": "2026-07-29T01:55:16.396Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,14 +12,14 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 58,
+    "totalTickets": 59,
     "staff": [
       {
         "key": "kat",
         "name": "kat",
         "rank": "LOA",
         "tickets": 10,
-        "replies": 35
+        "replies": 36
       },
       {
         "key": "snq",
@@ -46,8 +46,8 @@
         "key": "poptart",
         "name": "Poptart",
         "rank": "Administrator",
-        "tickets": 4,
-        "replies": 18
+        "tickets": 5,
+        "replies": 22
       },
       {
         "key": "mira",
@@ -184,14 +184,14 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 58,
+      "totalTickets": 59,
       "staff": [
         {
           "key": "kat",
           "name": "kat",
           "rank": "LOA",
           "tickets": 10,
-          "replies": 35
+          "replies": 36
         },
         {
           "key": "snq",
@@ -218,8 +218,8 @@
           "key": "poptart",
           "name": "Poptart",
           "rank": "Administrator",
-          "tickets": 4,
-          "replies": 18
+          "tickets": 5,
+          "replies": 22
         },
         {
           "key": "mira",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9402,
-  "totalTickets": 5150,
+  "transcriptCount": 9403,
+  "totalTickets": 5151,
   "staff": [
     {
       "key": "mira",
@@ -3201,7 +3201,7 @@
       "name": "kat",
       "rank": "LOA",
       "tickets": 576,
-      "replies": 2942
+      "replies": 2943
     },
     {
       "key": "clarksmith",
@@ -3298,8 +3298,8 @@
       "key": "poptart",
       "name": "Poptart",
       "rank": "Administrator",
-      "tickets": 109,
-      "replies": 467
+      "tickets": 110,
+      "replies": 471
     },
     {
       "key": "sho",

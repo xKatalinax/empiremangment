@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T02:39:11.273Z",
+  "generated": "2026-07-29T02:44:32.482Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 62,
+    "totalTickets": 63,
     "staff": [
       {
         "key": "kat",
@@ -64,6 +64,13 @@
         "replies": 20
       },
       {
+        "key": "bonnie",
+        "name": "Bonnie",
+        "rank": "Senior Administrator",
+        "tickets": 3,
+        "replies": 13
+      },
+      {
         "key": "pluplu",
         "name": "PLU PLU",
         "rank": "Administrator",
@@ -90,13 +97,6 @@
         "rank": "Moderator",
         "tickets": 2,
         "replies": 12
-      },
-      {
-        "key": "bonnie",
-        "name": "Bonnie",
-        "rank": "Senior Administrator",
-        "tickets": 2,
-        "replies": 10
       },
       {
         "key": "charliewatleh",
@@ -184,7 +184,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 62,
+      "totalTickets": 63,
       "staff": [
         {
           "key": "kat",
@@ -236,6 +236,13 @@
           "replies": 20
         },
         {
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Senior Administrator",
+          "tickets": 3,
+          "replies": 13
+        },
+        {
           "key": "pluplu",
           "name": "PLU PLU",
           "rank": "Administrator",
@@ -262,13 +269,6 @@
           "rank": "Moderator",
           "tickets": 2,
           "replies": 12
-        },
-        {
-          "key": "bonnie",
-          "name": "Bonnie",
-          "rank": "Senior Administrator",
-          "tickets": 2,
-          "replies": 10
         },
         {
           "key": "charliewatleh",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9409,
-  "totalTickets": 5154,
+  "transcriptCount": 9410,
+  "totalTickets": 5155,
   "staff": [
     {
       "key": "mira",
@@ -3211,18 +3211,18 @@
       "replies": 1291
     },
     {
+      "key": "bonnie",
+      "name": "Bonnie",
+      "rank": "Senior Administrator",
+      "tickets": 284,
+      "replies": 1539
+    },
+    {
       "key": "id1505031327035035698",
       "name": "🅡🅐🅘🅝🅔",
       "rank": "Moderator",
       "tickets": 284,
       "replies": 1192
-    },
-    {
-      "key": "bonnie",
-      "name": "Bonnie",
-      "rank": "Senior Administrator",
-      "tickets": 283,
-      "replies": 1536
     },
     {
       "key": "lyraquinn",

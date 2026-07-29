@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T01:28:55.917Z",
+  "generated": "2026-07-29T01:41:58.205Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 56,
+    "totalTickets": 58,
     "staff": [
       {
         "key": "kat",
@@ -61,7 +61,7 @@
         "name": "Luna Smith",
         "rank": "Administrator",
         "tickets": 3,
-        "replies": 13
+        "replies": 14
       },
       {
         "key": "pluplu",
@@ -69,6 +69,13 @@
         "rank": "Administrator",
         "tickets": 3,
         "replies": 11
+      },
+      {
+        "key": "savi",
+        "name": "Savi",
+        "rank": "Senior Administrator",
+        "tickets": 3,
+        "replies": 10
       },
       {
         "key": "commissionercrispymcchicken",
@@ -92,18 +99,18 @@
         "replies": 10
       },
       {
-        "key": "savi",
-        "name": "Savi",
-        "rank": "Senior Administrator",
-        "tickets": 2,
-        "replies": 8
-      },
-      {
         "key": "charliewatleh",
         "name": "Charlie Watleh",
         "rank": "Moderator",
         "tickets": 2,
         "replies": 8
+      },
+      {
+        "key": "clarksmith",
+        "name": "Clark Smith",
+        "rank": "Senior Administrator",
+        "tickets": 1,
+        "replies": 6
       },
       {
         "key": "harrisonford",
@@ -148,13 +155,6 @@
         "replies": 4
       },
       {
-        "key": "clarksmith",
-        "name": "Clark Smith",
-        "rank": "Senior Administrator",
-        "tickets": 0,
-        "replies": 1
-      },
-      {
         "key": "sho",
         "name": "Sho",
         "rank": "Administrator",
@@ -184,7 +184,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 56,
+      "totalTickets": 58,
       "staff": [
         {
           "key": "kat",
@@ -233,7 +233,7 @@
           "name": "Luna Smith",
           "rank": "Administrator",
           "tickets": 3,
-          "replies": 13
+          "replies": 14
         },
         {
           "key": "pluplu",
@@ -241,6 +241,13 @@
           "rank": "Administrator",
           "tickets": 3,
           "replies": 11
+        },
+        {
+          "key": "savi",
+          "name": "Savi",
+          "rank": "Senior Administrator",
+          "tickets": 3,
+          "replies": 10
         },
         {
           "key": "commissionercrispymcchicken",
@@ -264,18 +271,18 @@
           "replies": 10
         },
         {
-          "key": "savi",
-          "name": "Savi",
-          "rank": "Senior Administrator",
-          "tickets": 2,
-          "replies": 8
-        },
-        {
           "key": "charliewatleh",
           "name": "Charlie Watleh",
           "rank": "Moderator",
           "tickets": 2,
           "replies": 8
+        },
+        {
+          "key": "clarksmith",
+          "name": "Clark Smith",
+          "rank": "Senior Administrator",
+          "tickets": 1,
+          "replies": 6
         },
         {
           "key": "harrisonford",
@@ -318,13 +325,6 @@
           "rank": "Administrator",
           "tickets": 0,
           "replies": 4
-        },
-        {
-          "key": "clarksmith",
-          "name": "Clark Smith",
-          "rank": "Senior Administrator",
-          "tickets": 0,
-          "replies": 1
         },
         {
           "key": "sho",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9400,
-  "totalTickets": 5148,
+  "transcriptCount": 9401,
+  "totalTickets": 5150,
   "staff": [
     {
       "key": "mira",
@@ -3207,8 +3207,8 @@
       "key": "clarksmith",
       "name": "Clark Smith",
       "rank": "Senior Administrator",
-      "tickets": 285,
-      "replies": 1286
+      "tickets": 286,
+      "replies": 1291
     },
     {
       "key": "id1505031327035035698",
@@ -3249,8 +3249,8 @@
       "key": "savi",
       "name": "Savi",
       "rank": "Senior Administrator",
-      "tickets": 161,
-      "replies": 790
+      "tickets": 162,
+      "replies": 792
     },
     {
       "key": "pluplu",
@@ -3348,7 +3348,7 @@
       "name": "Luna Smith",
       "rank": "Administrator",
       "tickets": 91,
-      "replies": 433
+      "replies": 434
     },
     {
       "key": "ace",

@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T05:11:41.292Z",
+  "generated": "2026-07-29T05:12:20.683Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -26,7 +26,7 @@
         "name": "Poptart",
         "rank": "Administrator",
         "tickets": 9,
-        "replies": 31
+        "replies": 32
       },
       {
         "key": "snq",
@@ -212,7 +212,7 @@
           "name": "Poptart",
           "rank": "Administrator",
           "tickets": 9,
-          "replies": 31
+          "replies": 32
         },
         {
           "key": "snq",
@@ -3214,7 +3214,7 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9422,
+  "transcriptCount": 9423,
   "totalTickets": 5164,
   "staff": [
     {
@@ -3320,7 +3320,7 @@
       "name": "Poptart",
       "rank": "Administrator",
       "tickets": 114,
-      "replies": 480
+      "replies": 481
     },
     {
       "key": "gp",

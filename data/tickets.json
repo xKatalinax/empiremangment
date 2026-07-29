@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T02:44:32.482Z",
+  "generated": "2026-07-29T02:46:40.568Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 63,
+    "totalTickets": 64,
     "staff": [
       {
         "key": "kat",
@@ -22,18 +22,18 @@
         "replies": 36
       },
       {
+        "key": "poptart",
+        "name": "Poptart",
+        "rank": "Administrator",
+        "tickets": 8,
+        "replies": 28
+      },
+      {
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Moderator",
         "tickets": 7,
         "replies": 35
-      },
-      {
-        "key": "poptart",
-        "name": "Poptart",
-        "rank": "Administrator",
-        "tickets": 7,
-        "replies": 26
       },
       {
         "key": "id1505031327035035698",
@@ -184,7 +184,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 63,
+      "totalTickets": 64,
       "staff": [
         {
           "key": "kat",
@@ -194,18 +194,18 @@
           "replies": 36
         },
         {
+          "key": "poptart",
+          "name": "Poptart",
+          "rank": "Administrator",
+          "tickets": 8,
+          "replies": 28
+        },
+        {
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Moderator",
           "tickets": 7,
           "replies": 35
-        },
-        {
-          "key": "poptart",
-          "name": "Poptart",
-          "rank": "Administrator",
-          "tickets": 7,
-          "replies": 26
         },
         {
           "key": "id1505031327035035698",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9410,
-  "totalTickets": 5155,
+  "transcriptCount": 9411,
+  "totalTickets": 5156,
   "staff": [
     {
       "key": "mira",
@@ -3291,8 +3291,8 @@
       "key": "poptart",
       "name": "Poptart",
       "rank": "Administrator",
-      "tickets": 112,
-      "replies": 475
+      "tickets": 113,
+      "replies": 477
     },
     {
       "key": "gp",

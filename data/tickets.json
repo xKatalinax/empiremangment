@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T06:21:33.396Z",
+  "generated": "2026-07-29T06:23:51.935Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 75,
+    "totalTickets": 76,
     "staff": [
       {
         "key": "poptart",
@@ -113,6 +113,13 @@
         "replies": 8
       },
       {
+        "key": "kolton",
+        "name": "Kolton",
+        "rank": "LOA",
+        "tickets": 1,
+        "replies": 8
+      },
+      {
         "key": "clarksmith",
         "name": "Clark Smith",
         "rank": "Senior Administrator",
@@ -176,13 +183,6 @@
         "replies": 2
       },
       {
-        "key": "kolton",
-        "name": "Kolton",
-        "rank": "LOA",
-        "tickets": 0,
-        "replies": 2
-      },
-      {
         "key": "sho",
         "name": "Sho",
         "rank": "Administrator",
@@ -205,7 +205,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 75,
+      "totalTickets": 76,
       "staff": [
         {
           "key": "poptart",
@@ -306,6 +306,13 @@
           "replies": 8
         },
         {
+          "key": "kolton",
+          "name": "Kolton",
+          "rank": "LOA",
+          "tickets": 1,
+          "replies": 8
+        },
+        {
           "key": "clarksmith",
           "name": "Clark Smith",
           "rank": "Senior Administrator",
@@ -366,13 +373,6 @@
           "name": "nini",
           "rank": "Senior Administrator",
           "tickets": 1,
-          "replies": 2
-        },
-        {
-          "key": "kolton",
-          "name": "Kolton",
-          "rank": "LOA",
-          "tickets": 0,
           "replies": 2
         },
         {
@@ -3228,8 +3228,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9432,
-  "totalTickets": 5167,
+  "transcriptCount": 9433,
+  "totalTickets": 5168,
   "staff": [
     {
       "key": "mira",
@@ -3522,8 +3522,8 @@
       "key": "kolton",
       "name": "Kolton",
       "rank": "LOA",
-      "tickets": 16,
-      "replies": 60
+      "tickets": 17,
+      "replies": 66
     },
     {
       "key": "giyu",

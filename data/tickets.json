@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T01:55:16.396Z",
+  "generated": "2026-07-29T02:12:00.937Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 59,
+    "totalTickets": 61,
     "staff": [
       {
         "key": "kat",
@@ -36,6 +36,13 @@
         "replies": 48
       },
       {
+        "key": "poptart",
+        "name": "Poptart",
+        "rank": "Administrator",
+        "tickets": 6,
+        "replies": 24
+      },
+      {
         "key": "angel",
         "name": "Angel",
         "rank": "Administrator",
@@ -43,11 +50,11 @@
         "replies": 30
       },
       {
-        "key": "poptart",
-        "name": "Poptart",
+        "key": "lunasmith",
+        "name": "Luna Smith",
         "rank": "Administrator",
-        "tickets": 5,
-        "replies": 22
+        "tickets": 4,
+        "replies": 18
       },
       {
         "key": "mira",
@@ -55,13 +62,6 @@
         "rank": "Administrator",
         "tickets": 3,
         "replies": 20
-      },
-      {
-        "key": "lunasmith",
-        "name": "Luna Smith",
-        "rank": "Administrator",
-        "tickets": 3,
-        "replies": 14
       },
       {
         "key": "pluplu",
@@ -184,7 +184,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 59,
+      "totalTickets": 61,
       "staff": [
         {
           "key": "kat",
@@ -208,6 +208,13 @@
           "replies": 48
         },
         {
+          "key": "poptart",
+          "name": "Poptart",
+          "rank": "Administrator",
+          "tickets": 6,
+          "replies": 24
+        },
+        {
           "key": "angel",
           "name": "Angel",
           "rank": "Administrator",
@@ -215,11 +222,11 @@
           "replies": 30
         },
         {
-          "key": "poptart",
-          "name": "Poptart",
+          "key": "lunasmith",
+          "name": "Luna Smith",
           "rank": "Administrator",
-          "tickets": 5,
-          "replies": 22
+          "tickets": 4,
+          "replies": 18
         },
         {
           "key": "mira",
@@ -227,13 +234,6 @@
           "rank": "Administrator",
           "tickets": 3,
           "replies": 20
-        },
-        {
-          "key": "lunasmith",
-          "name": "Luna Smith",
-          "rank": "Administrator",
-          "tickets": 3,
-          "replies": 14
         },
         {
           "key": "pluplu",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9403,
-  "totalTickets": 5151,
+  "transcriptCount": 9405,
+  "totalTickets": 5153,
   "staff": [
     {
       "key": "mira",
@@ -3298,8 +3298,8 @@
       "key": "poptart",
       "name": "Poptart",
       "rank": "Administrator",
-      "tickets": 110,
-      "replies": 471
+      "tickets": 111,
+      "replies": 473
     },
     {
       "key": "sho",
@@ -3347,8 +3347,8 @@
       "key": "lunasmith",
       "name": "Luna Smith",
       "rank": "Administrator",
-      "tickets": 91,
-      "replies": 434
+      "tickets": 92,
+      "replies": 438
     },
     {
       "key": "ace",

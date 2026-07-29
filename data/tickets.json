@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T06:12:29.864Z",
+  "generated": "2026-07-29T06:21:33.396Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -103,7 +103,7 @@
         "name": "Carlitos",
         "rank": "Administrator",
         "tickets": 2,
-        "replies": 10
+        "replies": 11
       },
       {
         "key": "charliewatleh",
@@ -296,7 +296,7 @@
           "name": "Carlitos",
           "rank": "Administrator",
           "tickets": 2,
-          "replies": 10
+          "replies": 11
         },
         {
           "key": "charliewatleh",
@@ -3228,7 +3228,7 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9431,
+  "transcriptCount": 9432,
   "totalTickets": 5167,
   "staff": [
     {
@@ -3404,7 +3404,7 @@
       "name": "Carlitos",
       "rank": "Administrator",
       "tickets": 86,
-      "replies": 349
+      "replies": 350
     },
     {
       "key": "que",

@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T06:07:19.475Z",
+  "generated": "2026-07-29T06:09:57.071Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,14 +12,14 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 74,
+    "totalTickets": 75,
     "staff": [
       {
         "key": "poptart",
         "name": "Poptart",
         "rank": "Administrator",
         "tickets": 11,
-        "replies": 37
+        "replies": 38
       },
       {
         "key": "kat",
@@ -61,7 +61,7 @@
         "name": "Bonnie",
         "rank": "Senior Administrator",
         "tickets": 4,
-        "replies": 16
+        "replies": 17
       },
       {
         "key": "mira",
@@ -82,7 +82,7 @@
         "name": "PLU PLU",
         "rank": "Administrator",
         "tickets": 3,
-        "replies": 11
+        "replies": 12
       },
       {
         "key": "commissionercrispymcchicken",
@@ -122,6 +122,13 @@
       {
         "key": "harrisonford",
         "name": "Harrison Ford",
+        "rank": "Support",
+        "tickets": 1,
+        "replies": 6
+      },
+      {
+        "key": "kota",
+        "name": "Kota",
         "rank": "Support",
         "tickets": 1,
         "replies": 6
@@ -198,14 +205,14 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 74,
+      "totalTickets": 75,
       "staff": [
         {
           "key": "poptart",
           "name": "Poptart",
           "rank": "Administrator",
           "tickets": 11,
-          "replies": 37
+          "replies": 38
         },
         {
           "key": "kat",
@@ -247,7 +254,7 @@
           "name": "Bonnie",
           "rank": "Senior Administrator",
           "tickets": 4,
-          "replies": 16
+          "replies": 17
         },
         {
           "key": "mira",
@@ -268,7 +275,7 @@
           "name": "PLU PLU",
           "rank": "Administrator",
           "tickets": 3,
-          "replies": 11
+          "replies": 12
         },
         {
           "key": "commissionercrispymcchicken",
@@ -308,6 +315,13 @@
         {
           "key": "harrisonford",
           "name": "Harrison Ford",
+          "rank": "Support",
+          "tickets": 1,
+          "replies": 6
+        },
+        {
+          "key": "kota",
+          "name": "Kota",
           "rank": "Support",
           "tickets": 1,
           "replies": 6
@@ -3214,8 +3228,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9427,
-  "totalTickets": 5166,
+  "transcriptCount": 9428,
+  "totalTickets": 5167,
   "staff": [
     {
       "key": "mira",
@@ -3243,7 +3257,7 @@
       "name": "Bonnie",
       "rank": "Senior Administrator",
       "tickets": 285,
-      "replies": 1542
+      "replies": 1543
     },
     {
       "key": "id1505031327035035698",
@@ -3292,7 +3306,7 @@
       "name": "PLU PLU",
       "rank": "Administrator",
       "tickets": 144,
-      "replies": 759
+      "replies": 760
     },
     {
       "key": "snq",
@@ -3313,7 +3327,7 @@
       "name": "Poptart",
       "rank": "Administrator",
       "tickets": 116,
-      "replies": 486
+      "replies": 487
     },
     {
       "key": "fazehazard13",
@@ -3487,8 +3501,8 @@
       "key": "kota",
       "name": "Kota",
       "rank": "Support",
-      "tickets": 19,
-      "replies": 141
+      "tickets": 20,
+      "replies": 147
     },
     {
       "key": "chicken",

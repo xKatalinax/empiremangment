@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-29T04:14:02.821Z",
+  "generated": "2026-07-29T04:14:25.695Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 2,
@@ -12,7 +12,7 @@
     "start": "2026-07-24T04:00:00.000Z",
     "end": "2026-07-31T04:00:00.000Z",
     "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
-    "totalTickets": 68,
+    "totalTickets": 70,
     "staff": [
       {
         "key": "kat",
@@ -36,18 +36,18 @@
         "replies": 36
       },
       {
+        "key": "angel",
+        "name": "Angel",
+        "rank": "Administrator",
+        "tickets": 7,
+        "replies": 35
+      },
+      {
         "key": "id1505031327035035698",
         "name": "🅡🅐🅘🅝🅔",
         "rank": "Moderator",
         "tickets": 6,
         "replies": 48
-      },
-      {
-        "key": "angel",
-        "name": "Angel",
-        "rank": "Administrator",
-        "tickets": 6,
-        "replies": 33
       },
       {
         "key": "lunasmith",
@@ -99,18 +99,18 @@
         "replies": 12
       },
       {
+        "key": "carlitos",
+        "name": "Carlitos",
+        "rank": "Administrator",
+        "tickets": 2,
+        "replies": 10
+      },
+      {
         "key": "charliewatleh",
         "name": "Charlie Watleh",
         "rank": "Moderator",
         "tickets": 2,
         "replies": 8
-      },
-      {
-        "key": "carlitos",
-        "name": "Carlitos",
-        "rank": "Administrator",
-        "tickets": 1,
-        "replies": 7
       },
       {
         "key": "clarksmith",
@@ -184,7 +184,7 @@
       "end": "2026-07-31T04:00:00.000Z",
       "label": "Fri 24 Jul 12:00 AM – Fri 31 Jul 12:00 AM",
       "inProgress": true,
-      "totalTickets": 68,
+      "totalTickets": 70,
       "staff": [
         {
           "key": "kat",
@@ -208,18 +208,18 @@
           "replies": 36
         },
         {
+          "key": "angel",
+          "name": "Angel",
+          "rank": "Administrator",
+          "tickets": 7,
+          "replies": 35
+        },
+        {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
           "rank": "Moderator",
           "tickets": 6,
           "replies": 48
-        },
-        {
-          "key": "angel",
-          "name": "Angel",
-          "rank": "Administrator",
-          "tickets": 6,
-          "replies": 33
         },
         {
           "key": "lunasmith",
@@ -271,18 +271,18 @@
           "replies": 12
         },
         {
+          "key": "carlitos",
+          "name": "Carlitos",
+          "rank": "Administrator",
+          "tickets": 2,
+          "replies": 10
+        },
+        {
           "key": "charliewatleh",
           "name": "Charlie Watleh",
           "rank": "Moderator",
           "tickets": 2,
           "replies": 8
-        },
-        {
-          "key": "carlitos",
-          "name": "Carlitos",
-          "rank": "Administrator",
-          "tickets": 1,
-          "replies": 7
         },
         {
           "key": "clarksmith",
@@ -3186,8 +3186,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9418,
-  "totalTickets": 5160,
+  "transcriptCount": 9419,
+  "totalTickets": 5162,
   "staff": [
     {
       "key": "mira",
@@ -3228,8 +3228,8 @@
       "key": "angel",
       "name": "Angel",
       "rank": "Administrator",
-      "tickets": 174,
-      "replies": 842
+      "tickets": 175,
+      "replies": 844
     },
     {
       "key": "lyraquinn",
@@ -3361,8 +3361,8 @@
       "key": "carlitos",
       "name": "Carlitos",
       "rank": "Administrator",
-      "tickets": 85,
-      "replies": 346
+      "tickets": 86,
+      "replies": 349
     },
     {
       "key": "que",

@@ -272,19 +272,29 @@ function guildProblemMessage(err) {
 }
 
 // ---------- build the staff list from Discord roles ----------
+// Mirrors the staff list to whoever currently holds a staff role: new
+// holders are added, promotions/renames update, and anyone who lost every
+// staff role (or left) is removed. Manually-added staff are left alone.
 async function syncStaffFromRoles(guild) {
   const members = await guild.members.fetch();       // needs Guild Members intent
-  let added = 0, updated = 0, total = 0;
+  const current = [];
   for (const member of members.values()) {
     if (member.user.bot) continue;
-    const roleNames = member.roles.cache.map((r) => r.name);
-    const rank = highestRank(roleNames);             // null if they hold no staff role
-    if (!rank) continue;
-    total++;
-    const res = store.upsertStaff(member.displayName, member.id, rank);
-    if (res === 'added') added++; else if (res === 'updated') updated++;
+    const rank = highestRank(member.roles.cache.map((r) => r.name));
+    if (!rank) continue;                             // holds no staff role
+    current.push({ name: member.displayName, id: member.id, rank });
   }
-  return { total, added, updated };
+  return store.syncFromRoles(current);               // { total, added, updated, removed }
+}
+
+// Re-evaluate a single member after their roles change (live add/remove).
+function syncOneMember(member) {
+  if (!member || (member.user && member.user.bot)) return 'unchanged';
+  const roleNames = member.roles && member.roles.cache
+    ? member.roles.cache.map((r) => r.name) : [];
+  const rank = highestRank(roleNames);
+  const name = member.displayName || (member.user && member.user.username) || '';
+  return store.setMemberRole(member.id, name, rank);
 }
 
 // ---------- export for the website ----------
@@ -467,7 +477,51 @@ const client = new Client({
     GatewayIntentBits.MessageContent, // needed to read Ticket Tool's attachment in the log channel
     GatewayIntentBits.GuildMembers,   // needed to read members' roles for /syncstaff
   ],
-  partials: [Partials.Channel],
+  partials: [Partials.Channel, Partials.GuildMember],
+});
+
+// ---- live staff-role sync -------------------------------------------------
+// Keep the staff list in step with Discord as it happens, so promotions,
+// demotions, new hires and people leaving are reflected without a restart or
+// a manual /syncstaff. Each change refreshes the website export too.
+function afterStaffChange(reason) {
+  writeExportFile();        // refresh the file the website reads
+  schedulePublish(reason);  // debounced commit to the site repo (no-op if GitHub isn't configured)
+}
+
+// roles changed — staff role granted/removed, promotion, or a rename
+client.on(Events.GuildMemberUpdate, async (oldM, newM) => {
+  try {
+    let m = newM;
+    if (m.partial) m = await m.fetch();
+    const res = syncOneMember(m);
+    if (res !== 'unchanged') {
+      console.log(`staff sync: ${m.displayName} → ${res}`);
+      afterStaffChange('role change');
+    }
+  } catch (e) { /* ignore transient fetch errors */ }
+});
+
+// someone joins already holding a staff role
+client.on(Events.GuildMemberAdd, async (member) => {
+  try {
+    let m = member;
+    if (m.partial) m = await m.fetch();
+    if (syncOneMember(m) !== 'unchanged') {
+      console.log(`staff sync: ${m.displayName} joined with a staff role — added`);
+      afterStaffChange('member joined');
+    }
+  } catch (e) { /* ignore */ }
+});
+
+// someone leaves the server — drop them from the list
+client.on(Events.GuildMemberRemove, (member) => {
+  try {
+    if (store.removeStaffById(member.id)) {
+      console.log(`staff sync: member ${member.id} left — removed`);
+      afterStaffChange('member left');
+    }
+  } catch (e) { /* ignore */ }
 });
 
 client.once(Events.ClientReady, async () => {
@@ -489,7 +543,7 @@ client.once(Events.ClientReady, async () => {
     // build the staff list from roles every boot, so new hires/promotions are picked up
     try {
       const s = await syncStaffFromRoles(guild);
-      console.log(`[${guild.name}] staff from roles: ${s.total} matched (${s.added} new, ${s.updated} updated)`);
+      console.log(`[${guild.name}] staff from roles: ${s.total} matched (${s.added} new, ${s.updated} updated, ${s.removed} removed)`);
     } catch (e) {
       console.warn(`[${guild.name}] staff sync failed — enable the Server Members Intent? (${e.message})`);
     }
@@ -849,7 +903,7 @@ client.on('interactionCreate', async (i) => {
         ].join('\n'));
       }
       schedulePublish('staff sync');
-      return i.editReply(`👥 Staff list rebuilt from roles: **${s.total}** staff (${s.added} new, ${s.updated} updated). Run \`/staff list\` to see them.`);
+      return i.editReply(`👥 Staff list rebuilt from roles: **${s.total}** staff (${s.added} new, ${s.updated} updated, ${s.removed} removed). Run \`/staff list\` to see them.`);
     } catch (e) {
       const known = guildProblemMessage(e);
       if (known) return i.editReply(known);

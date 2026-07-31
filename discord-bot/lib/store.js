@@ -38,24 +38,73 @@ module.exports = {
   addStaff(name, id = '', rank = '') {
     const norm = name.toLowerCase().replace(/[^a-z0-9]/g, '');
     if (db.staff.some((s) => s.name.toLowerCase().replace(/[^a-z0-9]/g, '') === norm)) return false;
-    db.staff.push({ name, id, rank }); persist(); return true;
+    db.staff.push({ name, id, rank, manual: true }); persist(); return true;
   },
   // add-or-update, used by role sync (matches on Discord id first, then name)
-  upsertStaff(name, id = '', rank = '') {
+  upsertStaff(name, id = '', rank = '', fromRole = false) {
     const norm = name.toLowerCase().replace(/[^a-z0-9]/g, '');
     let row = (id && db.staff.find((s) => s.id === id)) ||
               db.staff.find((s) => s.name.toLowerCase().replace(/[^a-z0-9]/g, '') === norm);
     if (row) {
       const changed = row.name !== name || row.id !== id || row.rank !== rank;
       row.name = name; row.id = id || row.id; row.rank = rank;
+      if (fromRole) row.fromRole = true;
       persist(); return changed ? 'updated' : 'unchanged';
     }
-    db.staff.push({ name, id, rank }); persist(); return 'added';
+    db.staff.push({ name, id, rank, ...(fromRole ? { fromRole: true } : {}) }); persist(); return 'added';
   },
   removeStaff(name) {
     const norm = name.toLowerCase().replace(/[^a-z0-9]/g, '');
     const before = db.staff.length;
     db.staff = db.staff.filter((s) => s.name.toLowerCase().replace(/[^a-z0-9]/g, '') !== norm);
+    persist(); return db.staff.length < before;
+  },
+
+  // ---- Discord role sync -------------------------------------------------
+  // Make the staff list mirror the people who currently hold a staff role.
+  // `current` is [{ name, id, rank }] for every present role-holder. Everyone
+  // in it is added/updated; any previously role-synced member who is no longer
+  // a holder is removed. Manually-added staff (from /staff add) are never
+  // touched, so hand-picked entries survive a sync.
+  syncFromRoles(current) {
+    const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    let added = 0, updated = 0;
+    for (const c of current) {
+      const res = this.upsertStaff(c.name, c.id, c.rank, true);
+      if (res === 'added') added++; else if (res === 'updated') updated++;
+    }
+    const keepIds = new Set(current.map((c) => String(c.id)).filter(Boolean));
+    const keepNames = new Set(current.map((c) => norm(c.name)));
+    const before = db.staff.length;
+    db.staff = db.staff.filter((s) => {
+      if (s.manual) return true;                                   // never auto-remove manual entries
+      const holder = (s.id && keepIds.has(String(s.id))) || keepNames.has(norm(s.name));
+      return holder;                                               // drop anyone who lost the role
+    });
+    const removed = before - db.staff.length;
+    persist();
+    return { total: current.length, added, updated, removed };
+  },
+
+  // Apply one member's current role state (live add/remove). `rank` is the
+  // member's highest staff rank, or null/'' if they hold no staff role.
+  // Returns 'added' | 'updated' | 'removed' | 'unchanged'.
+  setMemberRole(id, name, rank) {
+    const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+    if (rank) return this.upsertStaff(name, id, rank, true);
+    // no staff role now — remove them, unless they were added by hand
+    const row = (id && db.staff.find((s) => s.id === String(id))) ||
+                db.staff.find((s) => norm(s.name) === norm(name));
+    if (!row || row.manual) return 'unchanged';
+    db.staff = db.staff.filter((s) => s !== row);
+    persist(); return 'removed';
+  },
+
+  // Remove a member by Discord id (used when someone leaves the server).
+  removeStaffById(id) {
+    if (!id) return false;
+    const before = db.staff.length;
+    db.staff = db.staff.filter((s) => !(String(s.id) === String(id) && !s.manual));
     persist(); return db.staff.length < before;
   },
 

@@ -365,3 +365,84 @@ td.num,.c-week .fig{transition:color .2s var(--ease);}
   .stat-row .stat,.panel,.cards .card{animation:none;}
   *{transition-duration:.001ms !important;}
 }
+
+/* ============================================================
+   UI refinements v2 — richer surfaces, crisper hierarchy.
+   Layered on top; motion still respects reduced-motion above.
+   ============================================================ */
+
+/* custom scrollbar for a more finished feel */
+*{scrollbar-width:thin;scrollbar-color:rgba(230,179,69,.35) transparent;}
+*::-webkit-scrollbar{width:11px;height:11px;}
+*::-webkit-scrollbar-track{background:transparent;}
+*::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,rgba(230,179,69,.5),rgba(158,31,60,.5));
+  border-radius:99px;border:3px solid transparent;background-clip:content-box;
+}
+*::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,rgba(255,223,142,.7),rgba(214,72,106,.6));background-clip:content-box;}
+
+/* text selection on-brand */
+::selection{background:rgba(230,179,69,.28);color:#fff;}
+
+/* stat tiles: subtle depth, a gold hairline on top, gradient numerals */
+.stat{
+  background:linear-gradient(180deg,rgba(38,22,34,.7),rgba(21,14,20,.85));
+  position:relative;overflow:hidden;
+}
+.stat::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(230,179,69,.7),transparent);
+  opacity:.7;
+}
+.stat .n{
+  background:linear-gradient(180deg,#fff 8%,var(--gold-bright) 60%,var(--gold) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* panels: soft inner top highlight + a touch more glass */
+.panel{
+  background:
+    linear-gradient(180deg,rgba(230,179,69,.05),transparent 120px),
+    var(--card);
+  backdrop-filter:blur(14px);
+  box-shadow:0 1px 0 rgba(255,255,255,.03) inset;
+}
+.panel h2{position:relative;padding-left:13px;}
+.panel h2::before{
+  content:"";position:absolute;left:0;top:1px;bottom:1px;width:3px;border-radius:2px;
+  background:linear-gradient(180deg,var(--gold-bright),var(--crimson));
+}
+
+/* dashboard cards: gentle sheen sweep on hover */
+.card{position:relative;overflow:hidden;
+  background:linear-gradient(180deg,rgba(38,22,34,.55),rgba(21,14,20,.85));}
+.card::after{
+  content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.06),transparent);
+  transform:skewX(-18deg);transition:left .6s var(--ease);pointer-events:none;
+}
+.card:hover::after{left:130%;}
+
+/* buttons: a slightly deeper, glossier gold */
+.btn{background:linear-gradient(180deg,var(--gold-bright) 0%,var(--gold) 55%,#cf9a34 100%);}
+
+/* period toggle + section subtitles a touch calmer */
+.period-bar .btn.small{border-radius:10px;}
+.page-title{filter:drop-shadow(0 2px 18px rgba(230,179,69,.18));}
+
+/* leaderboard rows: clearer hover + rounded active highlight */
+table.board tbody tr:hover{background:rgba(230,179,69,.06);}
+table.board tr.is-me{background:linear-gradient(90deg,rgba(158,31,60,.18),rgba(158,31,60,.06));}
+.pos.medal{box-shadow:0 2px 10px rgba(0,0,0,.35);}
+
+/* inputs: warmer focus */
+input:focus,select:focus,.search:focus{
+  border-color:var(--gold);box-shadow:0 0 0 3px rgba(230,179,69,.16),0 4px 18px rgba(0,0,0,.25);
+}
+
+/* dropzone: friendlier resting state */
+.dropzone{background:linear-gradient(180deg,rgba(230,179,69,.03),rgba(14,8,16,.5));}
+
+@media (prefers-reduced-motion: reduce){
+  .card::after{transition:none;}
+}

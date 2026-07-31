@@ -9,8 +9,8 @@
 //                   the same staff member inside one transcript
 // =====================================================
 
-const QUALITY_MIN_WORDS = 2;    // a reply must be at least this many words
-const TICKET_MIN_REPLIES = 2;   // 2+ lines on the ticket = 1 ticket
+const QUALITY_MIN_WORDS = 1;    // a reply must be at least this many words
+const TICKET_MIN_REPLIES = 1;   // 1+ reply on the ticket = 1 ticket (every ticket counts)
 const HELPFUL_MIN_CONTENT_WORDS = 2;   // meaningful words a normal reply needs
 const QUESTION_MIN_CONTENT_WORDS = 4;  // questions need more — "is this gtc?" isn't help
 const SHORT_REPLY_MAX_WORDS = 8;       // above this, a reply can't lean on the help-verb shortcut
@@ -133,38 +133,11 @@ function wordsOf(text) {
  * It's a heuristic, not comprehension. See the README for the tuning knobs.
  */
 function isQualityReply(text) {
-  const words = wordsOf(text);
-  if (words.length < QUALITY_MIN_WORDS) return false;
-
-  // Peel off leading filler formulas — repeatedly, since they stack
-  // ("hey there, thanks for waiting, bumping this...").
-  let rest = words.join(' ');
-  for (const re of FILLER_PHRASES) rest = rest.replace(re, ' ');
-  rest = rest.replace(/\s+/g, ' ').trim();
-  for (let pass = 0; pass < 4; pass++) {
-    const before = rest;
-    for (const re of FORMULA_OPENERS) rest = rest.replace(re, '').trim();
-    if (rest === before) break;
-  }
-  if (!rest) return false;
-
-  const restWords = rest.split(/\s+/);
-  const content = new Set(
-    restWords.filter((w) => w.length > 2
-      && !STOPWORDS.has(w) && !PLEASANTRIES.has(w) && !CHITCHAT.has(w))
-  );
-
-  // Is the staffer asking rather than answering?
-  const asks = String(text || '').includes('?') || QUESTION_OPENERS.has(restWords[0]);
-  if (asks) return content.size >= QUESTION_MIN_CONTENT_WORDS;
-
-  if (content.size >= HELPFUL_MIN_CONTENT_WORDS) return true;
-
-  // Terse-but-real replies ("i refunded it") get through on a help verb. Long
-  // messages don't — if 20 words boil down to one content word, it's padding.
-  return words.length <= SHORT_REPLY_MAX_WORDS
-    && content.size >= 1
-    && restWords.some((w) => HELP_VERBS.has(w));
+  // Every genuine staff reply now counts. We only skip messages that carry no
+  // real words at all — pure emoji, mentions, links or punctuation — since
+  // those aren't actually a reply. Any message with at least one word that
+  // contains a letter is a reply, so every ticket a staffer speaks in counts.
+  return wordsOf(text).some((w) => /[a-z]/.test(w));
 }
 
 const normName = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');

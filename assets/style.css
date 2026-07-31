@@ -307,3 +307,61 @@ tfoot td{border-bottom:none;border-top:1px solid var(--card-border);color:var(--
   table.board tr.is-me td:first-child{box-shadow:none;}
   table.board tr.is-me{border-color:rgba(214,72,106,.5);}
 }
+
+/* ============================================================
+   Smoother UI — gentler easing, tasteful entrances & hovers
+   Appended so it layers on top of the rules above. All motion
+   is disabled under prefers-reduced-motion at the very end.
+   ============================================================ */
+:root{
+  --ease:cubic-bezier(.22,.61,.36,1);      /* soft ease-out for hovers   */
+  --ease-spring:cubic-bezier(.34,1.56,.64,1); /* slight overshoot for lifts */
+}
+html{scroll-behavior:smooth;}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+
+/* smoother, springier interactive feedback */
+.btn{transition:transform .22s var(--ease-spring),box-shadow .22s var(--ease),filter .22s var(--ease);}
+.btn:active{transform:translateY(1px) scale(.99);}
+.btn.ghost{transition:transform .22s var(--ease-spring),border-color .22s var(--ease),color .22s var(--ease),background .22s var(--ease);}
+.btn.ghost:hover{background:rgba(230,179,69,.08);}
+
+.card{transition:transform .28s var(--ease-spring),border-color .28s var(--ease),box-shadow .28s var(--ease);}
+.stat{transition:transform .28s var(--ease-spring),border-color .28s var(--ease),box-shadow .28s var(--ease);}
+.stat:hover{transform:translateY(-3px);border-color:rgba(230,179,69,.45);box-shadow:0 14px 38px rgba(158,31,60,.20);}
+.stat .n{transition:text-shadow .28s var(--ease);}
+
+.panel{transition:border-color .28s var(--ease),box-shadow .28s var(--ease);}
+.panel:hover{border-color:rgba(230,179,69,.28);}
+
+input,select,.search{transition:border-color .22s var(--ease),box-shadow .22s var(--ease),background .22s var(--ease);}
+.dropzone{transition:border-color .22s var(--ease),background .22s var(--ease),transform .22s var(--ease-spring);}
+
+table tbody tr,table.board tbody tr{transition:background .2s var(--ease);}
+td.num,.c-week .fig{transition:color .2s var(--ease);}
+.tag,.pill{transition:background .2s var(--ease),border-color .2s var(--ease),color .2s var(--ease);}
+.bar{transition:width .5s var(--ease);}
+
+/* gentle fade-up entrance for the main building blocks */
+@keyframes riseIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.stat-row .stat,.panel,.cards .card{
+  animation:riseIn .5s var(--ease) both;
+}
+.stat-row .stat:nth-child(2){animation-delay:.05s;}
+.stat-row .stat:nth-child(3){animation-delay:.10s;}
+.stat-row .stat:nth-child(4){animation-delay:.15s;}
+.page > .panel:nth-of-type(1){animation-delay:.05s;}
+.page > .panel:nth-of-type(2){animation-delay:.10s;}
+.page > .panel:nth-of-type(3){animation-delay:.15s;}
+.page > .panel:nth-of-type(n+4){animation-delay:.20s;}
+.cards .card:nth-child(2){animation-delay:.06s;}
+.cards .card:nth-child(3){animation-delay:.12s;}
+.cards .card:nth-child(4){animation-delay:.18s;}
+.cards .card:nth-child(5){animation-delay:.24s;}
+.cards .card:nth-child(6){animation-delay:.30s;}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  .stat-row .stat,.panel,.cards .card{animation:none;}
+  *{transition-duration:.001ms !important;}
+}

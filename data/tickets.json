@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-31T09:58:03.119Z",
+  "generated": "2026-07-31T10:04:30.444Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 45,
+    "totalTickets": 48,
     "staff": [
       {
         "key": "snq",
@@ -32,8 +32,15 @@
         "key": "angel",
         "name": "Angel",
         "rank": "Administrator",
-        "tickets": 4,
-        "replies": 6
+        "tickets": 5,
+        "replies": 8
+      },
+      {
+        "key": "savi",
+        "name": "Savi",
+        "rank": "Head Administrator",
+        "tickets": 3,
+        "replies": 15
       },
       {
         "key": "tart",
@@ -57,18 +64,18 @@
         "replies": 5
       },
       {
-        "key": "savi",
-        "name": "Savi",
-        "rank": "Head Administrator",
-        "tickets": 2,
-        "replies": 13
-      },
-      {
         "key": "b05cmdrpaddymalone",
         "name": "B-05 | Cmdr. Paddy Malone",
         "rank": "Moderator",
         "tickets": 2,
         "replies": 9
+      },
+      {
+        "key": "kat",
+        "name": "kat",
+        "rank": "Server Manager",
+        "tickets": 2,
+        "replies": 4
       },
       {
         "key": "lunasmith",
@@ -127,13 +134,6 @@
         "replies": 4
       },
       {
-        "key": "kat",
-        "name": "kat",
-        "rank": "Server Manager",
-        "tickets": 1,
-        "replies": 3
-      },
-      {
         "key": "blaze",
         "name": "Blaze",
         "rank": "Administrator",
@@ -184,7 +184,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 45,
+      "totalTickets": 48,
       "staff": [
         {
           "key": "snq",
@@ -204,8 +204,15 @@
           "key": "angel",
           "name": "Angel",
           "rank": "Administrator",
-          "tickets": 4,
-          "replies": 6
+          "tickets": 5,
+          "replies": 8
+        },
+        {
+          "key": "savi",
+          "name": "Savi",
+          "rank": "Head Administrator",
+          "tickets": 3,
+          "replies": 15
         },
         {
           "key": "tart",
@@ -229,18 +236,18 @@
           "replies": 5
         },
         {
-          "key": "savi",
-          "name": "Savi",
-          "rank": "Head Administrator",
-          "tickets": 2,
-          "replies": 13
-        },
-        {
           "key": "b05cmdrpaddymalone",
           "name": "B-05 | Cmdr. Paddy Malone",
           "rank": "Moderator",
           "tickets": 2,
           "replies": 9
+        },
+        {
+          "key": "kat",
+          "name": "kat",
+          "rank": "Server Manager",
+          "tickets": 2,
+          "replies": 4
         },
         {
           "key": "lunasmith",
@@ -297,13 +304,6 @@
           "rank": "Support",
           "tickets": 1,
           "replies": 4
-        },
-        {
-          "key": "kat",
-          "name": "kat",
-          "rank": "Server Manager",
-          "tickets": 1,
-          "replies": 3
         },
         {
           "key": "blaze",
@@ -3558,15 +3558,15 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10287,
-  "totalTickets": 11518,
+  "transcriptCount": 10288,
+  "totalTickets": 11521,
   "staff": [
     {
       "key": "kat",
       "name": "kat",
       "rank": "Server Manager",
-      "tickets": 1569,
-      "replies": 3095
+      "tickets": 1570,
+      "replies": 3096
     },
     {
       "key": "mira",
@@ -3600,8 +3600,8 @@
       "key": "angel",
       "name": "Angel",
       "rank": "Administrator",
-      "tickets": 450,
-      "replies": 992
+      "tickets": 451,
+      "replies": 994
     },
     {
       "key": "esrie",
@@ -3614,8 +3614,8 @@
       "key": "savi",
       "name": "Savi",
       "rank": "Head Administrator",
-      "tickets": 397,
-      "replies": 926
+      "tickets": 398,
+      "replies": 928
     },
     {
       "key": "lyraquinn",

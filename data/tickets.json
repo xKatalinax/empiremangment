@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-07-31T09:23:12.448Z",
+  "generated": "2026-07-31T09:30:34.996Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 38,
+    "totalTickets": 43,
     "staff": [
       {
         "key": "exe",
@@ -25,8 +25,15 @@
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Moderator",
-        "tickets": 3,
-        "replies": 16
+        "tickets": 4,
+        "replies": 18
+      },
+      {
+        "key": "angel",
+        "name": "Angel",
+        "rank": "Administrator",
+        "tickets": 4,
+        "replies": 6
       },
       {
         "key": "tart",
@@ -43,11 +50,11 @@
         "replies": 12
       },
       {
-        "key": "angel",
-        "name": "Angel",
+        "key": "mira",
+        "name": "Mira",
         "rank": "Administrator",
         "tickets": 3,
-        "replies": 4
+        "replies": 5
       },
       {
         "key": "savi",
@@ -64,13 +71,6 @@
         "replies": 9
       },
       {
-        "key": "mira",
-        "name": "Mira",
-        "rank": "Administrator",
-        "tickets": 2,
-        "replies": 4
-      },
-      {
         "key": "lunasmith",
         "name": "Luna Smith",
         "rank": "Administrator",
@@ -80,6 +80,13 @@
       {
         "key": "lydia",
         "name": "Lydia",
+        "rank": "Support",
+        "tickets": 2,
+        "replies": 2
+      },
+      {
+        "key": "jimboobway",
+        "name": "Jim Boobway",
         "rank": "Support",
         "tickets": 2,
         "replies": 2
@@ -134,6 +141,13 @@
         "replies": 2
       },
       {
+        "key": "lucian",
+        "name": "Lucian",
+        "rank": "Support",
+        "tickets": 1,
+        "replies": 2
+      },
+      {
         "key": "pluplu",
         "name": "PLU PLU",
         "rank": "Administrator",
@@ -153,13 +167,6 @@
         "rank": "Head Administrator",
         "tickets": 1,
         "replies": 1
-      },
-      {
-        "key": "jimboobway",
-        "name": "Jim Boobway",
-        "rank": "Support",
-        "tickets": 1,
-        "replies": 1
       }
     ]
   },
@@ -170,7 +177,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 38,
+      "totalTickets": 43,
       "staff": [
         {
           "key": "exe",
@@ -183,8 +190,15 @@
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Moderator",
-          "tickets": 3,
-          "replies": 16
+          "tickets": 4,
+          "replies": 18
+        },
+        {
+          "key": "angel",
+          "name": "Angel",
+          "rank": "Administrator",
+          "tickets": 4,
+          "replies": 6
         },
         {
           "key": "tart",
@@ -201,11 +215,11 @@
           "replies": 12
         },
         {
-          "key": "angel",
-          "name": "Angel",
+          "key": "mira",
+          "name": "Mira",
           "rank": "Administrator",
           "tickets": 3,
-          "replies": 4
+          "replies": 5
         },
         {
           "key": "savi",
@@ -222,13 +236,6 @@
           "replies": 9
         },
         {
-          "key": "mira",
-          "name": "Mira",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 4
-        },
-        {
           "key": "lunasmith",
           "name": "Luna Smith",
           "rank": "Administrator",
@@ -238,6 +245,13 @@
         {
           "key": "lydia",
           "name": "Lydia",
+          "rank": "Support",
+          "tickets": 2,
+          "replies": 2
+        },
+        {
+          "key": "jimboobway",
+          "name": "Jim Boobway",
           "rank": "Support",
           "tickets": 2,
           "replies": 2
@@ -292,6 +306,13 @@
           "replies": 2
         },
         {
+          "key": "lucian",
+          "name": "Lucian",
+          "rank": "Support",
+          "tickets": 1,
+          "replies": 2
+        },
+        {
           "key": "pluplu",
           "name": "PLU PLU",
           "rank": "Administrator",
@@ -309,13 +330,6 @@
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
-          "tickets": 1,
-          "replies": 1
-        },
-        {
-          "key": "jimboobway",
-          "name": "Jim Boobway",
-          "rank": "Support",
           "tickets": 1,
           "replies": 1
         }
@@ -3530,8 +3544,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10285,
-  "totalTickets": 11511,
+  "transcriptCount": 10286,
+  "totalTickets": 11516,
   "staff": [
     {
       "key": "kat",
@@ -3544,8 +3558,8 @@
       "key": "mira",
       "name": "Mira",
       "rank": "Administrator",
-      "tickets": 1288,
-      "replies": 3315
+      "tickets": 1289,
+      "replies": 3316
     },
     {
       "key": "clarksmith",
@@ -3572,8 +3586,8 @@
       "key": "angel",
       "name": "Angel",
       "rank": "Administrator",
-      "tickets": 449,
-      "replies": 990
+      "tickets": 450,
+      "replies": 992
     },
     {
       "key": "esrie",
@@ -3607,8 +3621,8 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Moderator",
-      "tickets": 303,
-      "replies": 1115
+      "tickets": 304,
+      "replies": 1117
     },
     {
       "key": "pluplu",
@@ -3894,8 +3908,8 @@
       "key": "lucian",
       "name": "Lucian",
       "rank": "Support",
-      "tickets": 21,
-      "replies": 40
+      "tickets": 22,
+      "replies": 42
     },
     {
       "key": "ltshadow",
@@ -3908,8 +3922,8 @@
       "key": "jimboobway",
       "name": "Jim Boobway",
       "rank": "Support",
-      "tickets": 13,
-      "replies": 38
+      "tickets": 14,
+      "replies": 39
     },
     {
       "key": "ricky",

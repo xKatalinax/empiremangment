@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-01T03:29:46.850Z",
+  "generated": "2026-08-01T03:31:58.837Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -122,7 +122,7 @@
       {
         "key": "id1505031327035035698",
         "name": "░▒▓ ℝ𝔸𝕀ℕ𝔼 ▓▒░",
-        "rank": "Senior Administrator",
+        "rank": "",
         "tickets": 1,
         "replies": 4
       },
@@ -294,7 +294,7 @@
         {
           "key": "id1505031327035035698",
           "name": "░▒▓ ℝ𝔸𝕀ℕ𝔼 ▓▒░",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 1,
           "replies": 4
         },
@@ -388,7 +388,7 @@
         {
           "key": "id1505031327035035698",
           "name": "░▒▓ ℝ𝔸𝕀ℕ𝔼 ▓▒░",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 88,
           "replies": 216
         },
@@ -689,7 +689,7 @@
         {
           "key": "id1034173416619659316",
           "name": "𝕭𝕰𝕬𝕹",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 1,
           "replies": 4
         },
@@ -783,7 +783,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 81,
           "replies": 183
         },
@@ -993,7 +993,7 @@
         {
           "key": "id1034173416619659316",
           "name": "𝕭𝕰𝕬𝕹",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 4,
           "replies": 7
         },
@@ -1080,7 +1080,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 110,
           "replies": 218
         },
@@ -1276,7 +1276,7 @@
         {
           "key": "id1034173416619659316",
           "name": "𝕭𝕰𝕬𝕹",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 8,
           "replies": 15
         },
@@ -1419,7 +1419,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 55,
           "replies": 140
         },
@@ -1447,7 +1447,7 @@
         {
           "key": "id1034173416619659316",
           "name": "𝕭𝕰𝕬𝕹",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 48,
           "replies": 75
         },
@@ -1688,7 +1688,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 49,
           "replies": 110
         },
@@ -1842,7 +1842,7 @@
         {
           "key": "id1034173416619659316",
           "name": "𝕭𝕰𝕬𝕹",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 2,
           "replies": 12
         },
@@ -1950,7 +1950,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 43,
           "replies": 85
         },
@@ -2198,7 +2198,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 46,
           "replies": 88
         },
@@ -2418,7 +2418,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 51,
           "replies": 85
         },
@@ -2652,7 +2652,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 46,
           "replies": 122
         },
@@ -2809,7 +2809,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 30,
           "replies": 64
         },
@@ -2959,7 +2959,7 @@
         {
           "key": "id1505031327035035698",
           "name": "🅡🅐🅘🅝🅔",
-          "rank": "Senior Administrator",
+          "rank": "",
           "tickets": 25,
           "replies": 49
         },
@@ -3585,7 +3585,7 @@
     {
       "key": "id1505031327035035698",
       "name": "░▒▓ ℝ𝔸𝕀ℕ𝔼 ▓▒░",
-      "rank": "Senior Administrator",
+      "rank": "",
       "tickets": 625,
       "replies": 1364
     },
@@ -3795,7 +3795,7 @@
     {
       "key": "id1034173416619659316",
       "name": "𝕭𝕰𝕬𝕹",
-      "rank": "Senior Administrator",
+      "rank": "",
       "tickets": 63,
       "replies": 113
     },

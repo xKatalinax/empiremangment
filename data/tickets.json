@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-01T13:08:47.535Z",
+  "generated": "2026-08-01T18:26:05.785Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 81,
+    "totalTickets": 83,
     "staff": [
       {
         "key": "angel",
@@ -78,6 +78,13 @@
         "replies": 14
       },
       {
+        "key": "jimboobway",
+        "name": "Jim Boobway",
+        "rank": "Support",
+        "tickets": 3,
+        "replies": 6
+      },
+      {
         "key": "lunasmith",
         "name": "Luna Smith",
         "rank": "Administrator",
@@ -113,6 +120,13 @@
         "replies": 9
       },
       {
+        "key": "sho",
+        "name": "Sho",
+        "rank": "Administrator",
+        "tickets": 2,
+        "replies": 6
+      },
+      {
         "key": "lucian",
         "name": "Lucian",
         "rank": "Support",
@@ -122,13 +136,6 @@
       {
         "key": "lydia",
         "name": "Lydia",
-        "rank": "Support",
-        "tickets": 2,
-        "replies": 2
-      },
-      {
-        "key": "jimboobway",
-        "name": "Jim Boobway",
         "rank": "Support",
         "tickets": 2,
         "replies": 2
@@ -158,13 +165,6 @@
         "key": "charliewatleh",
         "name": "Charlie Watleh",
         "rank": "Moderator",
-        "tickets": 1,
-        "replies": 5
-      },
-      {
-        "key": "sho",
-        "name": "Sho",
-        "rank": "Administrator",
         "tickets": 1,
         "replies": 5
       },
@@ -226,7 +226,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 81,
+      "totalTickets": 83,
       "staff": [
         {
           "key": "angel",
@@ -292,6 +292,13 @@
           "replies": 14
         },
         {
+          "key": "jimboobway",
+          "name": "Jim Boobway",
+          "rank": "Support",
+          "tickets": 3,
+          "replies": 6
+        },
+        {
           "key": "lunasmith",
           "name": "Luna Smith",
           "rank": "Administrator",
@@ -327,6 +334,13 @@
           "replies": 9
         },
         {
+          "key": "sho",
+          "name": "Sho",
+          "rank": "Administrator",
+          "tickets": 2,
+          "replies": 6
+        },
+        {
           "key": "lucian",
           "name": "Lucian",
           "rank": "Support",
@@ -336,13 +350,6 @@
         {
           "key": "lydia",
           "name": "Lydia",
-          "rank": "Support",
-          "tickets": 2,
-          "replies": 2
-        },
-        {
-          "key": "jimboobway",
-          "name": "Jim Boobway",
           "rank": "Support",
           "tickets": 2,
           "replies": 2
@@ -372,13 +379,6 @@
           "key": "charliewatleh",
           "name": "Charlie Watleh",
           "rank": "Moderator",
-          "tickets": 1,
-          "replies": 5
-        },
-        {
-          "key": "sho",
-          "name": "Sho",
-          "rank": "Administrator",
           "tickets": 1,
           "replies": 5
         },
@@ -3642,8 +3642,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10300,
-  "totalTickets": 11554,
+  "transcriptCount": 10301,
+  "totalTickets": 11556,
   "staff": [
     {
       "key": "kat",
@@ -3775,8 +3775,8 @@
       "key": "sho",
       "name": "Sho",
       "rank": "Administrator",
-      "tickets": 204,
-      "replies": 530
+      "tickets": 205,
+      "replies": 531
     },
     {
       "key": "carlitos",
@@ -4020,8 +4020,8 @@
       "key": "jimboobway",
       "name": "Jim Boobway",
       "rank": "Support",
-      "tickets": 14,
-      "replies": 39
+      "tickets": 15,
+      "replies": 43
     },
     {
       "key": "evelyn",

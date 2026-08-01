@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-01T03:41:58.258Z",
+  "generated": "2026-08-01T03:42:20.777Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 51,
+    "totalTickets": 52,
     "staff": [
       {
         "key": "angel",
@@ -127,6 +127,13 @@
         "replies": 7
       },
       {
+        "key": "onthedeadhomies",
+        "name": "on the dead homies",
+        "rank": "Support",
+        "tickets": 1,
+        "replies": 6
+      },
+      {
         "key": "ricky",
         "name": "Ricky",
         "rank": "Support",
@@ -184,7 +191,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 51,
+      "totalTickets": 52,
       "staff": [
         {
           "key": "angel",
@@ -297,6 +304,13 @@
           "rank": "Senior Administrator",
           "tickets": 1,
           "replies": 7
+        },
+        {
+          "key": "onthedeadhomies",
+          "name": "on the dead homies",
+          "rank": "Support",
+          "tickets": 1,
+          "replies": 6
         },
         {
           "key": "ricky",
@@ -3558,8 +3572,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10290,
-  "totalTickets": 11524,
+  "transcriptCount": 10291,
+  "totalTickets": 11525,
   "staff": [
     {
       "key": "kat",
@@ -3968,6 +3982,13 @@
       "replies": 29
     },
     {
+      "key": "onthedeadhomies",
+      "name": "on the dead homies",
+      "rank": "Support",
+      "tickets": 6,
+      "replies": 16
+    },
+    {
       "key": "lydia",
       "name": "Lydia",
       "rank": "Support",
@@ -3980,13 +4001,6 @@
       "rank": "Support",
       "tickets": 5,
       "replies": 23
-    },
-    {
-      "key": "onthedeadhomies",
-      "name": "on the dead homies",
-      "rank": "Support",
-      "tickets": 5,
-      "replies": 10
     },
     {
       "key": "edengraves",

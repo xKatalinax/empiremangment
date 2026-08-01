@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-01T03:43:13.486Z",
+  "generated": "2026-08-01T03:44:45.816Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 52,
+    "totalTickets": 55,
     "staff": [
       {
         "key": "angel",
@@ -36,6 +36,13 @@
         "replies": 9
       },
       {
+        "key": "evelyn",
+        "name": "Evelyn",
+        "rank": "Support",
+        "tickets": 4,
+        "replies": 13
+      },
+      {
         "key": "savi",
         "name": "Savi",
         "rank": "Head Administrator",
@@ -50,18 +57,18 @@
         "replies": 14
       },
       {
-        "key": "evelyn",
-        "name": "Evelyn",
-        "rank": "Support",
-        "tickets": 3,
-        "replies": 12
-      },
-      {
         "key": "mira",
         "name": "Mira",
         "rank": "Administrator",
         "tickets": 3,
         "replies": 5
+      },
+      {
+        "key": "bonnie",
+        "name": "Bonnie",
+        "rank": "Head Administrator",
+        "tickets": 3,
+        "replies": 4
       },
       {
         "key": "b05cmdrpaddymalone",
@@ -88,13 +95,6 @@
         "key": "b09majbobross",
         "name": "B-09 | Maj. Bob Ross",
         "rank": "Administrator",
-        "tickets": 2,
-        "replies": 2
-      },
-      {
-        "key": "bonnie",
-        "name": "Bonnie",
-        "rank": "Head Administrator",
         "tickets": 2,
         "replies": 2
       },
@@ -129,6 +129,13 @@
       {
         "key": "onthedeadhomies",
         "name": "on the dead homies",
+        "rank": "Support",
+        "tickets": 1,
+        "replies": 6
+      },
+      {
+        "key": "xjhani",
+        "name": "xJhani",
         "rank": "Support",
         "tickets": 1,
         "replies": 6
@@ -191,7 +198,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 52,
+      "totalTickets": 55,
       "staff": [
         {
           "key": "angel",
@@ -215,6 +222,13 @@
           "replies": 9
         },
         {
+          "key": "evelyn",
+          "name": "Evelyn",
+          "rank": "Support",
+          "tickets": 4,
+          "replies": 13
+        },
+        {
           "key": "savi",
           "name": "Savi",
           "rank": "Head Administrator",
@@ -229,18 +243,18 @@
           "replies": 14
         },
         {
-          "key": "evelyn",
-          "name": "Evelyn",
-          "rank": "Support",
-          "tickets": 3,
-          "replies": 12
-        },
-        {
           "key": "mira",
           "name": "Mira",
           "rank": "Administrator",
           "tickets": 3,
           "replies": 5
+        },
+        {
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Head Administrator",
+          "tickets": 3,
+          "replies": 4
         },
         {
           "key": "b05cmdrpaddymalone",
@@ -267,13 +281,6 @@
           "key": "b09majbobross",
           "name": "B-09 | Maj. Bob Ross",
           "rank": "Administrator",
-          "tickets": 2,
-          "replies": 2
-        },
-        {
-          "key": "bonnie",
-          "name": "Bonnie",
-          "rank": "Head Administrator",
           "tickets": 2,
           "replies": 2
         },
@@ -308,6 +315,13 @@
         {
           "key": "onthedeadhomies",
           "name": "on the dead homies",
+          "rank": "Support",
+          "tickets": 1,
+          "replies": 6
+        },
+        {
+          "key": "xjhani",
+          "name": "xJhani",
           "rank": "Support",
           "tickets": 1,
           "replies": 6
@@ -3572,8 +3586,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10291,
-  "totalTickets": 11525,
+  "transcriptCount": 10292,
+  "totalTickets": 11528,
   "staff": [
     {
       "key": "kat",
@@ -3607,8 +3621,8 @@
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 596,
-      "replies": 1653
+      "tickets": 597,
+      "replies": 1655
     },
     {
       "key": "angel",
@@ -3768,8 +3782,8 @@
       "key": "xjhani",
       "name": "xJhani",
       "rank": "Support",
-      "tickets": 105,
-      "replies": 263
+      "tickets": 106,
+      "replies": 269
     },
     {
       "key": "cletus",
@@ -3978,8 +3992,8 @@
       "key": "evelyn",
       "name": "Evelyn",
       "rank": "Support",
-      "tickets": 7,
-      "replies": 29
+      "tickets": 8,
+      "replies": 30
     },
     {
       "key": "onthedeadhomies",

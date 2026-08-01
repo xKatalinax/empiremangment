@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-01T03:48:21.122Z",
+  "generated": "2026-08-01T03:48:56.996Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,14 +12,14 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 69,
+    "totalTickets": 74,
     "staff": [
       {
         "key": "angel",
         "name": "Angel",
         "rank": "Administrator",
-        "tickets": 8,
-        "replies": 13
+        "tickets": 9,
+        "replies": 14
       },
       {
         "key": "snq",
@@ -46,8 +46,15 @@
         "key": "evelyn",
         "name": "Evelyn",
         "rank": "Support",
-        "tickets": 4,
-        "replies": 13
+        "tickets": 5,
+        "replies": 16
+      },
+      {
+        "key": "bonnie",
+        "name": "Bonnie",
+        "rank": "Head Administrator",
+        "tickets": 5,
+        "replies": 9
       },
       {
         "key": "kat",
@@ -78,18 +85,18 @@
         "replies": 4
       },
       {
-        "key": "bonnie",
-        "name": "Bonnie",
-        "rank": "Head Administrator",
-        "tickets": 3,
-        "replies": 4
-      },
-      {
         "key": "onthedeadhomies",
         "name": "on the dead homies",
         "rank": "Support",
         "tickets": 2,
         "replies": 12
+      },
+      {
+        "key": "xjhani",
+        "name": "xJhani",
+        "rank": "Support",
+        "tickets": 2,
+        "replies": 10
       },
       {
         "key": "b05cmdrpaddymalone",
@@ -132,13 +139,6 @@
         "rank": "Senior Administrator",
         "tickets": 1,
         "replies": 7
-      },
-      {
-        "key": "xjhani",
-        "name": "xJhani",
-        "rank": "Support",
-        "tickets": 1,
-        "replies": 6
       },
       {
         "key": "ricky",
@@ -219,14 +219,14 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 69,
+      "totalTickets": 74,
       "staff": [
         {
           "key": "angel",
           "name": "Angel",
           "rank": "Administrator",
-          "tickets": 8,
-          "replies": 13
+          "tickets": 9,
+          "replies": 14
         },
         {
           "key": "snq",
@@ -253,8 +253,15 @@
           "key": "evelyn",
           "name": "Evelyn",
           "rank": "Support",
-          "tickets": 4,
-          "replies": 13
+          "tickets": 5,
+          "replies": 16
+        },
+        {
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Head Administrator",
+          "tickets": 5,
+          "replies": 9
         },
         {
           "key": "kat",
@@ -285,18 +292,18 @@
           "replies": 4
         },
         {
-          "key": "bonnie",
-          "name": "Bonnie",
-          "rank": "Head Administrator",
-          "tickets": 3,
-          "replies": 4
-        },
-        {
           "key": "onthedeadhomies",
           "name": "on the dead homies",
           "rank": "Support",
           "tickets": 2,
           "replies": 12
+        },
+        {
+          "key": "xjhani",
+          "name": "xJhani",
+          "rank": "Support",
+          "tickets": 2,
+          "replies": 10
         },
         {
           "key": "b05cmdrpaddymalone",
@@ -339,13 +346,6 @@
           "rank": "Senior Administrator",
           "tickets": 1,
           "replies": 7
-        },
-        {
-          "key": "xjhani",
-          "name": "xJhani",
-          "rank": "Support",
-          "tickets": 1,
-          "replies": 6
         },
         {
           "key": "ricky",
@@ -3628,8 +3628,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10296,
-  "totalTickets": 11542,
+  "transcriptCount": 10298,
+  "totalTickets": 11547,
   "staff": [
     {
       "key": "kat",
@@ -3663,15 +3663,15 @@
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 597,
-      "replies": 1655
+      "tickets": 599,
+      "replies": 1660
     },
     {
       "key": "angel",
       "name": "Angel",
       "rank": "Administrator",
-      "tickets": 454,
-      "replies": 999
+      "tickets": 455,
+      "replies": 1000
     },
     {
       "key": "esrie",
@@ -3824,8 +3824,8 @@
       "key": "xjhani",
       "name": "xJhani",
       "rank": "Support",
-      "tickets": 106,
-      "replies": 269
+      "tickets": 107,
+      "replies": 273
     },
     {
       "key": "cletus",
@@ -4017,6 +4017,13 @@
       "replies": 33
     },
     {
+      "key": "evelyn",
+      "name": "Evelyn",
+      "rank": "Support",
+      "tickets": 9,
+      "replies": 33
+    },
+    {
       "key": "unforgivenmike1",
       "name": "Unforgiven_mike1",
       "rank": "Support",
@@ -4029,13 +4036,6 @@
       "rank": "Support",
       "tickets": 9,
       "replies": 17
-    },
-    {
-      "key": "evelyn",
-      "name": "Evelyn",
-      "rank": "Support",
-      "tickets": 8,
-      "replies": 30
     },
     {
       "key": "onthedeadhomies",

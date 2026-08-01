@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-01T03:44:45.816Z",
+  "generated": "2026-08-01T03:45:49.101Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 55,
+    "totalTickets": 56,
     "staff": [
       {
         "key": "angel",
@@ -71,6 +71,13 @@
         "replies": 4
       },
       {
+        "key": "onthedeadhomies",
+        "name": "on the dead homies",
+        "rank": "Support",
+        "tickets": 2,
+        "replies": 12
+      },
+      {
         "key": "b05cmdrpaddymalone",
         "name": "B-05 | Cmdr. Paddy Malone",
         "rank": "Moderator",
@@ -125,13 +132,6 @@
         "rank": "Senior Administrator",
         "tickets": 1,
         "replies": 7
-      },
-      {
-        "key": "onthedeadhomies",
-        "name": "on the dead homies",
-        "rank": "Support",
-        "tickets": 1,
-        "replies": 6
       },
       {
         "key": "xjhani",
@@ -198,7 +198,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 55,
+      "totalTickets": 56,
       "staff": [
         {
           "key": "angel",
@@ -257,6 +257,13 @@
           "replies": 4
         },
         {
+          "key": "onthedeadhomies",
+          "name": "on the dead homies",
+          "rank": "Support",
+          "tickets": 2,
+          "replies": 12
+        },
+        {
           "key": "b05cmdrpaddymalone",
           "name": "B-05 | Cmdr. Paddy Malone",
           "rank": "Moderator",
@@ -311,13 +318,6 @@
           "rank": "Senior Administrator",
           "tickets": 1,
           "replies": 7
-        },
-        {
-          "key": "onthedeadhomies",
-          "name": "on the dead homies",
-          "rank": "Support",
-          "tickets": 1,
-          "replies": 6
         },
         {
           "key": "xjhani",
@@ -3586,8 +3586,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10292,
-  "totalTickets": 11528,
+  "transcriptCount": 10293,
+  "totalTickets": 11529,
   "staff": [
     {
       "key": "kat",
@@ -3999,8 +3999,8 @@
       "key": "onthedeadhomies",
       "name": "on the dead homies",
       "rank": "Support",
-      "tickets": 6,
-      "replies": 16
+      "tickets": 7,
+      "replies": 22
     },
     {
       "key": "lydia",

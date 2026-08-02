@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-02T19:42:36.657Z",
+  "generated": "2026-08-02T19:43:30.760Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 123,
+    "totalTickets": 126,
     "staff": [
       {
         "key": "mira",
@@ -39,8 +39,8 @@
         "key": "evelyn",
         "name": "Evelyn",
         "rank": "Support",
-        "tickets": 8,
-        "replies": 22
+        "tickets": 9,
+        "replies": 24
       },
       {
         "key": "exe",
@@ -50,18 +50,18 @@
         "replies": 22
       },
       {
+        "key": "b09majbobross",
+        "name": "B-09 | Maj. Bob Ross",
+        "rank": "Administrator",
+        "tickets": 8,
+        "replies": 14
+      },
+      {
         "key": "bonnie",
         "name": "Bonnie",
         "rank": "Head Administrator",
         "tickets": 7,
         "replies": 14
-      },
-      {
-        "key": "b09majbobross",
-        "name": "B-09 | Maj. Bob Ross",
-        "rank": "Administrator",
-        "tickets": 7,
-        "replies": 12
       },
       {
         "key": "axel",
@@ -97,6 +97,13 @@
         "rank": "Administrator",
         "tickets": 3,
         "replies": 12
+      },
+      {
+        "key": "blaze",
+        "name": "Blaze",
+        "rank": "Administrator",
+        "tickets": 3,
+        "replies": 9
       },
       {
         "key": "jimboobway",
@@ -136,7 +143,7 @@
       {
         "key": "xjhani",
         "name": "xJhani",
-        "rank": "Support",
+        "rank": "",
         "tickets": 2,
         "replies": 10
       },
@@ -153,13 +160,6 @@
         "rank": "Senior Administrator",
         "tickets": 2,
         "replies": 8
-      },
-      {
-        "key": "blaze",
-        "name": "Blaze",
-        "rank": "Administrator",
-        "tickets": 2,
-        "replies": 7
       },
       {
         "key": "charliewatleh",
@@ -240,7 +240,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 123,
+      "totalTickets": 126,
       "staff": [
         {
           "key": "mira",
@@ -267,8 +267,8 @@
           "key": "evelyn",
           "name": "Evelyn",
           "rank": "Support",
-          "tickets": 8,
-          "replies": 22
+          "tickets": 9,
+          "replies": 24
         },
         {
           "key": "exe",
@@ -278,18 +278,18 @@
           "replies": 22
         },
         {
+          "key": "b09majbobross",
+          "name": "B-09 | Maj. Bob Ross",
+          "rank": "Administrator",
+          "tickets": 8,
+          "replies": 14
+        },
+        {
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
           "tickets": 7,
           "replies": 14
-        },
-        {
-          "key": "b09majbobross",
-          "name": "B-09 | Maj. Bob Ross",
-          "rank": "Administrator",
-          "tickets": 7,
-          "replies": 12
         },
         {
           "key": "axel",
@@ -325,6 +325,13 @@
           "rank": "Administrator",
           "tickets": 3,
           "replies": 12
+        },
+        {
+          "key": "blaze",
+          "name": "Blaze",
+          "rank": "Administrator",
+          "tickets": 3,
+          "replies": 9
         },
         {
           "key": "jimboobway",
@@ -364,7 +371,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 2,
           "replies": 10
         },
@@ -381,13 +388,6 @@
           "rank": "Senior Administrator",
           "tickets": 2,
           "replies": 8
-        },
-        {
-          "key": "blaze",
-          "name": "Blaze",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 7
         },
         {
           "key": "charliewatleh",
@@ -829,7 +829,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 1,
           "replies": 1
         },
@@ -1000,7 +1000,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 21,
           "replies": 56
         },
@@ -1706,7 +1706,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 3,
           "replies": 18
         },
@@ -1926,7 +1926,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 4,
           "replies": 13
         },
@@ -2132,7 +2132,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 10,
           "replies": 16
         },
@@ -2380,7 +2380,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 13,
           "replies": 26
         },
@@ -2628,7 +2628,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 6,
           "replies": 17
         },
@@ -2876,7 +2876,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 2,
           "replies": 10
         },
@@ -2935,7 +2935,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 19,
           "replies": 49
         },
@@ -3078,7 +3078,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 24,
           "replies": 55
         },
@@ -3291,7 +3291,7 @@
         {
           "key": "xjhani",
           "name": "xJhani",
-          "rank": "Support",
+          "rank": "",
           "tickets": 2,
           "replies": 2
         },
@@ -3670,8 +3670,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10324,
-  "totalTickets": 11596,
+  "transcriptCount": 10325,
+  "totalTickets": 11599,
   "staff": [
     {
       "key": "kat",
@@ -3740,8 +3740,8 @@
       "key": "blaze",
       "name": "Blaze",
       "rank": "Administrator",
-      "tickets": 337,
-      "replies": 718
+      "tickets": 338,
+      "replies": 720
     },
     {
       "key": "snq",
@@ -3817,8 +3817,8 @@
       "key": "b09majbobross",
       "name": "B-09 | Maj. Bob Ross",
       "rank": "Administrator",
-      "tickets": 175,
-      "replies": 462
+      "tickets": 176,
+      "replies": 464
     },
     {
       "key": "eteal",
@@ -3865,7 +3865,7 @@
     {
       "key": "xjhani",
       "name": "xJhani",
-      "rank": "Support",
+      "rank": "",
       "tickets": 107,
       "replies": 273
     },
@@ -4055,8 +4055,8 @@
       "key": "evelyn",
       "name": "Evelyn",
       "rank": "Support",
-      "tickets": 12,
-      "replies": 39
+      "tickets": 13,
+      "replies": 41
     },
     {
       "key": "ricky",

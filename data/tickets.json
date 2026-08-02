@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-02T16:20:53.406Z",
+  "generated": "2026-08-02T16:21:19.983Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 96,
+    "totalTickets": 97,
     "staff": [
       {
         "key": "snq",
@@ -32,8 +32,8 @@
         "key": "mira",
         "name": "Mira",
         "rank": "Administrator",
-        "tickets": 8,
-        "replies": 13
+        "tickets": 9,
+        "replies": 20
       },
       {
         "key": "exe",
@@ -233,7 +233,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 96,
+      "totalTickets": 97,
       "staff": [
         {
           "key": "snq",
@@ -253,8 +253,8 @@
           "key": "mira",
           "name": "Mira",
           "rank": "Administrator",
-          "tickets": 8,
-          "replies": 13
+          "tickets": 9,
+          "replies": 20
         },
         {
           "key": "exe",
@@ -3656,8 +3656,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10307,
-  "totalTickets": 11569,
+  "transcriptCount": 10308,
+  "totalTickets": 11570,
   "staff": [
     {
       "key": "kat",
@@ -3670,8 +3670,8 @@
       "key": "mira",
       "name": "Mira",
       "rank": "Administrator",
-      "tickets": 1294,
-      "replies": 3324
+      "tickets": 1295,
+      "replies": 3331
     },
     {
       "key": "clarksmith",

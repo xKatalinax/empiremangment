@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-02T16:21:19.983Z",
+  "generated": "2026-08-02T16:30:52.084Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,8 +12,15 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 97,
+    "totalTickets": 100,
     "staff": [
+      {
+        "key": "angel",
+        "name": "Angel",
+        "rank": "Administrator",
+        "tickets": 11,
+        "replies": 25
+      },
       {
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
@@ -22,18 +29,11 @@
         "replies": 45
       },
       {
-        "key": "angel",
-        "name": "Angel",
-        "rank": "Administrator",
-        "tickets": 10,
-        "replies": 23
-      },
-      {
         "key": "mira",
         "name": "Mira",
         "rank": "Administrator",
-        "tickets": 9,
-        "replies": 20
+        "tickets": 10,
+        "replies": 22
       },
       {
         "key": "exe",
@@ -53,8 +53,8 @@
         "key": "bonnie",
         "name": "Bonnie",
         "rank": "Head Administrator",
-        "tickets": 5,
-        "replies": 9
+        "tickets": 6,
+        "replies": 11
       },
       {
         "key": "axel",
@@ -233,8 +233,15 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 97,
+      "totalTickets": 100,
       "staff": [
+        {
+          "key": "angel",
+          "name": "Angel",
+          "rank": "Administrator",
+          "tickets": 11,
+          "replies": 25
+        },
         {
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
@@ -243,18 +250,11 @@
           "replies": 45
         },
         {
-          "key": "angel",
-          "name": "Angel",
-          "rank": "Administrator",
-          "tickets": 10,
-          "replies": 23
-        },
-        {
           "key": "mira",
           "name": "Mira",
           "rank": "Administrator",
-          "tickets": 9,
-          "replies": 20
+          "tickets": 10,
+          "replies": 22
         },
         {
           "key": "exe",
@@ -274,8 +274,8 @@
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
-          "tickets": 5,
-          "replies": 9
+          "tickets": 6,
+          "replies": 11
         },
         {
           "key": "axel",
@@ -3656,8 +3656,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10308,
-  "totalTickets": 11570,
+  "transcriptCount": 10309,
+  "totalTickets": 11573,
   "staff": [
     {
       "key": "kat",
@@ -3670,8 +3670,8 @@
       "key": "mira",
       "name": "Mira",
       "rank": "Administrator",
-      "tickets": 1295,
-      "replies": 3331
+      "tickets": 1296,
+      "replies": 3333
     },
     {
       "key": "clarksmith",
@@ -3691,15 +3691,15 @@
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 599,
-      "replies": 1660
+      "tickets": 600,
+      "replies": 1662
     },
     {
       "key": "angel",
       "name": "Angel",
       "rank": "Administrator",
-      "tickets": 456,
-      "replies": 1009
+      "tickets": 457,
+      "replies": 1011
     },
     {
       "key": "esrie",

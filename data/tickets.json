@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-02T15:43:24.913Z",
+  "generated": "2026-08-02T15:47:49.740Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,14 +12,14 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 89,
+    "totalTickets": 92,
     "staff": [
       {
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Moderator",
-        "tickets": 9,
-        "replies": 44
+        "tickets": 10,
+        "replies": 45
       },
       {
         "key": "angel",
@@ -127,6 +127,13 @@
         "replies": 9
       },
       {
+        "key": "charliewatleh",
+        "name": "Charlie Watleh",
+        "rank": "Moderator",
+        "tickets": 2,
+        "replies": 7
+      },
+      {
         "key": "sho",
         "name": "Sho",
         "rank": "Administrator",
@@ -169,13 +176,6 @@
         "replies": 5
       },
       {
-        "key": "charliewatleh",
-        "name": "Charlie Watleh",
-        "rank": "Moderator",
-        "tickets": 1,
-        "replies": 5
-      },
-      {
         "key": "id1505031327035035698",
         "name": "░▒▓ ℝ𝔸𝕀ℕ𝔼 ▓▒░",
         "rank": "",
@@ -186,6 +186,13 @@
         "key": "unforgivenmike1",
         "name": "Unforgiven_mike1",
         "rank": "Support",
+        "tickets": 1,
+        "replies": 4
+      },
+      {
+        "key": "gp",
+        "name": "GP -_-",
+        "rank": "Administrator",
         "tickets": 1,
         "replies": 4
       },
@@ -226,14 +233,14 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 89,
+      "totalTickets": 92,
       "staff": [
         {
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Moderator",
-          "tickets": 9,
-          "replies": 44
+          "tickets": 10,
+          "replies": 45
         },
         {
           "key": "angel",
@@ -341,6 +348,13 @@
           "replies": 9
         },
         {
+          "key": "charliewatleh",
+          "name": "Charlie Watleh",
+          "rank": "Moderator",
+          "tickets": 2,
+          "replies": 7
+        },
+        {
           "key": "sho",
           "name": "Sho",
           "rank": "Administrator",
@@ -383,13 +397,6 @@
           "replies": 5
         },
         {
-          "key": "charliewatleh",
-          "name": "Charlie Watleh",
-          "rank": "Moderator",
-          "tickets": 1,
-          "replies": 5
-        },
-        {
           "key": "id1505031327035035698",
           "name": "░▒▓ ℝ𝔸𝕀ℕ𝔼 ▓▒░",
           "rank": "",
@@ -400,6 +407,13 @@
           "key": "unforgivenmike1",
           "name": "Unforgiven_mike1",
           "rank": "Support",
+          "tickets": 1,
+          "replies": 4
+        },
+        {
+          "key": "gp",
+          "name": "GP -_-",
+          "rank": "Administrator",
           "tickets": 1,
           "replies": 4
         },
@@ -3642,8 +3656,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10304,
-  "totalTickets": 11562,
+  "transcriptCount": 10305,
+  "totalTickets": 11565,
   "staff": [
     {
       "key": "kat",
@@ -3719,8 +3733,8 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Moderator",
-      "tickets": 309,
-      "replies": 1143
+      "tickets": 310,
+      "replies": 1144
     },
     {
       "key": "pluplu",
@@ -3747,8 +3761,8 @@
       "key": "gp",
       "name": "GP -_-",
       "rank": "Administrator",
-      "tickets": 241,
-      "replies": 524
+      "tickets": 242,
+      "replies": 528
     },
     {
       "key": "poptart",
@@ -3887,8 +3901,8 @@
       "key": "charliewatleh",
       "name": "Charlie Watleh",
       "rank": "Moderator",
-      "tickets": 50,
-      "replies": 195
+      "tickets": 51,
+      "replies": 197
     },
     {
       "key": "b08tmerc",

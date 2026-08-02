@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-02T17:24:29.920Z",
+  "generated": "2026-08-02T17:27:25.702Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,14 +12,14 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 103,
+    "totalTickets": 106,
     "staff": [
       {
         "key": "mira",
         "name": "Mira",
         "rank": "Administrator",
-        "tickets": 11,
-        "replies": 26
+        "tickets": 12,
+        "replies": 32
       },
       {
         "key": "angel",
@@ -78,6 +78,13 @@
         "replies": 7
       },
       {
+        "key": "b09majbobross",
+        "name": "B-09 | Maj. Bob Ross",
+        "rank": "Administrator",
+        "tickets": 4,
+        "replies": 4
+      },
+      {
         "key": "savi",
         "name": "Savi",
         "rank": "Head Administrator",
@@ -97,13 +104,6 @@
         "rank": "Administrator",
         "tickets": 3,
         "replies": 4
-      },
-      {
-        "key": "b09majbobross",
-        "name": "B-09 | Maj. Bob Ross",
-        "rank": "Administrator",
-        "tickets": 3,
-        "replies": 3
       },
       {
         "key": "onthedeadhomies",
@@ -223,6 +223,13 @@
         "rank": "Administrator",
         "tickets": 1,
         "replies": 1
+      },
+      {
+        "key": "clarksmith",
+        "name": "Clark Smith",
+        "rank": "Senior Administrator",
+        "tickets": 1,
+        "replies": 1
       }
     ]
   },
@@ -233,14 +240,14 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 103,
+      "totalTickets": 106,
       "staff": [
         {
           "key": "mira",
           "name": "Mira",
           "rank": "Administrator",
-          "tickets": 11,
-          "replies": 26
+          "tickets": 12,
+          "replies": 32
         },
         {
           "key": "angel",
@@ -299,6 +306,13 @@
           "replies": 7
         },
         {
+          "key": "b09majbobross",
+          "name": "B-09 | Maj. Bob Ross",
+          "rank": "Administrator",
+          "tickets": 4,
+          "replies": 4
+        },
+        {
           "key": "savi",
           "name": "Savi",
           "rank": "Head Administrator",
@@ -318,13 +332,6 @@
           "rank": "Administrator",
           "tickets": 3,
           "replies": 4
-        },
-        {
-          "key": "b09majbobross",
-          "name": "B-09 | Maj. Bob Ross",
-          "rank": "Administrator",
-          "tickets": 3,
-          "replies": 3
         },
         {
           "key": "onthedeadhomies",
@@ -442,6 +449,13 @@
           "key": "carlitos",
           "name": "Carlitos",
           "rank": "Administrator",
+          "tickets": 1,
+          "replies": 1
+        },
+        {
+          "key": "clarksmith",
+          "name": "Clark Smith",
+          "rank": "Senior Administrator",
           "tickets": 1,
           "replies": 1
         }
@@ -3656,8 +3670,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10313,
-  "totalTickets": 11576,
+  "transcriptCount": 10314,
+  "totalTickets": 11579,
   "staff": [
     {
       "key": "kat",
@@ -3670,15 +3684,15 @@
       "key": "mira",
       "name": "Mira",
       "rank": "Administrator",
-      "tickets": 1297,
-      "replies": 3337
+      "tickets": 1298,
+      "replies": 3343
     },
     {
       "key": "clarksmith",
       "name": "Clark Smith",
       "rank": "Senior Administrator",
-      "tickets": 690,
-      "replies": 1343
+      "tickets": 691,
+      "replies": 1344
     },
     {
       "key": "id1505031327035035698",
@@ -3800,18 +3814,18 @@
       "replies": 440
     },
     {
+      "key": "b09majbobross",
+      "name": "B-09 | Maj. Bob Ross",
+      "rank": "Administrator",
+      "tickets": 172,
+      "replies": 454
+    },
+    {
       "key": "eteal",
       "name": "/E Teal",
       "rank": "Administrator",
       "tickets": 172,
       "replies": 421
-    },
-    {
-      "key": "b09majbobross",
-      "name": "B-09 | Maj. Bob Ross",
-      "rank": "Administrator",
-      "tickets": 171,
-      "replies": 453
     },
     {
       "key": "gman",

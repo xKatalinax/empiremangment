@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-02T19:36:00.416Z",
+  "generated": "2026-08-02T19:42:36.657Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,14 +12,14 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 119,
+    "totalTickets": 123,
     "staff": [
       {
         "key": "mira",
         "name": "Mira",
         "rank": "Administrator",
-        "tickets": 15,
-        "replies": 45
+        "tickets": 16,
+        "replies": 46
       },
       {
         "key": "angel",
@@ -36,18 +36,18 @@
         "replies": 47
       },
       {
-        "key": "exe",
-        "name": ".exe",
+        "key": "evelyn",
+        "name": "Evelyn",
         "rank": "Support",
         "tickets": 8,
         "replies": 22
       },
       {
-        "key": "evelyn",
-        "name": "Evelyn",
+        "key": "exe",
+        "name": ".exe",
         "rank": "Support",
-        "tickets": 7,
-        "replies": 21
+        "tickets": 8,
+        "replies": 22
       },
       {
         "key": "bonnie",
@@ -92,6 +92,13 @@
         "replies": 15
       },
       {
+        "key": "gp",
+        "name": "GP -_-",
+        "rank": "Administrator",
+        "tickets": 3,
+        "replies": 12
+      },
+      {
         "key": "jimboobway",
         "name": "Jim Boobway",
         "rank": "Support",
@@ -134,13 +141,6 @@
         "replies": 10
       },
       {
-        "key": "gp",
-        "name": "GP -_-",
-        "rank": "Administrator",
-        "tickets": 2,
-        "replies": 10
-      },
-      {
         "key": "b05cmdrpaddymalone",
         "name": "B-05 | Cmdr. Paddy Malone",
         "rank": "Moderator",
@@ -153,6 +153,13 @@
         "rank": "Senior Administrator",
         "tickets": 2,
         "replies": 8
+      },
+      {
+        "key": "blaze",
+        "name": "Blaze",
+        "rank": "Administrator",
+        "tickets": 2,
+        "replies": 7
       },
       {
         "key": "charliewatleh",
@@ -204,13 +211,6 @@
         "replies": 4
       },
       {
-        "key": "blaze",
-        "name": "Blaze",
-        "rank": "Administrator",
-        "tickets": 1,
-        "replies": 3
-      },
-      {
         "key": "slotkillaa772",
         "name": "slotkillaa772",
         "rank": "",
@@ -240,14 +240,14 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 119,
+      "totalTickets": 123,
       "staff": [
         {
           "key": "mira",
           "name": "Mira",
           "rank": "Administrator",
-          "tickets": 15,
-          "replies": 45
+          "tickets": 16,
+          "replies": 46
         },
         {
           "key": "angel",
@@ -264,18 +264,18 @@
           "replies": 47
         },
         {
-          "key": "exe",
-          "name": ".exe",
+          "key": "evelyn",
+          "name": "Evelyn",
           "rank": "Support",
           "tickets": 8,
           "replies": 22
         },
         {
-          "key": "evelyn",
-          "name": "Evelyn",
+          "key": "exe",
+          "name": ".exe",
           "rank": "Support",
-          "tickets": 7,
-          "replies": 21
+          "tickets": 8,
+          "replies": 22
         },
         {
           "key": "bonnie",
@@ -320,6 +320,13 @@
           "replies": 15
         },
         {
+          "key": "gp",
+          "name": "GP -_-",
+          "rank": "Administrator",
+          "tickets": 3,
+          "replies": 12
+        },
+        {
           "key": "jimboobway",
           "name": "Jim Boobway",
           "rank": "Support",
@@ -362,13 +369,6 @@
           "replies": 10
         },
         {
-          "key": "gp",
-          "name": "GP -_-",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 10
-        },
-        {
           "key": "b05cmdrpaddymalone",
           "name": "B-05 | Cmdr. Paddy Malone",
           "rank": "Moderator",
@@ -381,6 +381,13 @@
           "rank": "Senior Administrator",
           "tickets": 2,
           "replies": 8
+        },
+        {
+          "key": "blaze",
+          "name": "Blaze",
+          "rank": "Administrator",
+          "tickets": 2,
+          "replies": 7
         },
         {
           "key": "charliewatleh",
@@ -430,13 +437,6 @@
           "rank": "Support",
           "tickets": 1,
           "replies": 4
-        },
-        {
-          "key": "blaze",
-          "name": "Blaze",
-          "rank": "Administrator",
-          "tickets": 1,
-          "replies": 3
         },
         {
           "key": "slotkillaa772",
@@ -3670,8 +3670,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10323,
-  "totalTickets": 11592,
+  "transcriptCount": 10324,
+  "totalTickets": 11596,
   "staff": [
     {
       "key": "kat",
@@ -3684,8 +3684,8 @@
       "key": "mira",
       "name": "Mira",
       "rank": "Administrator",
-      "tickets": 1301,
-      "replies": 3356
+      "tickets": 1302,
+      "replies": 3357
     },
     {
       "key": "clarksmith",
@@ -3740,8 +3740,8 @@
       "key": "blaze",
       "name": "Blaze",
       "rank": "Administrator",
-      "tickets": 336,
-      "replies": 714
+      "tickets": 337,
+      "replies": 718
     },
     {
       "key": "snq",
@@ -3775,8 +3775,8 @@
       "key": "gp",
       "name": "GP -_-",
       "rank": "Administrator",
-      "tickets": 243,
-      "replies": 534
+      "tickets": 244,
+      "replies": 536
     },
     {
       "key": "poptart",
@@ -4055,8 +4055,8 @@
       "key": "evelyn",
       "name": "Evelyn",
       "rank": "Support",
-      "tickets": 11,
-      "replies": 38
+      "tickets": 12,
+      "replies": 39
     },
     {
       "key": "ricky",

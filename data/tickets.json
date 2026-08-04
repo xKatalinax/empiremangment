@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-03T06:31:16.938Z",
+  "generated": "2026-08-04T14:28:39.157Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 129,
+    "totalTickets": 130,
     "staff": [
       {
         "key": "mira",
@@ -22,18 +22,18 @@
         "replies": 46
       },
       {
+        "key": "snq",
+        "name": "ʇsɹnʍʇɐɹq",
+        "rank": "Moderator",
+        "tickets": 12,
+        "replies": 53
+      },
+      {
         "key": "angel",
         "name": "Angel",
         "rank": "Administrator",
         "tickets": 12,
         "replies": 30
-      },
-      {
-        "key": "snq",
-        "name": "ʇsɹnʍʇɐɹq",
-        "rank": "Moderator",
-        "tickets": 11,
-        "replies": 47
       },
       {
         "key": "evelyn",
@@ -240,7 +240,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 129,
+      "totalTickets": 130,
       "staff": [
         {
           "key": "mira",
@@ -250,18 +250,18 @@
           "replies": 46
         },
         {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Moderator",
+          "tickets": 12,
+          "replies": 53
+        },
+        {
           "key": "angel",
           "name": "Angel",
           "rank": "Administrator",
           "tickets": 12,
           "replies": 30
-        },
-        {
-          "key": "snq",
-          "name": "ʇsɹnʍʇɐɹq",
-          "rank": "Moderator",
-          "tickets": 11,
-          "replies": 47
         },
         {
           "key": "evelyn",
@@ -3670,8 +3670,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10329,
-  "totalTickets": 11602,
+  "transcriptCount": 10330,
+  "totalTickets": 11603,
   "staff": [
     {
       "key": "kat",
@@ -3747,8 +3747,8 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Moderator",
-      "tickets": 311,
-      "replies": 1146
+      "tickets": 312,
+      "replies": 1152
     },
     {
       "key": "pluplu",

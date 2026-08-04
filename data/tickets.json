@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-04T14:37:30.743Z",
+  "generated": "2026-08-04T14:41:03.532Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -129,7 +129,7 @@
       {
         "key": "onthedeadhomies",
         "name": "on the dead homies",
-        "rank": "Support",
+        "rank": "LOA",
         "tickets": 2,
         "replies": 12
       },
@@ -357,7 +357,7 @@
         {
           "key": "onthedeadhomies",
           "name": "on the dead homies",
-          "rank": "Support",
+          "rank": "LOA",
           "tickets": 2,
           "replies": 12
         },
@@ -696,7 +696,7 @@
         {
           "key": "onthedeadhomies",
           "name": "on the dead homies",
-          "rank": "Support",
+          "rank": "LOA",
           "tickets": 5,
           "replies": 10
         },
@@ -4082,7 +4082,7 @@
     {
       "key": "onthedeadhomies",
       "name": "on the dead homies",
-      "rank": "Support",
+      "rank": "LOA",
       "tickets": 7,
       "replies": 22
     },

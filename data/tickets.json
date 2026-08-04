@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-04T14:28:39.157Z",
+  "generated": "2026-08-04T14:29:48.460Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-07-31T04:00:00.000Z",
     "end": "2026-08-07T04:00:00.000Z",
     "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
-    "totalTickets": 130,
+    "totalTickets": 132,
     "staff": [
       {
         "key": "mira",
@@ -25,8 +25,8 @@
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Moderator",
-        "tickets": 12,
-        "replies": 53
+        "tickets": 13,
+        "replies": 54
       },
       {
         "key": "angel",
@@ -71,6 +71,13 @@
         "replies": 21
       },
       {
+        "key": "lunasmith",
+        "name": "Luna Smith",
+        "rank": "Administrator",
+        "tickets": 5,
+        "replies": 8
+      },
+      {
         "key": "tart",
         "name": "Tart",
         "rank": "Administrator",
@@ -97,13 +104,6 @@
         "rank": "Server Manager",
         "tickets": 4,
         "replies": 7
-      },
-      {
-        "key": "lunasmith",
-        "name": "Luna Smith",
-        "rank": "Administrator",
-        "tickets": 4,
-        "replies": 5
       },
       {
         "key": "blaze",
@@ -240,7 +240,7 @@
       "end": "2026-08-07T04:00:00.000Z",
       "label": "Fri 31 Jul 12:00 AM – Fri 7 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 130,
+      "totalTickets": 132,
       "staff": [
         {
           "key": "mira",
@@ -253,8 +253,8 @@
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Moderator",
-          "tickets": 12,
-          "replies": 53
+          "tickets": 13,
+          "replies": 54
         },
         {
           "key": "angel",
@@ -299,6 +299,13 @@
           "replies": 21
         },
         {
+          "key": "lunasmith",
+          "name": "Luna Smith",
+          "rank": "Administrator",
+          "tickets": 5,
+          "replies": 8
+        },
+        {
           "key": "tart",
           "name": "Tart",
           "rank": "Administrator",
@@ -325,13 +332,6 @@
           "rank": "Server Manager",
           "tickets": 4,
           "replies": 7
-        },
-        {
-          "key": "lunasmith",
-          "name": "Luna Smith",
-          "rank": "Administrator",
-          "tickets": 4,
-          "replies": 5
         },
         {
           "key": "blaze",
@@ -3670,8 +3670,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10330,
-  "totalTickets": 11603,
+  "transcriptCount": 10331,
+  "totalTickets": 11605,
   "staff": [
     {
       "key": "kat",
@@ -3747,8 +3747,8 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Moderator",
-      "tickets": 312,
-      "replies": 1152
+      "tickets": 313,
+      "replies": 1153
     },
     {
       "key": "pluplu",
@@ -3761,8 +3761,8 @@
       "key": "lunasmith",
       "name": "Luna Smith",
       "rank": "Administrator",
-      "tickets": 267,
-      "replies": 535
+      "tickets": 268,
+      "replies": 538
     },
     {
       "key": "fazehazard13",

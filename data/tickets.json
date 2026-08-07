@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-07T20:14:21.413Z",
+  "generated": "2026-08-07T20:20:35.304Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,14 +12,28 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 3,
+    "totalTickets": 7,
     "staff": [
       {
         "key": "pluplu",
         "name": "PLU PLU",
         "rank": "Administrator",
-        "tickets": 3,
+        "tickets": 4,
+        "replies": 8
+      },
+      {
+        "key": "tart",
+        "name": "Tart",
+        "rank": "Administrator",
+        "tickets": 2,
         "replies": 5
+      },
+      {
+        "key": "bonnie",
+        "name": "Bonnie",
+        "rank": "Head Administrator",
+        "tickets": 1,
+        "replies": 9
       }
     ]
   },
@@ -30,14 +44,28 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 3,
+      "totalTickets": 7,
       "staff": [
         {
           "key": "pluplu",
           "name": "PLU PLU",
           "rank": "Administrator",
-          "tickets": 3,
+          "tickets": 4,
+          "replies": 8
+        },
+        {
+          "key": "tart",
+          "name": "Tart",
+          "rank": "Administrator",
+          "tickets": 2,
           "replies": 5
+        },
+        {
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Head Administrator",
+          "tickets": 1,
+          "replies": 9
         }
       ]
     },
@@ -3468,8 +3496,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10337,
-  "totalTickets": 11608,
+  "transcriptCount": 10339,
+  "totalTickets": 11612,
   "staff": [
     {
       "key": "kat",
@@ -3503,8 +3531,8 @@
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 601,
-      "replies": 1665
+      "tickets": 602,
+      "replies": 1674
     },
     {
       "key": "angel",
@@ -3552,8 +3580,8 @@
       "key": "pluplu",
       "name": "PLU PLU",
       "rank": "Administrator",
-      "tickets": 295,
-      "replies": 1090
+      "tickets": 296,
+      "replies": 1093
     },
     {
       "key": "lunasmith",
@@ -3724,18 +3752,18 @@
       "replies": 118
     },
     {
+      "key": "tart",
+      "name": "Tart",
+      "rank": "Administrator",
+      "tickets": 49,
+      "replies": 135
+    },
+    {
       "key": "giyu",
       "name": "Giyu",
       "rank": "Support",
       "tickets": 49,
       "replies": 99
-    },
-    {
-      "key": "tart",
-      "name": "Tart",
-      "rank": "Administrator",
-      "tickets": 47,
-      "replies": 130
     },
     {
       "key": "camz",

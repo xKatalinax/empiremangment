@@ -1,8 +1,8 @@
 // =====================================================
 //  Empire Roleplay — Ticket Counter bot
 //  Auto-counts tickets from Ticket Tool transcripts using the
-//  same rule as the web portal: a staff member with 2+ quality
-//  replies (10+ words, filler filtered out) in a transcript = 1 ticket.
+//  same rule as the web portal: a staff member with 1+ qualifying
+//  reply (a message of two or more words) in a transcript = 1 ticket.
 // =====================================================
 
 require('dotenv').config();
@@ -332,7 +332,7 @@ function buildExport() {
     source: 'empire-ticket-counter',
     version: 3,
     generated: new Date().toISOString(),
-    rule: { qualityMinWords: QUALITY_MIN_WORDS, ticketMinReplies: TICKET_MIN_REPLIES, helpfulnessFilter: true },
+    rule: { qualityMinWords: QUALITY_MIN_WORDS, ticketMinReplies: TICKET_MIN_REPLIES, helpfulnessFilter: false },
     week: {
       startsOn: `Friday ${resetLabel()}`,
       start: new Date(ws).toISOString(),
@@ -734,7 +734,7 @@ client.on('interactionCreate', async (i) => {
       const r = await processTranscript(html, label);
       if (!r.ok && r.reason === 'duplicate') return i.editReply('♻️ That transcript was already counted.');
       if (!r.ok) return i.editReply('⚠️ Couldn\'t read that transcript. Send Kat a sample so the parser can be tuned.');
-      if (!r.credited.length) return i.editReply(`Processed **${label}** — nobody hit ${TICKET_MIN_REPLIES}+ helpful replies of ${QUALITY_MIN_WORDS}+ words, so no credit.`);
+      if (!r.credited.length) return i.editReply(`Processed **${label}** — nobody said a message of ${QUALITY_MIN_WORDS}+ words, so no credit.`);
       return i.editReply({ embeds: [creditEmbed(label, r.credited)] });
     } catch (e) {
       return i.editReply('⚠️ Fetch failed: ' + e.message + (url ? ' — hosted transcript links can be JS-rendered; try attaching the `.html` file instead.' : ''));

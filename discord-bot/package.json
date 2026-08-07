@@ -1,13 +1,14 @@
 {
   "name": "empire-ticket-counter",
   "version": "1.0.0",
-  "description": "Discord bot that auto-counts tickets from Ticket Tool transcripts (3+ quality replies = 1 ticket).",
+  "description": "Discord bot that auto-counts tickets from Ticket Tool transcripts (a reply of 2+ words = 1 ticket).",
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
     "start": "node index.js",
     "checkenv": "node checkenv.js",
-    "diagnose": "node diagnose.js"
+    "diagnose": "node diagnose.js",
+    "recount": "node recount.js"
   },
   "engines": {
     "node": ">=18"

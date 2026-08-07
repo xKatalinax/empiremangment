@@ -3,8 +3,13 @@
 Auto-counts staff tickets from **Ticket Tool** transcripts, using the exact same
 rule as the web portal:
 
-> A **quality reply** is a staff message with **15+ characters** of real text.
-> A staff member with **2+ quality replies** (2+ lines on the ticket) in one transcript is credited with **1 ticket handled**. A quality reply is **2+ words** and has to look like actual help rather than a question or filler.
+> A **quality reply** is a staff message of **two or more words** (mentions,
+> emoji, links and code blocks are stripped first, and at least one word must
+> contain a letter).
+> A staff member with **1+ quality reply** in one transcript is credited with
+> **1 ticket handled** — so every ticket a staffer says two or more words in
+> counts once for them. This is a pure word-count rule: no helpfulness or
+> filler filtering.
 
 Two ways to feed it transcripts:
 
@@ -226,8 +231,8 @@ ephemeral disks, attach a volume or the counts reset on redeploy.
   by name only, it falls back to name matching.
 - **Bot messages never count.** Ticket Tool's own posts are flagged `bot: true` and are
   skipped, so its welcome and closing messages can't earn credit.
-- **Length rule ignores noise.** Mentions, custom emoji, code blocks and links are stripped
-  before the 15-character check, so "<@123> ok" doesn't count as a quality reply.
+- **Word rule ignores noise.** Mentions, custom emoji, code blocks and links are stripped
+  before the two-word check, so "<@123> ok" is one word after stripping and doesn't count as a quality reply.
 - **De-duplication:** each transcript is fingerprinted, so re-posting or re-scanning the
   same one won't double-count. (Bot reacts ♻️ if it's already been counted.)
 - **Links as well as files.** A `tickettool.xyz/transcript/v1/...` link is just a viewer
@@ -235,63 +240,79 @@ ephemeral disks, attach a volume or the counts reset on redeploy.
   transcripts posted as links are counted too. (`/v2/` Google-Drive links are not supported.)
 - **Diagnostics.** If anything can't be read, run `/diagnose` in Discord, or
   `npm run diagnose` locally against `data/sample-transcript.html`.
-- The counting rule lives in `lib/counter.js` (`QUALITY_MIN_CHARS`, `TICKET_MIN_REPLIES`)
+- The counting rule lives in `lib/counter.js` (`QUALITY_MIN_WORDS`, `TICKET_MIN_REPLIES`)
   and is identical to the web portal, so both always agree.
 
 ---
 
 ## What counts as a reply
 
-A staff message counts only if **both** are true:
+A staff message counts as a **quality reply** when it is **two or more words**
+long. That is the whole rule.
 
-1. It is **2 or more words** long (mentions, emoji, links and code blocks are
-   stripped out first, so they can't pad the count).
-2. It passes the **helpfulness check** in `isQualityReply()`
-   (`discord-bot/lib/counter.js`).
+* Mentions, custom emoji, links and code blocks are stripped out first
+  (see `textOnly()` in `lib/parser.js`), so they can't pad the count — `<@123> ok`
+  is one word after stripping and does **not** count.
+* At least one of the surviving words has to contain a letter, so pure symbols
+  or numbers like `?? !!` or `123 456` don't slip through as speech.
+* There is **no** helpfulness, filler or question filtering. If two or more real
+  words were said, the reply counts.
 
-At a 2-word floor the length test filters almost nothing, so the helpfulness
-check does the real work. It is a heuristic, not comprehension. It strips filler
-phrases ("give me a moment", "let me check", "reaching out") and formula openers
-("hey", "thanks", "bump", "on it", "closing this"), removes stopwords,
-pleasantries and chitchat, then judges what survives:
-
-* **A question needs 4 content words.** Asking for information is not giving
-  help, so `is this gtc?` and `can you check?` are out, while `can you send me
-  your steam hex and a screenshot of the error` is in.
-* **Anything else needs 2 content words**, so `check your keybinds` and
-  `ban appeal denied` count.
-* **Short replies of 8 words or fewer** can also get through on a single content
-  word plus a help verb, which rescues terse-but-real answers like
-  `i refunded it`. Longer messages don't get that shortcut — if 20 words boil
-  down to one content word, it is padding.
+A staffer credited with **1+ quality reply** in a transcript earns **1 ticket**
+for it, so every ticket they say two or more words in counts once.
 
 These count:
 
-> i refunded it · press F to interact · your whitelist is approved
-> closing this — I refunded the car to your garage, relog and it'll be there
+> i refunded it · press F to interact · your whitelist is approved · is this gtc?
 
-These do not:
+These do not (fewer than two words, or no letters):
 
-> is this gtc? · ok let me check · give me a moment · yeah that makes sense
-> hey there how are you doing today hope you are having a good one
+> ok · ty · 👍 · `<@123>` · 45min · ??
 
 Tuning knobs, all at the top of `discord-bot/lib/counter.js` (mirror any change
 in `assets/app.js`):
 
 | Constant | Default | Effect |
 | --- | --- | --- |
-| `QUALITY_MIN_WORDS` | `2` | Minimum words in a reply |
-| `HELPFUL_MIN_CONTENT_WORDS` | `2` | Content words a normal reply needs — raise to catch more filler, lower if real replies are missed |
-| `QUESTION_MIN_CONTENT_WORDS` | `4` | Bar for questions. Lower it if you want clarifying questions to count |
-| `SHORT_REPLY_MAX_WORDS` | `8` | Longest reply allowed to pass on the help-verb shortcut |
-| `TICKET_MIN_REPLIES` | `2` | Replies needed for 1 ticket |
-| `STOPWORDS` / `PLEASANTRIES` / `CHITCHAT` | — | Word lists that don't count as substance |
-| `HELP_VERBS` | — | Verbs that mark a real action or instruction |
-| `FORMULA_OPENERS` / `FILLER_PHRASES` | — | Stock phrasing stripped before judging the rest |
+| `QUALITY_MIN_WORDS` | `2` | Minimum words a reply must have (two words or more said) |
+| `TICKET_MIN_REPLIES` | `1` | Quality replies needed in one transcript for 1 ticket |
 
-**After changing any of these, run `/scan recount:True`.** Stored records keep
-only reply tallies, not the original message text, so old transcripts cannot be
-re-judged in place — they have to be read again from the channel.
+The `HELPFUL_MIN_CONTENT_WORDS`, `QUESTION_MIN_CONTENT_WORDS`,
+`SHORT_REPLY_MAX_WORDS`, `STOPWORDS`, `PLEASANTRIES`, `CHITCHAT`, `HELP_VERBS`,
+`FORMULA_OPENERS` and `FILLER_PHRASES` values are left in the file for reference
+but are **no longer used** by the current rule.
+
+**After changing the rule, redo the counts** (see *Redoing all the ticket
+counts* below). Stored records keep only reply tallies, not the original message
+text, so old transcripts cannot be re-judged in place — they have to be read
+again from the transcripts.
+
+---
+
+## Redoing all the ticket counts
+
+A rule change only affects new transcripts until the old ones are read again,
+because `db.json` stores per-transcript reply *tallies*, not the original text.
+There are two ways to redo every count under the current rule:
+
+- **From Discord (live bot):** run `/scan recount:True`. This wipes the stored
+  tallies and re-reads every transcript channel from scratch. Use this if the
+  bot is running and still has access to the transcript channels.
+
+- **Offline, from a folder of saved transcripts:** run
+
+  ```bash
+  cd discord-bot
+  node recount.js /path/to/your/transcripts
+  ```
+
+  It backs up `data/db.json`, wipes the tallies, re-reads every `.html`
+  transcript in that folder (recursively), then regenerates
+  `data/empire-tickets.json` and the website's `data/tickets.json`. The staff
+  list is left untouched. If you omit the path it looks in
+  `discord-bot/data/transcripts`.
+
+Both paths use the exact same rule as the website, so the two never disagree.
 
 
 ---

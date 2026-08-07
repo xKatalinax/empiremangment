@@ -3,14 +3,15 @@
 //  (assets/app.js in the Empire management portal).
 //
 //  quality reply  = a staff message that is at least
-//                   QUALITY_MIN_WORDS words long AND looks like
-//                   actual help rather than filler
+//                   QUALITY_MIN_WORDS words long (two or more words said)
 //  1 ticket handled = >= TICKET_MIN_REPLIES quality replies from
 //                   the same staff member inside one transcript
+//
+//  Every ticket a staffer says two or more words in counts once for them.
 // =====================================================
 
-const QUALITY_MIN_WORDS = 1;    // a reply must be at least this many words
-const TICKET_MIN_REPLIES = 1;   // 1+ reply on the ticket = 1 ticket (every ticket counts)
+const QUALITY_MIN_WORDS = 2;    // a reply must be at least this many words (two words or more said)
+const TICKET_MIN_REPLIES = 1;   // 1+ qualifying reply on the ticket = 1 ticket (every ticket counts)
 const HELPFUL_MIN_CONTENT_WORDS = 2;   // meaningful words a normal reply needs
 const QUESTION_MIN_CONTENT_WORDS = 4;  // questions need more — "is this gtc?" isn't help
 const SHORT_REPLY_MAX_WORDS = 8;       // above this, a reply can't lean on the help-verb shortcut
@@ -116,28 +117,19 @@ function wordsOf(text) {
 /**
  * Does this message count as a quality reply?
  *
- * With the floor at 3 words, length barely filters anything, so the decision is
- * about what the message is *doing*:
+ * The rule is deliberately simple: a reply counts when the staffer actually
+ * said something — two or more words (QUALITY_MIN_WORDS). Everything below that
+ * bar (a bare "ok", "ty", a lone emoji, mention or link) is not enough to
+ * credit. At least one of those words must contain a letter, so pure symbols or
+ * numbers like "?? !!" or "123 456" don't slip through as speech.
  *
- *   1. At least QUALITY_MIN_WORDS words.
- *   2. Formula openers are peeled off ("hey", "thanks", "bump", "on it").
- *   3. Stopwords, pleasantries and chitchat are removed; what survives is the
- *      message's actual content.
- *   4. A question has to clear QUESTION_MIN_CONTENT_WORDS — asking for
- *      information isn't giving help, so "is this gtc?" is out while
- *      "can you send your steam hex and a screenshot of the error" is in.
- *   5. Anything else needs HELPFUL_MIN_CONTENT_WORDS content words, OR one
- *      content word plus a help verb, so terse-but-real replies like
- *      "i refunded it" still count.
- *
- * It's a heuristic, not comprehension. See the README for the tuning knobs.
+ * This is a pure word-count check — no helpfulness heuristics. The STOPWORDS /
+ * PLEASANTRIES / HELP_VERBS sets above are kept only for reference and are no
+ * longer consulted. See the README for the tuning knobs.
  */
 function isQualityReply(text) {
-  // Every genuine staff reply now counts. We only skip messages that carry no
-  // real words at all — pure emoji, mentions, links or punctuation — since
-  // those aren't actually a reply. Any message with at least one word that
-  // contains a letter is a reply, so every ticket a staffer speaks in counts.
-  return wordsOf(text).some((w) => /[a-z]/.test(w));
+  const words = wordsOf(text);
+  return words.length >= QUALITY_MIN_WORDS && words.some((w) => /[a-z]/.test(w));
 }
 
 const normName = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -186,7 +178,7 @@ function countTranscript(messages, staffList) {
   const tally = {};
   for (const m of messages) {
     if (m.bot) continue;                                   // never count bot posts
-    if (!isQualityReply(m.content)) continue;               // 10+ words and actually helpful
+    if (!isQualityReply(m.content)) continue;               // must be two or more words
     const st = matchStaff(m, staffList);
     if (!st) continue;
     const key = normName(st.name) || ('id' + st.id);

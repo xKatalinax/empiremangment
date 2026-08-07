@@ -40,13 +40,28 @@ function b64decode(s) {
   return Buffer.from(s, 'base64').toString('utf8');
 }
 
+// Pull the string assigned to `let <name> = "...."` without a giant regex.
+// A capture like /([A-Za-z0-9+/=]{40,})/ backtracks catastrophically on a
+// multi-megabyte Ticket Tool payload and overflows the stack, which used to make
+// large transcripts silently parse to nothing. We match only the short prefix,
+// then read up to the closing quote by hand (base64 never contains a `"`).
+function assignedString(html, name) {
+  const prefix = new RegExp('\\b' + name + '\\s*=\\s*"');
+  const m = prefix.exec(html);
+  if (!m) return null;
+  const start = m.index + m[0].length;
+  const end = html.indexOf('"', start);
+  if (end < 0) return null;
+  return html.slice(start, end);
+}
+
 // ---- Ticket Tool: base64 JSON payload ----
 function parseTicketTool(html) {
-  const m = html.match(/\bmessages\s*=\s*"([A-Za-z0-9+/=]{40,})"/);
-  if (!m) return null;
+  const payload = assignedString(html, 'messages');
+  if (!payload || payload.length < 40) return null;
   let arr;
   try {
-    arr = JSON.parse(b64decode(m[1]));
+    arr = JSON.parse(b64decode(payload));
   } catch (e) {
     return null;
   }
@@ -63,10 +78,10 @@ function parseTicketTool(html) {
 
 // Pull the channel name out of the sibling `channel` variable, for nicer labels.
 function ticketToolChannelName(html) {
-  const m = html.match(/\bchannel\s*=\s*"([A-Za-z0-9+/=]{8,})"/);
-  if (!m) return null;
+  const payload = assignedString(html, 'channel');
+  if (!payload || payload.length < 8) return null;
   try {
-    const o = JSON.parse(b64decode(m[1]));
+    const o = JSON.parse(b64decode(payload));
     return o && o.name ? String(o.name) : null;
   } catch (e) {
     return null;

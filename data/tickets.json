@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-07T21:15:26.454Z",
+  "generated": "2026-08-07T21:16:54.254Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 40,
+    "totalTickets": 41,
     "staff": [
       {
         "key": "pluplu",
@@ -25,8 +25,8 @@
         "key": "mirasorrengail",
         "name": "Mira Sorrengail",
         "rank": "Senior Administrator",
-        "tickets": 6,
-        "replies": 20
+        "tickets": 7,
+        "replies": 22
       },
       {
         "key": "tartsorrengail",
@@ -107,7 +107,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 40,
+      "totalTickets": 41,
       "staff": [
         {
           "key": "pluplu",
@@ -120,8 +120,8 @@
           "key": "mirasorrengail",
           "name": "Mira Sorrengail",
           "rank": "Senior Administrator",
-          "tickets": 6,
-          "replies": 20
+          "tickets": 7,
+          "replies": 22
         },
         {
           "key": "tartsorrengail",
@@ -2832,7 +2832,7 @@
       "end": "2026-06-05T04:00:00.000Z",
       "label": "Fri 29 May 12:00 AM – Fri 5 Jun 12:00 AM",
       "inProgress": false,
-      "totalTickets": 752,
+      "totalTickets": 753,
       "staff": [
         {
           "key": "clarksmith",
@@ -2866,8 +2866,8 @@
           "key": "commissionercrispymcchicken",
           "name": "commissioner crispy mcchicken ツ",
           "rank": "LOA",
-          "tickets": 48,
-          "replies": 120
+          "tickets": 49,
+          "replies": 121
         },
         {
           "key": "id1505031327035035698",
@@ -3003,14 +3003,14 @@
       "end": "2026-05-29T04:00:00.000Z",
       "label": "Fri 22 May 12:00 AM – Fri 29 May 12:00 AM",
       "inProgress": false,
-      "totalTickets": 321,
+      "totalTickets": 324,
       "staff": [
         {
           "key": "kat",
           "name": "kat",
           "rank": "Server Manager",
-          "tickets": 75,
-          "replies": 182
+          "tickets": 76,
+          "replies": 217
         },
         {
           "key": "mira",
@@ -3111,6 +3111,13 @@
           "replies": 2
         },
         {
+          "key": "mirasorrengail",
+          "name": "Mira Sorrengail",
+          "rank": "Senior Administrator",
+          "tickets": 1,
+          "replies": 35
+        },
+        {
           "key": "b09majbobross",
           "name": "B-09 | Maj. Bob Ross",
           "rank": "",
@@ -3130,6 +3137,13 @@
           "rank": "",
           "tickets": 1,
           "replies": 1
+        },
+        {
+          "key": "angelsorrengail",
+          "name": "Angel Sorrengail",
+          "rank": "Administrator",
+          "tickets": 1,
+          "replies": 1
         }
       ]
     },
@@ -3139,14 +3153,14 @@
       "end": "2026-05-22T04:00:00.000Z",
       "label": "Fri 15 May 12:00 AM – Fri 22 May 12:00 AM",
       "inProgress": false,
-      "totalTickets": 489,
+      "totalTickets": 492,
       "staff": [
         {
           "key": "kat",
           "name": "kat",
           "rank": "Server Manager",
-          "tickets": 117,
-          "replies": 295
+          "tickets": 118,
+          "replies": 296
         },
         {
           "key": "mira",
@@ -3243,8 +3257,8 @@
           "key": "mirasorrengail",
           "name": "Mira Sorrengail",
           "rank": "Senior Administrator",
-          "tickets": 3,
-          "replies": 183
+          "tickets": 4,
+          "replies": 198
         },
         {
           "key": "b09majbobross",
@@ -3278,6 +3292,13 @@
           "key": "ava",
           "name": "Ava",
           "rank": "Moderator",
+          "tickets": 1,
+          "replies": 1
+        },
+        {
+          "key": "angelsorrengail",
+          "name": "Angel Sorrengail",
+          "rank": "Administrator",
           "tickets": 1,
           "replies": 1
         }
@@ -3797,15 +3818,15 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10783,
-  "totalTickets": 12196,
+  "transcriptCount": 10788,
+  "totalTickets": 12204,
   "staff": [
     {
       "key": "kat",
       "name": "kat",
       "rank": "Server Manager",
-      "tickets": 1628,
-      "replies": 3312
+      "tickets": 1630,
+      "replies": 3348
     },
     {
       "key": "mira",
@@ -3909,8 +3930,8 @@
       "key": "commissionercrispymcchicken",
       "name": "commissioner crispy mcchicken ツ",
       "rank": "LOA",
-      "tickets": 218,
-      "replies": 640
+      "tickets": 219,
+      "replies": 641
     },
     {
       "key": "poptart",
@@ -4000,8 +4021,8 @@
       "key": "mirasorrengail",
       "name": "Mira Sorrengail",
       "rank": "Senior Administrator",
-      "tickets": 103,
-      "replies": 883
+      "tickets": 106,
+      "replies": 935
     },
     {
       "key": "cletus",
@@ -4102,18 +4123,18 @@
       "replies": 175
     },
     {
+      "key": "angelsorrengail",
+      "name": "Angel Sorrengail",
+      "rank": "Administrator",
+      "tickets": 40,
+      "replies": 141
+    },
+    {
       "key": "chicken",
       "name": "Chicken",
       "rank": "",
       "tickets": 39,
       "replies": 75
-    },
-    {
-      "key": "angelsorrengail",
-      "name": "Angel Sorrengail",
-      "rank": "Administrator",
-      "tickets": 38,
-      "replies": 139
     },
     {
       "key": "spiraldontping",

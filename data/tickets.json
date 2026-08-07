@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-07T20:01:15.755Z",
+  "generated": "2026-08-07T20:12:06.549Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,14 +12,14 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 1,
+    "totalTickets": 2,
     "staff": [
       {
         "key": "pluplu",
         "name": "PLU PLU",
         "rank": "Administrator",
-        "tickets": 1,
-        "replies": 1
+        "tickets": 2,
+        "replies": 3
       }
     ]
   },
@@ -30,14 +30,14 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 1,
+      "totalTickets": 2,
       "staff": [
         {
           "key": "pluplu",
           "name": "PLU PLU",
           "rank": "Administrator",
-          "tickets": 1,
-          "replies": 1
+          "tickets": 2,
+          "replies": 3
         }
       ]
     },
@@ -3468,8 +3468,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10335,
-  "totalTickets": 11606,
+  "transcriptCount": 10336,
+  "totalTickets": 11607,
   "staff": [
     {
       "key": "kat",
@@ -3552,8 +3552,8 @@
       "key": "pluplu",
       "name": "PLU PLU",
       "rank": "Administrator",
-      "tickets": 293,
-      "replies": 1086
+      "tickets": 294,
+      "replies": 1088
     },
     {
       "key": "lunasmith",

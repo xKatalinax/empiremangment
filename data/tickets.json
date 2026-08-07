@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-07T20:33:41.975Z",
+  "generated": "2026-08-07T20:34:03.563Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 9,
+    "totalTickets": 10,
     "staff": [
       {
         "key": "pluplu",
@@ -22,18 +22,18 @@
         "replies": 8
       },
       {
+        "key": "bonnie",
+        "name": "Bonnie",
+        "rank": "Head Administrator",
+        "tickets": 2,
+        "replies": 10
+      },
+      {
         "key": "tart",
         "name": "Tart",
         "rank": "Administrator",
         "tickets": 2,
         "replies": 5
-      },
-      {
-        "key": "bonnie",
-        "name": "Bonnie",
-        "rank": "Head Administrator",
-        "tickets": 1,
-        "replies": 9
       },
       {
         "key": "evelyn",
@@ -58,7 +58,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 9,
+      "totalTickets": 10,
       "staff": [
         {
           "key": "pluplu",
@@ -68,18 +68,18 @@
           "replies": 8
         },
         {
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Head Administrator",
+          "tickets": 2,
+          "replies": 10
+        },
+        {
           "key": "tart",
           "name": "Tart",
           "rank": "Administrator",
           "tickets": 2,
           "replies": 5
-        },
-        {
-          "key": "bonnie",
-          "name": "Bonnie",
-          "rank": "Head Administrator",
-          "tickets": 1,
-          "replies": 9
         },
         {
           "key": "evelyn",
@@ -3524,8 +3524,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10341,
-  "totalTickets": 11614,
+  "transcriptCount": 10342,
+  "totalTickets": 11615,
   "staff": [
     {
       "key": "kat",
@@ -3559,8 +3559,8 @@
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 602,
-      "replies": 1674
+      "tickets": 603,
+      "replies": 1675
     },
     {
       "key": "angel",

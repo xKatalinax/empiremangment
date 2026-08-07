@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-07T22:01:07.875Z",
+  "generated": "2026-08-07T22:07:21.451Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 130,
+    "totalTickets": 132,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -32,8 +32,8 @@
         "key": "kensorrengail",
         "name": "Ken Sorrengail",
         "rank": "Support",
-        "tickets": 11,
-        "replies": 47
+        "tickets": 12,
+        "replies": 49
       },
       {
         "key": "snq",
@@ -60,8 +60,8 @@
         "key": "kolton",
         "name": "Kolton",
         "rank": "Support",
-        "tickets": 7,
-        "replies": 22
+        "tickets": 8,
+        "replies": 24
       },
       {
         "key": "blaze",
@@ -184,7 +184,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 130,
+      "totalTickets": 132,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -204,8 +204,8 @@
           "key": "kensorrengail",
           "name": "Ken Sorrengail",
           "rank": "Support",
-          "tickets": 11,
-          "replies": 47
+          "tickets": 12,
+          "replies": 49
         },
         {
           "key": "snq",
@@ -232,8 +232,8 @@
           "key": "kolton",
           "name": "Kolton",
           "rank": "Support",
-          "tickets": 7,
-          "replies": 22
+          "tickets": 8,
+          "replies": 24
         },
         {
           "key": "blaze",
@@ -1655,35 +1655,84 @@
       "end": "2026-07-10T04:00:00.000Z",
       "label": "Fri 3 Jul 12:00 AM – Fri 10 Jul 12:00 AM",
       "inProgress": false,
-      "totalTickets": 870,
+      "totalTickets": 1412,
       "staff": [
         {
           "key": "kat",
           "name": "kat",
           "rank": "Server Manager",
-          "tickets": 136,
-          "replies": 430
-        },
-        {
-          "key": "bonnie",
-          "name": "Bonnie",
-          "rank": "Head Administrator",
-          "tickets": 74,
-          "replies": 312
+          "tickets": 209,
+          "replies": 545
         },
         {
           "key": "blaze",
           "name": "Blaze",
           "rank": "Administrator",
-          "tickets": 70,
-          "replies": 202
+          "tickets": 133,
+          "replies": 350
+        },
+        {
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Head Administrator",
+          "tickets": 121,
+          "replies": 422
         },
         {
           "key": "lunasmith",
           "name": "Luna Smith",
           "rank": "Administrator",
-          "tickets": 66,
-          "replies": 192
+          "tickets": 87,
+          "replies": 231
+        },
+        {
+          "key": "savi",
+          "name": "Savi",
+          "rank": "Head Administrator",
+          "tickets": 81,
+          "replies": 238
+        },
+        {
+          "key": "pluplu",
+          "name": "PLU PLU",
+          "rank": "Administrator",
+          "tickets": 78,
+          "replies": 459
+        },
+        {
+          "key": "tartsorrengail",
+          "name": "Tart Sorrengail",
+          "rank": "Administrator",
+          "tickets": 76,
+          "replies": 169
+        },
+        {
+          "key": "clarksmith",
+          "name": "Clark Smith",
+          "rank": "Senior Administrator",
+          "tickets": 72,
+          "replies": 173
+        },
+        {
+          "key": "bean",
+          "name": "B⃞  e⃞  a⃞  n⃞",
+          "rank": "LOA",
+          "tickets": 63,
+          "replies": 150
+        },
+        {
+          "key": "angelsorrengail",
+          "name": "Angel Sorrengail",
+          "rank": "Administrator",
+          "tickets": 62,
+          "replies": 182
+        },
+        {
+          "key": "gp",
+          "name": "GP -_-",
+          "rank": "Administrator",
+          "tickets": 57,
+          "replies": 180
         },
         {
           "key": "ace",
@@ -1693,123 +1742,102 @@
           "replies": 264
         },
         {
-          "key": "savi",
-          "name": "Savi",
-          "rank": "Head Administrator",
-          "tickets": 52,
-          "replies": 174
-        },
-        {
-          "key": "clarksmith",
-          "name": "Clark Smith",
-          "rank": "Senior Administrator",
-          "tickets": 49,
-          "replies": 135
-        },
-        {
           "key": "iawalsh",
           "name": "IA | Walsh",
           "rank": "Senior Administrator",
-          "tickets": 43,
-          "replies": 110
-        },
-        {
-          "key": "angelsorrengail",
-          "name": "Angel Sorrengail",
-          "rank": "Administrator",
-          "tickets": 41,
-          "replies": 142
-        },
-        {
-          "key": "tartsorrengail",
-          "name": "Tart Sorrengail",
-          "rank": "Administrator",
-          "tickets": 40,
-          "replies": 97
-        },
-        {
-          "key": "que",
-          "name": "que",
-          "rank": "LOA",
-          "tickets": 39,
-          "replies": 210
-        },
-        {
-          "key": "pluplu",
-          "name": "PLU PLU",
-          "rank": "Administrator",
-          "tickets": 34,
-          "replies": 176
-        },
-        {
-          "key": "eteal",
-          "name": "/E Teal",
-          "rank": "Administrator",
-          "tickets": 32,
-          "replies": 75
+          "tickets": 53,
+          "replies": 145
         },
         {
           "key": "carlitos",
           "name": "Carlitos",
           "rank": "LOA",
-          "tickets": 29,
-          "replies": 114
+          "tickets": 51,
+          "replies": 185
         },
         {
-          "key": "gp",
-          "name": "GP -_-",
+          "key": "que",
+          "name": "que",
+          "rank": "LOA",
+          "tickets": 42,
+          "replies": 231
+        },
+        {
+          "key": "eteal",
+          "name": "/E Teal",
           "rank": "Administrator",
-          "tickets": 28,
-          "replies": 92
+          "tickets": 42,
+          "replies": 87
         },
         {
           "key": "spiraldontping",
           "name": "[🎯]Spiral | DONT PING",
           "rank": "Support",
-          "tickets": 15,
-          "replies": 101
+          "tickets": 22,
+          "replies": 171
         },
         {
-          "key": "bean",
-          "name": "B⃞  e⃞  a⃞  n⃞",
-          "rank": "LOA",
-          "tickets": 15,
-          "replies": 36
+          "key": "b06cmrdbobross",
+          "name": "B-06 | Cmrd. Bob Ross",
+          "rank": "Administrator",
+          "tickets": 19,
+          "replies": 59
         },
         {
           "key": "ava",
           "name": "Ava",
           "rank": "Moderator",
-          "tickets": 9,
-          "replies": 57
+          "tickets": 15,
+          "replies": 74
         },
         {
           "key": "lifeivktlsquad",
           "name": "Life.IV [KTL squad]",
           "rank": "LOA",
-          "tickets": 8,
-          "replies": 21
+          "tickets": 15,
+          "replies": 52
         },
         {
-          "key": "charliewatleh",
-          "name": "Charlie Watleh",
+          "key": "fazehazard13",
+          "name": "faZe_HaZard13",
           "rank": "LOA",
-          "tickets": 7,
-          "replies": 90
-        },
-        {
-          "key": "katana",
-          "name": "katana",
-          "rank": "Support",
-          "tickets": 5,
-          "replies": 9
+          "tickets": 10,
+          "replies": 27
         },
         {
           "key": "b05cmdrpaddymalone",
           "name": "B-05 | Cmdr. Paddy Malone",
           "rank": "Moderator",
-          "tickets": 4,
-          "replies": 44
+          "tickets": 9,
+          "replies": 59
+        },
+        {
+          "key": "charliewatleh",
+          "name": "Charlie Watleh",
+          "rank": "LOA",
+          "tickets": 8,
+          "replies": 94
+        },
+        {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Administrator",
+          "tickets": 6,
+          "replies": 45
+        },
+        {
+          "key": "katana",
+          "name": "katana",
+          "rank": "Support",
+          "tickets": 6,
+          "replies": 14
+        },
+        {
+          "key": "mitochondria",
+          "name": "Mitochondria 🦠",
+          "rank": "LOA",
+          "tickets": 3,
+          "replies": 33
         },
         {
           "key": "cletus",
@@ -1826,6 +1854,20 @@
           "replies": 11
         },
         {
+          "key": "esrie",
+          "name": "esrie",
+          "rank": "LOA",
+          "tickets": 3,
+          "replies": 4
+        },
+        {
+          "key": "mirasorrengail",
+          "name": "Mira Sorrengail",
+          "rank": "Senior Administrator",
+          "tickets": 2,
+          "replies": 30
+        },
+        {
           "key": "octavia3",
           "name": "Octavia <3",
           "rank": "Moderator",
@@ -1833,36 +1875,15 @@
           "replies": 29
         },
         {
-          "key": "mitochondria",
-          "name": "Mitochondria 🦠",
-          "rank": "LOA",
-          "tickets": 2,
-          "replies": 20
-        },
-        {
-          "key": "fazehazard13",
-          "name": "faZe_HaZard13",
-          "rank": "LOA",
+          "key": "exe",
+          "name": ".exe",
+          "rank": "Support",
           "tickets": 2,
           "replies": 6
         },
         {
-          "key": "b06cmrdbobross",
-          "name": "B-06 | Cmrd. Bob Ross",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 5
-        },
-        {
           "key": "commissionercrispymcchicken",
           "name": "commissioner crispy mcchicken ツ",
-          "rank": "LOA",
-          "tickets": 2,
-          "replies": 3
-        },
-        {
-          "key": "esrie",
-          "name": "esrie",
           "rank": "LOA",
           "tickets": 2,
           "replies": 3
@@ -1875,18 +1896,11 @@
           "replies": 19
         },
         {
-          "key": "snq",
-          "name": "ʇsɹnʍʇɐɹq",
-          "rank": "Administrator",
+          "key": "nini",
+          "name": "nini",
+          "rank": "LOA",
           "tickets": 1,
-          "replies": 10
-        },
-        {
-          "key": "exe",
-          "name": ".exe",
-          "rank": "Support",
-          "tickets": 1,
-          "replies": 4
+          "replies": 2
         }
       ]
     },
@@ -1896,84 +1910,182 @@
       "end": "2026-07-03T04:00:00.000Z",
       "label": "Fri 26 Jun 12:00 AM – Fri 3 Jul 12:00 AM",
       "inProgress": false,
-      "totalTickets": 125,
+      "totalTickets": 939,
       "staff": [
+        {
+          "key": "clarksmith",
+          "name": "Clark Smith",
+          "rank": "Senior Administrator",
+          "tickets": 132,
+          "replies": 358
+        },
         {
           "key": "kat",
           "name": "kat",
           "rank": "Server Manager",
-          "tickets": 23,
-          "replies": 68
+          "tickets": 121,
+          "replies": 295
         },
         {
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
-          "tickets": 18,
-          "replies": 77
-        },
-        {
-          "key": "iawalsh",
-          "name": "IA | Walsh",
-          "rank": "Senior Administrator",
-          "tickets": 13,
-          "replies": 29
-        },
-        {
-          "key": "clarksmith",
-          "name": "Clark Smith",
-          "rank": "Senior Administrator",
-          "tickets": 12,
-          "replies": 50
-        },
-        {
-          "key": "gp",
-          "name": "GP -_-",
-          "rank": "Administrator",
-          "tickets": 12,
-          "replies": 25
-        },
-        {
-          "key": "savi",
-          "name": "Savi",
-          "rank": "Head Administrator",
-          "tickets": 10,
-          "replies": 20
-        },
-        {
-          "key": "angelsorrengail",
-          "name": "Angel Sorrengail",
-          "rank": "Administrator",
-          "tickets": 9,
-          "replies": 19
-        },
-        {
-          "key": "esrie",
-          "name": "esrie",
-          "rank": "LOA",
-          "tickets": 6,
-          "replies": 13
-        },
-        {
-          "key": "nini",
-          "name": "nini",
-          "rank": "LOA",
-          "tickets": 4,
-          "replies": 49
+          "tickets": 95,
+          "replies": 429
         },
         {
           "key": "blaze",
           "name": "Blaze",
           "rank": "Administrator",
-          "tickets": 4,
-          "replies": 14
+          "tickets": 81,
+          "replies": 229
+        },
+        {
+          "key": "lunasmith",
+          "name": "Luna Smith",
+          "rank": "Administrator",
+          "tickets": 79,
+          "replies": 146
+        },
+        {
+          "key": "b06cmrdbobross",
+          "name": "B-06 | Cmrd. Bob Ross",
+          "rank": "Administrator",
+          "tickets": 76,
+          "replies": 294
+        },
+        {
+          "key": "savi",
+          "name": "Savi",
+          "rank": "Head Administrator",
+          "tickets": 49,
+          "replies": 121
+        },
+        {
+          "key": "iawalsh",
+          "name": "IA | Walsh",
+          "rank": "Senior Administrator",
+          "tickets": 39,
+          "replies": 90
+        },
+        {
+          "key": "esrie",
+          "name": "esrie",
+          "rank": "LOA",
+          "tickets": 38,
+          "replies": 61
+        },
+        {
+          "key": "gp",
+          "name": "GP -_-",
+          "rank": "Administrator",
+          "tickets": 37,
+          "replies": 99
         },
         {
           "key": "eteal",
           "name": "/E Teal",
           "rank": "Administrator",
+          "tickets": 30,
+          "replies": 68
+        },
+        {
+          "key": "angelsorrengail",
+          "name": "Angel Sorrengail",
+          "rank": "Administrator",
+          "tickets": 28,
+          "replies": 69
+        },
+        {
+          "key": "lifeivktlsquad",
+          "name": "Life.IV [KTL squad]",
+          "rank": "LOA",
+          "tickets": 27,
+          "replies": 81
+        },
+        {
+          "key": "fazehazard13",
+          "name": "faZe_HaZard13",
+          "rank": "LOA",
+          "tickets": 22,
+          "replies": 61
+        },
+        {
+          "key": "tartsorrengail",
+          "name": "Tart Sorrengail",
+          "rank": "Administrator",
+          "tickets": 14,
+          "replies": 32
+        },
+        {
+          "key": "b04cmdrtylermercer",
+          "name": "B-04 | Cmdr. Tyler Mercer",
+          "rank": "Moderator",
+          "tickets": 13,
+          "replies": 34
+        },
+        {
+          "key": "mrwhitaker",
+          "name": "Mr. Whitaker",
+          "rank": "Support",
+          "tickets": 7,
+          "replies": 26
+        },
+        {
+          "key": "carlitos",
+          "name": "Carlitos",
+          "rank": "LOA",
+          "tickets": 7,
+          "replies": 19
+        },
+        {
+          "key": "ava",
+          "name": "Ava",
+          "rank": "Moderator",
+          "tickets": 7,
+          "replies": 17
+        },
+        {
+          "key": "nini",
+          "name": "nini",
+          "rank": "LOA",
+          "tickets": 5,
+          "replies": 50
+        },
+        {
+          "key": "bean",
+          "name": "B⃞  e⃞  a⃞  n⃞",
+          "rank": "LOA",
+          "tickets": 5,
+          "replies": 27
+        },
+        {
+          "key": "que",
+          "name": "que",
+          "rank": "LOA",
+          "tickets": 5,
+          "replies": 22
+        },
+        {
+          "key": "mirasorrengail",
+          "name": "Mira Sorrengail",
+          "rank": "Senior Administrator",
+          "tickets": 5,
+          "replies": 11
+        },
+        {
+          "key": "mitochondria",
+          "name": "Mitochondria 🦠",
+          "rank": "LOA",
           "tickets": 4,
-          "replies": 8
+          "replies": 21
+        },
+        {
+          "key": "commissionercrispymcchicken",
+          "name": "commissioner crispy mcchicken ツ",
+          "rank": "LOA",
+          "tickets": 3,
+          "replies": 5
         },
         {
           "key": "kensorrengail",
@@ -1983,39 +2095,32 @@
           "replies": 38
         },
         {
-          "key": "mitochondria",
-          "name": "Mitochondria 🦠",
-          "rank": "LOA",
-          "tickets": 2,
-          "replies": 16
-        },
-        {
-          "key": "lunasmith",
-          "name": "Luna Smith",
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
           "rank": "Administrator",
           "tickets": 2,
-          "replies": 5
+          "replies": 18
         },
         {
-          "key": "que",
-          "name": "que",
-          "rank": "LOA",
+          "key": "cletus",
+          "name": "Cletus",
+          "rank": "Administrator",
+          "tickets": 2,
+          "replies": 17
+        },
+        {
+          "key": "pluplu",
+          "name": "PLU PLU",
+          "rank": "Administrator",
+          "tickets": 1,
+          "replies": 8
+        },
+        {
+          "key": "ace",
+          "name": "Ace",
+          "rank": "Moderator",
           "tickets": 1,
           "replies": 6
-        },
-        {
-          "key": "bean",
-          "name": "B⃞  e⃞  a⃞  n⃞",
-          "rank": "LOA",
-          "tickets": 1,
-          "replies": 6
-        },
-        {
-          "key": "mrwhitaker",
-          "name": "Mr. Whitaker",
-          "rank": "Support",
-          "tickets": 1,
-          "replies": 4
         },
         {
           "key": "spiraldontping",
@@ -2023,6 +2128,13 @@
           "rank": "Support",
           "tickets": 1,
           "replies": 4
+        },
+        {
+          "key": "b05cmdrpaddymalone",
+          "name": "B-05 | Cmdr. Paddy Malone",
+          "rank": "Moderator",
+          "tickets": 1,
+          "replies": 3
         }
       ]
     },
@@ -2032,119 +2144,224 @@
       "end": "2026-06-26T04:00:00.000Z",
       "label": "Fri 19 Jun 12:00 AM – Fri 26 Jun 12:00 AM",
       "inProgress": false,
-      "totalTickets": 175,
+      "totalTickets": 970,
       "staff": [
+        {
+          "key": "clarksmith",
+          "name": "Clark Smith",
+          "rank": "Senior Administrator",
+          "tickets": 135,
+          "replies": 372
+        },
         {
           "key": "kat",
           "name": "kat",
           "rank": "Server Manager",
-          "tickets": 30,
-          "replies": 62
+          "tickets": 105,
+          "replies": 210
         },
         {
           "key": "mirasorrengail",
           "name": "Mira Sorrengail",
           "rank": "Senior Administrator",
-          "tickets": 27,
-          "replies": 86
+          "tickets": 84,
+          "replies": 261
         },
         {
-          "key": "clarksmith",
-          "name": "Clark Smith",
-          "rank": "Senior Administrator",
-          "tickets": 25,
-          "replies": 92
-        },
-        {
-          "key": "angelsorrengail",
-          "name": "Angel Sorrengail",
+          "key": "lunasmith",
+          "name": "Luna Smith",
           "rank": "Administrator",
-          "tickets": 21,
-          "replies": 88
+          "tickets": 77,
+          "replies": 217
         },
         {
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
-          "tickets": 20,
-          "replies": 70
-        },
-        {
-          "key": "esrie",
-          "name": "esrie",
-          "rank": "LOA",
-          "tickets": 17,
-          "replies": 34
-        },
-        {
-          "key": "gp",
-          "name": "GP -_-",
-          "rank": "Administrator",
-          "tickets": 10,
-          "replies": 24
+          "tickets": 73,
+          "replies": 239
         },
         {
           "key": "savi",
           "name": "Savi",
           "rank": "Head Administrator",
-          "tickets": 5,
-          "replies": 23
+          "tickets": 62,
+          "replies": 168
         },
         {
-          "key": "mrwhitaker",
-          "name": "Mr. Whitaker",
-          "rank": "Support",
-          "tickets": 3,
-          "replies": 26
-        },
-        {
-          "key": "cletus",
-          "name": "Cletus",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 16
-        },
-        {
-          "key": "mitochondria",
-          "name": "Mitochondria 🦠",
+          "key": "esrie",
+          "name": "esrie",
           "rank": "LOA",
-          "tickets": 2,
-          "replies": 10
-        },
-        {
-          "key": "lifeivktlsquad",
-          "name": "Life.IV [KTL squad]",
-          "rank": "LOA",
-          "tickets": 2,
-          "replies": 8
-        },
-        {
-          "key": "eteal",
-          "name": "/E Teal",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 6
-        },
-        {
-          "key": "nini",
-          "name": "nini",
-          "rank": "LOA",
-          "tickets": 2,
-          "replies": 5
-        },
-        {
-          "key": "blaze",
-          "name": "Blaze",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 4
+          "tickets": 61,
+          "replies": 124
         },
         {
           "key": "fazehazard13",
           "name": "faZe_HaZard13",
           "rank": "LOA",
+          "tickets": 54,
+          "replies": 178
+        },
+        {
+          "key": "blaze",
+          "name": "Blaze",
+          "rank": "Administrator",
+          "tickets": 42,
+          "replies": 101
+        },
+        {
+          "key": "angelsorrengail",
+          "name": "Angel Sorrengail",
+          "rank": "Administrator",
+          "tickets": 40,
+          "replies": 138
+        },
+        {
+          "key": "b06cmrdbobross",
+          "name": "B-06 | Cmrd. Bob Ross",
+          "rank": "Administrator",
+          "tickets": 35,
+          "replies": 145
+        },
+        {
+          "key": "ava",
+          "name": "Ava",
+          "rank": "Moderator",
+          "tickets": 35,
+          "replies": 131
+        },
+        {
+          "key": "lifeivktlsquad",
+          "name": "Life.IV [KTL squad]",
+          "rank": "LOA",
+          "tickets": 24,
+          "replies": 95
+        },
+        {
+          "key": "eteal",
+          "name": "/E Teal",
+          "rank": "Administrator",
+          "tickets": 24,
+          "replies": 49
+        },
+        {
+          "key": "gp",
+          "name": "GP -_-",
+          "rank": "Administrator",
+          "tickets": 22,
+          "replies": 69
+        },
+        {
+          "key": "mitochondria",
+          "name": "Mitochondria 🦠",
+          "rank": "LOA",
+          "tickets": 17,
+          "replies": 32
+        },
+        {
+          "key": "mrwhitaker",
+          "name": "Mr. Whitaker",
+          "rank": "Support",
+          "tickets": 11,
+          "replies": 113
+        },
+        {
+          "key": "iawalsh",
+          "name": "IA | Walsh",
+          "rank": "Senior Administrator",
+          "tickets": 10,
+          "replies": 31
+        },
+        {
+          "key": "katy",
+          "name": "katy",
+          "rank": "Moderator",
+          "tickets": 9,
+          "replies": 32
+        },
+        {
+          "key": "cletus",
+          "name": "Cletus",
+          "rank": "Administrator",
+          "tickets": 8,
+          "replies": 35
+        },
+        {
+          "key": "nini",
+          "name": "nini",
+          "rank": "LOA",
+          "tickets": 7,
+          "replies": 25
+        },
+        {
+          "key": "que",
+          "name": "que",
+          "rank": "LOA",
+          "tickets": 6,
+          "replies": 57
+        },
+        {
+          "key": "carlitos",
+          "name": "Carlitos",
+          "rank": "LOA",
+          "tickets": 6,
+          "replies": 21
+        },
+        {
+          "key": "octavia3",
+          "name": "Octavia <3",
+          "rank": "Moderator",
+          "tickets": 5,
+          "replies": 23
+        },
+        {
+          "key": "tartsorrengail",
+          "name": "Tart Sorrengail",
+          "rank": "Administrator",
+          "tickets": 4,
+          "replies": 16
+        },
+        {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Administrator",
+          "tickets": 3,
+          "replies": 32
+        },
+        {
+          "key": "commissionercrispymcchicken",
+          "name": "commissioner crispy mcchicken ツ",
+          "rank": "LOA",
           "tickets": 2,
-          "replies": 3
+          "replies": 21
+        },
+        {
+          "key": "ewock",
+          "name": "ewock",
+          "rank": "LOA",
+          "tickets": 2,
+          "replies": 7
+        },
+        {
+          "key": "ace",
+          "name": "Ace",
+          "rank": "Moderator",
+          "tickets": 2,
+          "replies": 6
+        },
+        {
+          "key": "id265933025764835329",
+          "name": "᲼",
+          "rank": "Moderator",
+          "tickets": 2,
+          "replies": 5
+        },
+        {
+          "key": "b04cmdrtylermercer",
+          "name": "B-04 | Cmdr. Tyler Mercer",
+          "rank": "Moderator",
+          "tickets": 1,
+          "replies": 8
         },
         {
           "key": "spiraldontping",
@@ -2154,18 +2371,11 @@
           "replies": 4
         },
         {
-          "key": "lunasmith",
-          "name": "Luna Smith",
-          "rank": "Administrator",
-          "tickets": 1,
-          "replies": 4
-        },
-        {
-          "key": "ace",
-          "name": "Ace",
+          "key": "b05cmdrpaddymalone",
+          "name": "B-05 | Cmdr. Paddy Malone",
           "rank": "Moderator",
           "tickets": 1,
-          "replies": 3
+          "replies": 4
         }
       ]
     },
@@ -2175,112 +2385,203 @@
       "end": "2026-06-19T04:00:00.000Z",
       "label": "Fri 12 Jun 12:00 AM – Fri 19 Jun 12:00 AM",
       "inProgress": false,
-      "totalTickets": 178,
+      "totalTickets": 961,
       "staff": [
         {
           "key": "mirasorrengail",
           "name": "Mira Sorrengail",
           "rank": "Senior Administrator",
-          "tickets": 46,
-          "replies": 220
-        },
-        {
-          "key": "bonnie",
-          "name": "Bonnie",
-          "rank": "Head Administrator",
-          "tickets": 24,
-          "replies": 105
-        },
-        {
-          "key": "esrie",
-          "name": "esrie",
-          "rank": "LOA",
-          "tickets": 24,
-          "replies": 98
-        },
-        {
-          "key": "kat",
-          "name": "kat",
-          "rank": "Server Manager",
-          "tickets": 24,
-          "replies": 71
+          "tickets": 154,
+          "replies": 614
         },
         {
           "key": "clarksmith",
           "name": "Clark Smith",
           "rank": "Senior Administrator",
-          "tickets": 18,
-          "replies": 73
+          "tickets": 130,
+          "replies": 370
         },
         {
-          "key": "commissionercrispymcchicken",
-          "name": "commissioner crispy mcchicken ツ",
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Head Administrator",
+          "tickets": 106,
+          "replies": 392
+        },
+        {
+          "key": "esrie",
+          "name": "esrie",
           "rank": "LOA",
-          "tickets": 13,
-          "replies": 40
+          "tickets": 90,
+          "replies": 291
+        },
+        {
+          "key": "kat",
+          "name": "kat",
+          "rank": "Server Manager",
+          "tickets": 83,
+          "replies": 192
+        },
+        {
+          "key": "blaze",
+          "name": "Blaze",
+          "rank": "Administrator",
+          "tickets": 55,
+          "replies": 190
         },
         {
           "key": "angelsorrengail",
           "name": "Angel Sorrengail",
           "rank": "Administrator",
-          "tickets": 11,
-          "replies": 28
+          "tickets": 49,
+          "replies": 140
+        },
+        {
+          "key": "lifeivktlsquad",
+          "name": "Life.IV [KTL squad]",
+          "rank": "LOA",
+          "tickets": 48,
+          "replies": 179
+        },
+        {
+          "key": "iawalsh",
+          "name": "IA | Walsh",
+          "rank": "Senior Administrator",
+          "tickets": 40,
+          "replies": 107
         },
         {
           "key": "gp",
           "name": "GP -_-",
           "rank": "Administrator",
-          "tickets": 4,
-          "replies": 12
-        },
-        {
-          "key": "b05cmdrpaddymalone",
-          "name": "B-05 | Cmdr. Paddy Malone",
-          "rank": "Moderator",
-          "tickets": 3,
-          "replies": 101
-        },
-        {
-          "key": "nini",
-          "name": "nini",
-          "rank": "LOA",
-          "tickets": 3,
-          "replies": 15
+          "tickets": 34,
+          "replies": 95
         },
         {
           "key": "eteal",
           "name": "/E Teal",
           "rank": "Administrator",
-          "tickets": 3,
-          "replies": 3
+          "tickets": 31,
+          "replies": 75
+        },
+        {
+          "key": "commissionercrispymcchicken",
+          "name": "commissioner crispy mcchicken ツ",
+          "rank": "LOA",
+          "tickets": 24,
+          "replies": 66
         },
         {
           "key": "fazehazard13",
           "name": "faZe_HaZard13",
           "rank": "LOA",
-          "tickets": 2,
-          "replies": 10
+          "tickets": 20,
+          "replies": 60
         },
         {
-          "key": "mrwhitaker",
-          "name": "Mr. Whitaker",
-          "rank": "Support",
-          "tickets": 1,
-          "replies": 3
+          "key": "ava",
+          "name": "Ava",
+          "rank": "Moderator",
+          "tickets": 14,
+          "replies": 62
         },
         {
-          "key": "que",
-          "name": "que",
+          "key": "mitochondria",
+          "name": "Mitochondria 🦠",
           "rank": "LOA",
-          "tickets": 1,
-          "replies": 3
+          "tickets": 14,
+          "replies": 42
+        },
+        {
+          "key": "cletus",
+          "name": "Cletus",
+          "rank": "Administrator",
+          "tickets": 13,
+          "replies": 58
+        },
+        {
+          "key": "gman",
+          "name": "Gman",
+          "rank": "LOA",
+          "tickets": 9,
+          "replies": 49
         },
         {
           "key": "savi",
           "name": "Savi",
           "rank": "Head Administrator",
+          "tickets": 9,
+          "replies": 22
+        },
+        {
+          "key": "mrwhitaker",
+          "name": "Mr. Whitaker",
+          "rank": "Support",
+          "tickets": 7,
+          "replies": 116
+        },
+        {
+          "key": "nini",
+          "name": "nini",
+          "rank": "LOA",
+          "tickets": 7,
+          "replies": 21
+        },
+        {
+          "key": "b05cmdrpaddymalone",
+          "name": "B-05 | Cmdr. Paddy Malone",
+          "rank": "Moderator",
+          "tickets": 6,
+          "replies": 141
+        },
+        {
+          "key": "que",
+          "name": "que",
+          "rank": "LOA",
+          "tickets": 5,
+          "replies": 37
+        },
+        {
+          "key": "ace",
+          "name": "Ace",
+          "rank": "Moderator",
+          "tickets": 5,
+          "replies": 7
+        },
+        {
+          "key": "octavia3",
+          "name": "Octavia <3",
+          "rank": "Moderator",
+          "tickets": 3,
+          "replies": 15
+        },
+        {
+          "key": "ewock",
+          "name": "ewock",
+          "rank": "LOA",
+          "tickets": 2,
+          "replies": 3
+        },
+        {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Administrator",
           "tickets": 1,
-          "replies": 2
+          "replies": 12
+        },
+        {
+          "key": "onthedeadhomies",
+          "name": "on the dead homies",
+          "rank": "Support",
+          "tickets": 1,
+          "replies": 1
+        },
+        {
+          "key": "id265933025764835329",
+          "name": "᲼",
+          "rank": "Moderator",
+          "tickets": 1,
+          "replies": 1
         }
       ]
     },
@@ -2290,112 +2591,168 @@
       "end": "2026-06-12T04:00:00.000Z",
       "label": "Fri 5 Jun 12:00 AM – Fri 12 Jun 12:00 AM",
       "inProgress": false,
-      "totalTickets": 913,
+      "totalTickets": 1292,
       "staff": [
         {
           "key": "mirasorrengail",
           "name": "Mira Sorrengail",
           "rank": "Senior Administrator",
-          "tickets": 218,
-          "replies": 619
-        },
-        {
-          "key": "clarksmith",
-          "name": "Clark Smith",
-          "rank": "Senior Administrator",
-          "tickets": 135,
-          "replies": 294
-        },
-        {
-          "key": "esrie",
-          "name": "esrie",
-          "rank": "LOA",
-          "tickets": 128,
-          "replies": 332
+          "tickets": 304,
+          "replies": 868
         },
         {
           "key": "kat",
           "name": "kat",
           "rank": "Server Manager",
-          "tickets": 119,
-          "replies": 285
+          "tickets": 189,
+          "replies": 398
+        },
+        {
+          "key": "clarksmith",
+          "name": "Clark Smith",
+          "rank": "Senior Administrator",
+          "tickets": 178,
+          "replies": 382
+        },
+        {
+          "key": "esrie",
+          "name": "esrie",
+          "rank": "LOA",
+          "tickets": 152,
+          "replies": 386
         },
         {
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
-          "tickets": 66,
-          "replies": 154
-        },
-        {
-          "key": "fazehazard13",
-          "name": "faZe_HaZard13",
-          "rank": "LOA",
-          "tickets": 36,
-          "replies": 94
-        },
-        {
-          "key": "eteal",
-          "name": "/E Teal",
-          "rank": "Administrator",
-          "tickets": 35,
-          "replies": 106
-        },
-        {
-          "key": "gp",
-          "name": "GP -_-",
-          "rank": "Administrator",
-          "tickets": 34,
-          "replies": 163
+          "tickets": 100,
+          "replies": 274
         },
         {
           "key": "commissionercrispymcchicken",
           "name": "commissioner crispy mcchicken ツ",
           "rank": "LOA",
-          "tickets": 28,
-          "replies": 150
+          "tickets": 43,
+          "replies": 189
+        },
+        {
+          "key": "gp",
+          "name": "GP -_-",
+          "rank": "Administrator",
+          "tickets": 41,
+          "replies": 181
+        },
+        {
+          "key": "eteal",
+          "name": "/E Teal",
+          "rank": "Administrator",
+          "tickets": 40,
+          "replies": 114
+        },
+        {
+          "key": "fazehazard13",
+          "name": "faZe_HaZard13",
+          "rank": "LOA",
+          "tickets": 39,
+          "replies": 98
         },
         {
           "key": "ace",
           "name": "Ace",
           "rank": "Moderator",
-          "tickets": 25,
-          "replies": 71
-        },
-        {
-          "key": "nini",
-          "name": "nini",
-          "rank": "LOA",
-          "tickets": 17,
-          "replies": 37
+          "tickets": 32,
+          "replies": 89
         },
         {
           "key": "katy",
           "name": "katy",
           "rank": "Moderator",
-          "tickets": 15,
-          "replies": 65
-        },
-        {
-          "key": "iawalsh",
-          "name": "IA | Walsh",
-          "rank": "Senior Administrator",
-          "tickets": 8,
-          "replies": 45
-        },
-        {
-          "key": "cletus",
-          "name": "Cletus",
-          "rank": "Administrator",
-          "tickets": 8,
-          "replies": 29
+          "tickets": 22,
+          "replies": 85
         },
         {
           "key": "gman",
           "name": "Gman",
           "rank": "LOA",
+          "tickets": 22,
+          "replies": 64
+        },
+        {
+          "key": "iawalsh",
+          "name": "IA | Walsh",
+          "rank": "Senior Administrator",
+          "tickets": 21,
+          "replies": 98
+        },
+        {
+          "key": "nini",
+          "name": "nini",
+          "rank": "LOA",
+          "tickets": 21,
+          "replies": 46
+        },
+        {
+          "key": "savi",
+          "name": "Savi",
+          "rank": "Head Administrator",
+          "tickets": 14,
+          "replies": 36
+        },
+        {
+          "key": "cletus",
+          "name": "Cletus",
+          "rank": "Administrator",
+          "tickets": 13,
+          "replies": 41
+        },
+        {
+          "key": "blaze",
+          "name": "Blaze",
+          "rank": "Administrator",
+          "tickets": 10,
+          "replies": 65
+        },
+        {
+          "key": "mrwhitaker",
+          "name": "Mr. Whitaker",
+          "rank": "Support",
+          "tickets": 7,
+          "replies": 72
+        },
+        {
+          "key": "que",
+          "name": "que",
+          "rank": "LOA",
           "tickets": 6,
-          "replies": 14
+          "replies": 45
+        },
+        {
+          "key": "mitochondria",
+          "name": "Mitochondria 🦠",
+          "rank": "LOA",
+          "tickets": 6,
+          "replies": 24
+        },
+        {
+          "key": "b04cmdrtylermercer",
+          "name": "B-04 | Cmdr. Tyler Mercer",
+          "rank": "Moderator",
+          "tickets": 6,
+          "replies": 18
+        },
+        {
+          "key": "id265933025764835329",
+          "name": "᲼",
+          "rank": "Moderator",
+          "tickets": 5,
+          "replies": 9
+        },
+        {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Administrator",
+          "tickets": 4,
+          "replies": 25
         },
         {
           "key": "angelsorrengail",
@@ -2405,20 +2762,6 @@
           "replies": 22
         },
         {
-          "key": "b04cmdrtylermercer",
-          "name": "B-04 | Cmdr. Tyler Mercer",
-          "rank": "Moderator",
-          "tickets": 4,
-          "replies": 8
-        },
-        {
-          "key": "savi",
-          "name": "Savi",
-          "rank": "Head Administrator",
-          "tickets": 4,
-          "replies": 6
-        },
-        {
           "key": "ricky",
           "name": "Ricky",
           "rank": "Support",
@@ -2426,39 +2769,11 @@
           "replies": 122
         },
         {
-          "key": "blaze",
-          "name": "Blaze",
-          "rank": "Administrator",
-          "tickets": 3,
-          "replies": 38
-        },
-        {
-          "key": "que",
-          "name": "que",
-          "rank": "LOA",
-          "tickets": 3,
-          "replies": 35
-        },
-        {
-          "key": "mitochondria",
-          "name": "Mitochondria 🦠",
-          "rank": "LOA",
-          "tickets": 3,
-          "replies": 11
-        },
-        {
-          "key": "id265933025764835329",
-          "name": "᲼",
+          "key": "octavia3",
+          "name": "Octavia <3",
           "rank": "Moderator",
           "tickets": 3,
           "replies": 5
-        },
-        {
-          "key": "mrwhitaker",
-          "name": "Mr. Whitaker",
-          "rank": "Support",
-          "tickets": 2,
-          "replies": 27
         },
         {
           "key": "ava",
@@ -2468,25 +2783,25 @@
           "replies": 13
         },
         {
-          "key": "snq",
-          "name": "ʇsɹnʍʇɐɹq",
-          "rank": "Administrator",
+          "key": "ewock",
+          "name": "ewock",
+          "rank": "LOA",
+          "tickets": 2,
+          "replies": 5
+        },
+        {
+          "key": "magnify",
+          "name": "Magnify®",
+          "rank": "Support",
           "tickets": 1,
           "replies": 6
         },
         {
-          "key": "ewock",
-          "name": "ewock",
-          "rank": "LOA",
+          "key": "b06cmrdbobross",
+          "name": "B-06 | Cmrd. Bob Ross",
+          "rank": "Administrator",
           "tickets": 1,
-          "replies": 4
-        },
-        {
-          "key": "octavia3",
-          "name": "Octavia <3",
-          "rank": "Moderator",
-          "tickets": 1,
-          "replies": 3
+          "replies": 6
         },
         {
           "key": "lifeivktlsquad",
@@ -3524,204 +3839,225 @@
       "staff": []
     }
   ],
-  "transcriptCount": 9352,
-  "totalTickets": 12753,
+  "transcriptCount": 11683,
+  "totalTickets": 16068,
   "staff": [
     {
       "key": "kat",
       "name": "kat",
       "rank": "Server Manager",
-      "tickets": 1825,
-      "replies": 4683
+      "tickets": 2200,
+      "replies": 5407
     },
     {
       "key": "mirasorrengail",
       "name": "Mira Sorrengail",
       "rank": "Senior Administrator",
-      "tickets": 1781,
-      "replies": 6514
+      "tickets": 2039,
+      "replies": 7373
     },
     {
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 670,
-      "replies": 2283
-    },
-    {
-      "key": "angelsorrengail",
-      "name": "Angel Sorrengail",
-      "rank": "Administrator",
-      "tickets": 604,
-      "replies": 1755
-    },
-    {
-      "key": "snq",
-      "name": "ʇsɹnʍʇɐɹq",
-      "rank": "Administrator",
-      "tickets": 586,
-      "replies": 2463
+      "tickets": 963,
+      "replies": 3321
     },
     {
       "key": "clarksmith",
       "name": "Clark Smith",
       "rank": "Senior Administrator",
-      "tickets": 555,
-      "replies": 1518
+      "tickets": 963,
+      "replies": 2529
     },
     {
       "key": "esrie",
       "name": "esrie",
       "rank": "LOA",
-      "tickets": 551,
-      "replies": 1377
+      "tickets": 718,
+      "replies": 1763
+    },
+    {
+      "key": "angelsorrengail",
+      "name": "Angel Sorrengail",
+      "rank": "Administrator",
+      "tickets": 701,
+      "replies": 2007
     },
     {
       "key": "savi",
       "name": "Savi",
       "rank": "Head Administrator",
-      "tickets": 485,
-      "replies": 1293
+      "tickets": 628,
+      "replies": 1653
     },
     {
-      "key": "pluplu",
-      "name": "PLU PLU",
+      "key": "snq",
+      "name": "ʇsɹnʍʇɐɹq",
       "rank": "Administrator",
-      "tickets": 417,
-      "replies": 2019
+      "tickets": 600,
+      "replies": 2579
     },
     {
       "key": "lunasmith",
       "name": "Luna Smith",
       "rank": "Administrator",
-      "tickets": 402,
-      "replies": 977
+      "tickets": 576,
+      "replies": 1370
     },
     {
       "key": "blaze",
       "name": "Blaze",
       "rank": "Administrator",
-      "tickets": 329,
-      "replies": 889
+      "tickets": 571,
+      "replies": 1566
+    },
+    {
+      "key": "pluplu",
+      "name": "PLU PLU",
+      "rank": "Administrator",
+      "tickets": 462,
+      "replies": 2310
     },
     {
       "key": "tartsorrengail",
       "name": "Tart Sorrengail",
       "rank": "Administrator",
-      "tickets": 303,
-      "replies": 944
-    },
-    {
-      "key": "carlitos",
-      "name": "Carlitos",
-      "rank": "LOA",
-      "tickets": 299,
-      "replies": 880
+      "tickets": 357,
+      "replies": 1064
     },
     {
       "key": "gp",
       "name": "GP -_-",
       "rank": "Administrator",
-      "tickets": 252,
-      "replies": 891
-    },
-    {
-      "key": "commissionercrispymcchicken",
-      "name": "commissioner crispy mcchicken ツ",
-      "rank": "LOA",
-      "tickets": 247,
-      "replies": 971
+      "tickets": 355,
+      "replies": 1199
     },
     {
       "key": "fazehazard13",
       "name": "faZe_HaZard13",
       "rank": "LOA",
-      "tickets": 232,
-      "replies": 699
+      "tickets": 335,
+      "replies": 1010
+    },
+    {
+      "key": "carlitos",
+      "name": "Carlitos",
+      "rank": "LOA",
+      "tickets": 334,
+      "replies": 991
     },
     {
       "key": "iawalsh",
       "name": "IA | Walsh",
       "rank": "Senior Administrator",
-      "tickets": 214,
-      "replies": 721
+      "tickets": 313,
+      "replies": 1008
     },
     {
-      "key": "gman",
-      "name": "Gman",
+      "key": "commissionercrispymcchicken",
+      "name": "commissioner crispy mcchicken ツ",
       "rank": "LOA",
-      "tickets": 198,
-      "replies": 943
-    },
-    {
-      "key": "b05cmdrpaddymalone",
-      "name": "B-05 | Cmdr. Paddy Malone",
-      "rank": "Moderator",
-      "tickets": 191,
-      "replies": 894
-    },
-    {
-      "key": "kolton",
-      "name": "Kolton",
-      "rank": "Support",
-      "tickets": 170,
-      "replies": 541
-    },
-    {
-      "key": "ace",
-      "name": "Ace",
-      "rank": "Moderator",
-      "tickets": 169,
-      "replies": 895
-    },
-    {
-      "key": "nini",
-      "name": "nini",
-      "rank": "LOA",
-      "tickets": 139,
-      "replies": 377
+      "tickets": 278,
+      "replies": 1062
     },
     {
       "key": "eteal",
       "name": "/E Teal",
       "rank": "Administrator",
-      "tickets": 138,
-      "replies": 432
+      "tickets": 229,
+      "replies": 627
     },
     {
-      "key": "que",
-      "name": "que",
+      "key": "b06cmrdbobross",
+      "name": "B-06 | Cmrd. Bob Ross",
+      "rank": "Administrator",
+      "tickets": 227,
+      "replies": 866
+    },
+    {
+      "key": "gman",
+      "name": "Gman",
       "rank": "LOA",
-      "tickets": 137,
-      "replies": 745
+      "tickets": 223,
+      "replies": 1042
+    },
+    {
+      "key": "b05cmdrpaddymalone",
+      "name": "B-05 | Cmdr. Paddy Malone",
+      "rank": "Moderator",
+      "tickets": 201,
+      "replies": 956
+    },
+    {
+      "key": "ace",
+      "name": "Ace",
+      "rank": "Moderator",
+      "tickets": 183,
+      "replies": 929
+    },
+    {
+      "key": "kolton",
+      "name": "Kolton",
+      "rank": "Support",
+      "tickets": 171,
+      "replies": 543
     },
     {
       "key": "mrwhitaker",
       "name": "Mr. Whitaker",
       "rank": "Support",
-      "tickets": 136,
-      "replies": 675
+      "tickets": 161,
+      "replies": 942
     },
     {
-      "key": "ewock",
-      "name": "ewock",
+      "key": "que",
+      "name": "que",
       "rank": "LOA",
-      "tickets": 125,
-      "replies": 362
+      "tickets": 157,
+      "replies": 883
+    },
+    {
+      "key": "nini",
+      "name": "nini",
+      "rank": "LOA",
+      "tickets": 154,
+      "replies": 415
     },
     {
       "key": "mitochondria",
       "name": "Mitochondria 🦠",
       "rank": "LOA",
-      "tickets": 118,
-      "replies": 449
+      "tickets": 153,
+      "replies": 544
+    },
+    {
+      "key": "lifeivktlsquad",
+      "name": "Life.IV [KTL squad]",
+      "rank": "LOA",
+      "tickets": 130,
+      "replies": 437
+    },
+    {
+      "key": "ewock",
+      "name": "ewock",
+      "rank": "LOA",
+      "tickets": 130,
+      "replies": 373
+    },
+    {
+      "key": "cletus",
+      "name": "Cletus",
+      "rank": "Administrator",
+      "tickets": 116,
+      "replies": 487
     },
     {
       "key": "exe",
       "name": ".exe",
       "rank": "Support",
-      "tickets": 107,
-      "replies": 348
+      "tickets": 108,
+      "replies": 350
     },
     {
       "key": "evelyn",
@@ -3731,39 +4067,53 @@
       "replies": 245
     },
     {
-      "key": "b06cmrdbobross",
-      "name": "B-06 | Cmrd. Bob Ross",
-      "rank": "Administrator",
-      "tickets": 98,
-      "replies": 367
-    },
-    {
       "key": "onthedeadhomies",
       "name": "on the dead homies",
       "rank": "Support",
-      "tickets": 96,
-      "replies": 296
+      "tickets": 97,
+      "replies": 297
     },
     {
-      "key": "cletus",
-      "name": "Cletus",
-      "rank": "Administrator",
-      "tickets": 90,
-      "replies": 381
+      "key": "bean",
+      "name": "B⃞  e⃞  a⃞  n⃞",
+      "rank": "LOA",
+      "tickets": 86,
+      "replies": 242
+    },
+    {
+      "key": "ava",
+      "name": "Ava",
+      "rank": "Moderator",
+      "tickets": 83,
+      "replies": 360
+    },
+    {
+      "key": "b04cmdrtylermercer",
+      "name": "B-04 | Cmdr. Tyler Mercer",
+      "rank": "Moderator",
+      "tickets": 76,
+      "replies": 250
     },
     {
       "key": "kensorrengail",
       "name": "Ken Sorrengail",
       "rank": "Support",
-      "tickets": 71,
-      "replies": 307
+      "tickets": 72,
+      "replies": 309
+    },
+    {
+      "key": "octavia3",
+      "name": "Octavia <3",
+      "rank": "Moderator",
+      "tickets": 69,
+      "replies": 241
     },
     {
       "key": "charliewatleh",
       "name": "Charlie Watleh",
       "rank": "LOA",
-      "tickets": 67,
-      "replies": 360
+      "tickets": 68,
+      "replies": 364
     },
     {
       "key": "lucian",
@@ -3787,25 +4137,18 @@
       "replies": 178
     },
     {
-      "key": "b04cmdrtylermercer",
-      "name": "B-04 | Cmdr. Tyler Mercer",
-      "rank": "Moderator",
-      "tickets": 60,
-      "replies": 198
-    },
-    {
-      "key": "octavia3",
-      "name": "Octavia <3",
-      "rank": "Moderator",
-      "tickets": 59,
-      "replies": 201
-    },
-    {
       "key": "chickensorrengail",
       "name": "Chicken Sorrengail",
       "rank": "Moderator",
       "tickets": 54,
       "replies": 172
+    },
+    {
+      "key": "spiraldontping",
+      "name": "[🎯]Spiral | DONT PING",
+      "rank": "Support",
+      "tickets": 45,
+      "replies": 298
     },
     {
       "key": "franklitt",
@@ -3822,18 +4165,18 @@
       "replies": 200
     },
     {
-      "key": "spiraldontping",
-      "name": "[🎯]Spiral | DONT PING",
-      "rank": "Support",
-      "tickets": 38,
-      "replies": 228
-    },
-    {
       "key": "id265933025764835329",
       "name": "᲼",
       "rank": "Moderator",
-      "tickets": 38,
-      "replies": 74
+      "tickets": 43,
+      "replies": 84
+    },
+    {
+      "key": "katy",
+      "name": "katy",
+      "rank": "Moderator",
+      "tickets": 40,
+      "replies": 148
     },
     {
       "key": "joseph",
@@ -3841,13 +4184,6 @@
       "rank": "Moderator",
       "tickets": 37,
       "replies": 146
-    },
-    {
-      "key": "bean",
-      "name": "B⃞  e⃞  a⃞  n⃞",
-      "rank": "LOA",
-      "tickets": 34,
-      "replies": 107
     },
     {
       "key": "amateur",
@@ -3864,32 +4200,11 @@
       "replies": 343
     },
     {
-      "key": "lifeivktlsquad",
-      "name": "Life.IV [KTL squad]",
-      "rank": "LOA",
-      "tickets": 26,
-      "replies": 59
-    },
-    {
-      "key": "katy",
-      "name": "katy",
-      "rank": "Moderator",
-      "tickets": 24,
-      "replies": 96
-    },
-    {
       "key": "zynsangeljrsorrengail",
       "name": "Zyns Angel Jr Sorrengail",
       "rank": "Support",
       "tickets": 23,
       "replies": 74
-    },
-    {
-      "key": "ava",
-      "name": "Ava",
-      "rank": "Moderator",
-      "tickets": 21,
-      "replies": 133
     },
     {
       "key": "habibi",
@@ -3923,8 +4238,8 @@
       "key": "katana",
       "name": "katana",
       "rank": "Support",
-      "tickets": 11,
-      "replies": 40
+      "tickets": 12,
+      "replies": 45
     },
     {
       "key": "mediczach",
@@ -3953,6 +4268,13 @@
       "rank": "Moderator",
       "tickets": 2,
       "replies": 2
+    },
+    {
+      "key": "magnify",
+      "name": "Magnify®",
+      "rank": "Support",
+      "tickets": 1,
+      "replies": 6
     }
   ]
 }

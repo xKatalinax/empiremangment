@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-07T20:23:27.437Z",
+  "generated": "2026-08-07T20:25:01.631Z",
   "rule": {
     "qualityMinWords": 1,
     "ticketMinReplies": 1,
@@ -3496,7 +3496,7 @@
       "staff": []
     }
   ],
-  "transcriptCount": 10339,
+  "transcriptCount": 10340,
   "totalTickets": 11612,
   "staff": [
     {

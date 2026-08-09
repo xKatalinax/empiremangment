@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-09T22:07:40.752Z",
+  "generated": "2026-08-09T22:09:48.446Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 136,
+    "totalTickets": 139,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -36,6 +36,13 @@
         "replies": 49
       },
       {
+        "key": "snq",
+        "name": "ʇsɹnʍʇɐɹq",
+        "rank": "Administrator",
+        "tickets": 10,
+        "replies": 37
+      },
+      {
         "key": "bonnie",
         "name": "Bonnie",
         "rank": "Head Administrator",
@@ -43,18 +50,11 @@
         "replies": 23
       },
       {
-        "key": "snq",
-        "name": "ʇsɹnʍʇɐɹq",
-        "rank": "Administrator",
-        "tickets": 9,
-        "replies": 32
-      },
-      {
         "key": "franklitt",
         "name": "Frank litt",
         "rank": "Support",
-        "tickets": 8,
-        "replies": 25
+        "tickets": 9,
+        "replies": 33
       },
       {
         "key": "kolton",
@@ -78,6 +78,13 @@
         "replies": 21
       },
       {
+        "key": "gp",
+        "name": "GP -_-",
+        "rank": "Administrator",
+        "tickets": 5,
+        "replies": 11
+      },
+      {
         "key": "eteal",
         "name": "/E Teal",
         "rank": "Administrator",
@@ -97,13 +104,6 @@
         "rank": "Support",
         "tickets": 4,
         "replies": 14
-      },
-      {
-        "key": "gp",
-        "name": "GP -_-",
-        "rank": "Administrator",
-        "tickets": 4,
-        "replies": 9
       },
       {
         "key": "angelsorrengail",
@@ -184,7 +184,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 136,
+      "totalTickets": 139,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -208,6 +208,13 @@
           "replies": 49
         },
         {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Administrator",
+          "tickets": 10,
+          "replies": 37
+        },
+        {
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
@@ -215,18 +222,11 @@
           "replies": 23
         },
         {
-          "key": "snq",
-          "name": "ʇsɹnʍʇɐɹq",
-          "rank": "Administrator",
-          "tickets": 9,
-          "replies": 32
-        },
-        {
           "key": "franklitt",
           "name": "Frank litt",
           "rank": "Support",
-          "tickets": 8,
-          "replies": 25
+          "tickets": 9,
+          "replies": 33
         },
         {
           "key": "kolton",
@@ -250,6 +250,13 @@
           "replies": 21
         },
         {
+          "key": "gp",
+          "name": "GP -_-",
+          "rank": "Administrator",
+          "tickets": 5,
+          "replies": 11
+        },
+        {
           "key": "eteal",
           "name": "/E Teal",
           "rank": "Administrator",
@@ -269,13 +276,6 @@
           "rank": "Support",
           "tickets": 4,
           "replies": 14
-        },
-        {
-          "key": "gp",
-          "name": "GP -_-",
-          "rank": "Administrator",
-          "tickets": 4,
-          "replies": 9
         },
         {
           "key": "angelsorrengail",
@@ -3839,8 +3839,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11687,
-  "totalTickets": 16072,
+  "transcriptCount": 11688,
+  "totalTickets": 16075,
   "staff": [
     {
       "key": "kat",
@@ -3895,8 +3895,8 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Administrator",
-      "tickets": 600,
-      "replies": 2579
+      "tickets": 601,
+      "replies": 2584
     },
     {
       "key": "lunasmith",
@@ -3930,8 +3930,8 @@
       "key": "gp",
       "name": "GP -_-",
       "rank": "Administrator",
-      "tickets": 355,
-      "replies": 1199
+      "tickets": 356,
+      "replies": 1201
     },
     {
       "key": "fazehazard13",
@@ -4144,18 +4144,18 @@
       "replies": 172
     },
     {
+      "key": "franklitt",
+      "name": "Frank litt",
+      "rank": "Support",
+      "tickets": 46,
+      "replies": 173
+    },
+    {
       "key": "spiraldontping",
       "name": "[🎯]Spiral | DONT PING",
       "rank": "Support",
       "tickets": 45,
       "replies": 298
-    },
-    {
-      "key": "franklitt",
-      "name": "Frank litt",
-      "rank": "Support",
-      "tickets": 45,
-      "replies": 165
     },
     {
       "key": "sienna3",

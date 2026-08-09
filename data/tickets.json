@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-09T22:02:09.207Z",
+  "generated": "2026-08-09T22:03:41.439Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 132,
+    "totalTickets": 133,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -106,6 +106,13 @@
         "replies": 9
       },
       {
+        "key": "angelsorrengail",
+        "name": "Angel Sorrengail",
+        "rank": "Administrator",
+        "tickets": 3,
+        "replies": 15
+      },
+      {
         "key": "savi",
         "name": "Savi",
         "rank": "Head Administrator",
@@ -132,13 +139,6 @@
         "rank": "Administrator",
         "tickets": 3,
         "replies": 6
-      },
-      {
-        "key": "angelsorrengail",
-        "name": "Angel Sorrengail",
-        "rank": "Administrator",
-        "tickets": 2,
-        "replies": 14
       },
       {
         "key": "amateur",
@@ -184,7 +184,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 132,
+      "totalTickets": 133,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -278,6 +278,13 @@
           "replies": 9
         },
         {
+          "key": "angelsorrengail",
+          "name": "Angel Sorrengail",
+          "rank": "Administrator",
+          "tickets": 3,
+          "replies": 15
+        },
+        {
           "key": "savi",
           "name": "Savi",
           "rank": "Head Administrator",
@@ -304,13 +311,6 @@
           "rank": "Administrator",
           "tickets": 3,
           "replies": 6
-        },
-        {
-          "key": "angelsorrengail",
-          "name": "Angel Sorrengail",
-          "rank": "Administrator",
-          "tickets": 2,
-          "replies": 14
         },
         {
           "key": "amateur",
@@ -3839,8 +3839,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11683,
-  "totalTickets": 16068,
+  "transcriptCount": 11684,
+  "totalTickets": 16069,
   "staff": [
     {
       "key": "kat",
@@ -3881,8 +3881,8 @@
       "key": "angelsorrengail",
       "name": "Angel Sorrengail",
       "rank": "Administrator",
-      "tickets": 701,
-      "replies": 2007
+      "tickets": 702,
+      "replies": 2008
     },
     {
       "key": "savi",

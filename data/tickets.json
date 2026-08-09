@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-07T22:10:01.891Z",
+  "generated": "2026-08-09T22:02:09.207Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -542,7 +542,7 @@
         {
           "key": "id214727591196622848",
           "name": "𝑨𝒏𝒈𝒍𝒆 📐",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 20,
           "replies": 89
         },
@@ -811,7 +811,7 @@
         {
           "key": "id214727591196622848",
           "name": "𝑨𝒏𝒈𝒍𝒆 📐",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 41,
           "replies": 177
         },
@@ -1325,14 +1325,14 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 5,
           "replies": 6
         },
         {
           "key": "id214727591196622848",
           "name": "𝑨𝒏𝒈𝒍𝒆 📐",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 4,
           "replies": 37
         },
@@ -2352,7 +2352,7 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 2,
           "replies": 5
         },
@@ -2579,7 +2579,7 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 1,
           "replies": 1
         }
@@ -2743,7 +2743,7 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 5,
           "replies": 9
         },
@@ -2928,7 +2928,7 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 11,
           "replies": 17
         },
@@ -3106,7 +3106,7 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 3,
           "replies": 7
         },
@@ -3256,7 +3256,7 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 8,
           "replies": 18
         },
@@ -3392,7 +3392,7 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 7,
           "replies": 16
         },
@@ -3685,7 +3685,7 @@
         {
           "key": "id265933025764835329",
           "name": "᲼",
-          "rank": "Moderator",
+          "rank": "LOA",
           "tickets": 1,
           "replies": 5
         }
@@ -4125,7 +4125,7 @@
     {
       "key": "id214727591196622848",
       "name": "𝑨𝒏𝒈𝒍𝒆 📐",
-      "rank": "Moderator",
+      "rank": "LOA",
       "tickets": 65,
       "replies": 303
     },
@@ -4167,7 +4167,7 @@
     {
       "key": "id265933025764835329",
       "name": "᲼",
-      "rank": "Moderator",
+      "rank": "LOA",
       "tickets": 43,
       "replies": 84
     },

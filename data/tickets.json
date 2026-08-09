@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-09T22:13:54.927Z",
+  "generated": "2026-08-09T22:16:07.213Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,14 +12,14 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 148,
+    "totalTickets": 151,
     "staff": [
       {
         "key": "mirasorrengail",
         "name": "Mira Sorrengail",
         "rank": "Senior Administrator",
-        "tickets": 24,
-        "replies": 84
+        "tickets": 25,
+        "replies": 85
       },
       {
         "key": "pluplu",
@@ -36,18 +36,18 @@
         "replies": 49
       },
       {
+        "key": "bonnie",
+        "name": "Bonnie",
+        "rank": "Head Administrator",
+        "tickets": 12,
+        "replies": 25
+      },
+      {
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Administrator",
         "tickets": 11,
         "replies": 38
-      },
-      {
-        "key": "bonnie",
-        "name": "Bonnie",
-        "rank": "Head Administrator",
-        "tickets": 11,
-        "replies": 24
       },
       {
         "key": "franklitt",
@@ -106,6 +106,13 @@
         "replies": 10
       },
       {
+        "key": "angelsorrengail",
+        "name": "Angel Sorrengail",
+        "rank": "Administrator",
+        "tickets": 4,
+        "replies": 19
+      },
+      {
         "key": "mrwhitaker",
         "name": "Mr. Whitaker",
         "rank": "Support",
@@ -118,13 +125,6 @@
         "rank": "Administrator",
         "tickets": 4,
         "replies": 9
-      },
-      {
-        "key": "angelsorrengail",
-        "name": "Angel Sorrengail",
-        "rank": "Administrator",
-        "tickets": 3,
-        "replies": 15
       },
       {
         "key": "savi",
@@ -191,14 +191,14 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 148,
+      "totalTickets": 151,
       "staff": [
         {
           "key": "mirasorrengail",
           "name": "Mira Sorrengail",
           "rank": "Senior Administrator",
-          "tickets": 24,
-          "replies": 84
+          "tickets": 25,
+          "replies": 85
         },
         {
           "key": "pluplu",
@@ -215,18 +215,18 @@
           "replies": 49
         },
         {
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Head Administrator",
+          "tickets": 12,
+          "replies": 25
+        },
+        {
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Administrator",
           "tickets": 11,
           "replies": 38
-        },
-        {
-          "key": "bonnie",
-          "name": "Bonnie",
-          "rank": "Head Administrator",
-          "tickets": 11,
-          "replies": 24
         },
         {
           "key": "franklitt",
@@ -285,6 +285,13 @@
           "replies": 10
         },
         {
+          "key": "angelsorrengail",
+          "name": "Angel Sorrengail",
+          "rank": "Administrator",
+          "tickets": 4,
+          "replies": 19
+        },
+        {
           "key": "mrwhitaker",
           "name": "Mr. Whitaker",
           "rank": "Support",
@@ -297,13 +304,6 @@
           "rank": "Administrator",
           "tickets": 4,
           "replies": 9
-        },
-        {
-          "key": "angelsorrengail",
-          "name": "Angel Sorrengail",
-          "rank": "Administrator",
-          "tickets": 3,
-          "replies": 15
         },
         {
           "key": "savi",
@@ -3853,8 +3853,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11691,
-  "totalTickets": 16084,
+  "transcriptCount": 11692,
+  "totalTickets": 16087,
   "staff": [
     {
       "key": "kat",
@@ -3867,15 +3867,15 @@
       "key": "mirasorrengail",
       "name": "Mira Sorrengail",
       "rank": "Senior Administrator",
-      "tickets": 2039,
-      "replies": 7373
+      "tickets": 2040,
+      "replies": 7374
     },
     {
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 965,
-      "replies": 3323
+      "tickets": 966,
+      "replies": 3324
     },
     {
       "key": "clarksmith",
@@ -3895,8 +3895,8 @@
       "key": "angelsorrengail",
       "name": "Angel Sorrengail",
       "rank": "Administrator",
-      "tickets": 702,
-      "replies": 2008
+      "tickets": 703,
+      "replies": 2012
     },
     {
       "key": "savi",

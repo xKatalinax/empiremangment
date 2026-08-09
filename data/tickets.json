@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-09T22:09:48.446Z",
+  "generated": "2026-08-09T22:11:27.190Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 139,
+    "totalTickets": 145,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -39,15 +39,15 @@
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Administrator",
-        "tickets": 10,
-        "replies": 37
+        "tickets": 11,
+        "replies": 38
       },
       {
         "key": "bonnie",
         "name": "Bonnie",
         "rank": "Head Administrator",
-        "tickets": 10,
-        "replies": 23
+        "tickets": 11,
+        "replies": 24
       },
       {
         "key": "franklitt",
@@ -67,8 +67,8 @@
         "key": "blaze",
         "name": "Blaze",
         "rank": "Administrator",
-        "tickets": 6,
-        "replies": 7
+        "tickets": 7,
+        "replies": 13
       },
       {
         "key": "tartsorrengail",
@@ -76,6 +76,13 @@
         "rank": "Administrator",
         "tickets": 5,
         "replies": 21
+      },
+      {
+        "key": "kat",
+        "name": "kat",
+        "rank": "Server Manager",
+        "tickets": 5,
+        "replies": 18
       },
       {
         "key": "gp",
@@ -92,18 +99,25 @@
         "replies": 10
       },
       {
-        "key": "kat",
-        "name": "kat",
-        "rank": "Server Manager",
-        "tickets": 4,
-        "replies": 14
-      },
-      {
         "key": "sienna3",
         "name": "Sienna <3",
         "rank": "Support",
         "tickets": 4,
         "replies": 14
+      },
+      {
+        "key": "mrwhitaker",
+        "name": "Mr. Whitaker",
+        "rank": "Support",
+        "tickets": 4,
+        "replies": 13
+      },
+      {
+        "key": "lunasmith",
+        "name": "Luna Smith",
+        "rank": "Administrator",
+        "tickets": 4,
+        "replies": 9
       },
       {
         "key": "angelsorrengail",
@@ -120,25 +134,11 @@
         "replies": 12
       },
       {
-        "key": "mrwhitaker",
-        "name": "Mr. Whitaker",
-        "rank": "Support",
-        "tickets": 3,
-        "replies": 11
-      },
-      {
         "key": "evelyn",
         "name": "Evelyn",
         "rank": "Support",
         "tickets": 3,
         "replies": 9
-      },
-      {
-        "key": "lunasmith",
-        "name": "Luna Smith",
-        "rank": "Administrator",
-        "tickets": 3,
-        "replies": 6
       },
       {
         "key": "amateur",
@@ -184,7 +184,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 139,
+      "totalTickets": 145,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -211,15 +211,15 @@
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Administrator",
-          "tickets": 10,
-          "replies": 37
+          "tickets": 11,
+          "replies": 38
         },
         {
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
-          "tickets": 10,
-          "replies": 23
+          "tickets": 11,
+          "replies": 24
         },
         {
           "key": "franklitt",
@@ -239,8 +239,8 @@
           "key": "blaze",
           "name": "Blaze",
           "rank": "Administrator",
-          "tickets": 6,
-          "replies": 7
+          "tickets": 7,
+          "replies": 13
         },
         {
           "key": "tartsorrengail",
@@ -248,6 +248,13 @@
           "rank": "Administrator",
           "tickets": 5,
           "replies": 21
+        },
+        {
+          "key": "kat",
+          "name": "kat",
+          "rank": "Server Manager",
+          "tickets": 5,
+          "replies": 18
         },
         {
           "key": "gp",
@@ -264,18 +271,25 @@
           "replies": 10
         },
         {
-          "key": "kat",
-          "name": "kat",
-          "rank": "Server Manager",
-          "tickets": 4,
-          "replies": 14
-        },
-        {
           "key": "sienna3",
           "name": "Sienna <3",
           "rank": "Support",
           "tickets": 4,
           "replies": 14
+        },
+        {
+          "key": "mrwhitaker",
+          "name": "Mr. Whitaker",
+          "rank": "Support",
+          "tickets": 4,
+          "replies": 13
+        },
+        {
+          "key": "lunasmith",
+          "name": "Luna Smith",
+          "rank": "Administrator",
+          "tickets": 4,
+          "replies": 9
         },
         {
           "key": "angelsorrengail",
@@ -292,25 +306,11 @@
           "replies": 12
         },
         {
-          "key": "mrwhitaker",
-          "name": "Mr. Whitaker",
-          "rank": "Support",
-          "tickets": 3,
-          "replies": 11
-        },
-        {
           "key": "evelyn",
           "name": "Evelyn",
           "rank": "Support",
           "tickets": 3,
           "replies": 9
-        },
-        {
-          "key": "lunasmith",
-          "name": "Luna Smith",
-          "rank": "Administrator",
-          "tickets": 3,
-          "replies": 6
         },
         {
           "key": "amateur",
@@ -3839,15 +3839,15 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11688,
-  "totalTickets": 16075,
+  "transcriptCount": 11689,
+  "totalTickets": 16081,
   "staff": [
     {
       "key": "kat",
       "name": "kat",
       "rank": "Server Manager",
-      "tickets": 2200,
-      "replies": 5407
+      "tickets": 2201,
+      "replies": 5411
     },
     {
       "key": "mirasorrengail",
@@ -3860,8 +3860,8 @@
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 964,
-      "replies": 3322
+      "tickets": 965,
+      "replies": 3323
     },
     {
       "key": "clarksmith",
@@ -3895,22 +3895,22 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Administrator",
-      "tickets": 601,
-      "replies": 2584
+      "tickets": 602,
+      "replies": 2585
     },
     {
       "key": "lunasmith",
       "name": "Luna Smith",
       "rank": "Administrator",
-      "tickets": 576,
-      "replies": 1370
+      "tickets": 577,
+      "replies": 1373
     },
     {
       "key": "blaze",
       "name": "Blaze",
       "rank": "Administrator",
-      "tickets": 571,
-      "replies": 1566
+      "tickets": 572,
+      "replies": 1572
     },
     {
       "key": "pluplu",
@@ -4007,8 +4007,8 @@
       "key": "mrwhitaker",
       "name": "Mr. Whitaker",
       "rank": "Support",
-      "tickets": 161,
-      "replies": 942
+      "tickets": 162,
+      "replies": 944
     },
     {
       "key": "que",

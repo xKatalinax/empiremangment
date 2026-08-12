@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-12T08:01:04.290Z",
+  "generated": "2026-08-12T08:06:52.129Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 154,
+    "totalTickets": 158,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -71,6 +71,13 @@
         "replies": 14
       },
       {
+        "key": "kat",
+        "name": "kat",
+        "rank": "Server Manager",
+        "tickets": 6,
+        "replies": 20
+      },
+      {
         "key": "tartsorrengail",
         "name": "Tart Sorrengail",
         "rank": "Administrator",
@@ -78,18 +85,18 @@
         "replies": 21
       },
       {
-        "key": "kat",
-        "name": "kat",
-        "rank": "Server Manager",
-        "tickets": 5,
-        "replies": 18
-      },
-      {
         "key": "sienna3",
         "name": "Sienna <3",
         "rank": "Support",
         "tickets": 5,
         "replies": 18
+      },
+      {
+        "key": "lunasmith",
+        "name": "Luna Smith",
+        "rank": "Administrator",
+        "tickets": 5,
+        "replies": 13
       },
       {
         "key": "gp",
@@ -120,11 +127,11 @@
         "replies": 13
       },
       {
-        "key": "lunasmith",
-        "name": "Luna Smith",
-        "rank": "Administrator",
+        "key": "evelyn",
+        "name": "Evelyn",
+        "rank": "Support",
         "tickets": 4,
-        "replies": 9
+        "replies": 10
       },
       {
         "key": "savi",
@@ -134,18 +141,18 @@
         "replies": 12
       },
       {
-        "key": "evelyn",
-        "name": "Evelyn",
-        "rank": "Support",
-        "tickets": 3,
-        "replies": 9
-      },
-      {
         "key": "amateur",
         "name": "Amateur",
         "rank": "Support",
         "tickets": 2,
         "replies": 5
+      },
+      {
+        "key": "iawalsh",
+        "name": "IA | Walsh",
+        "rank": "Senior Administrator",
+        "tickets": 2,
+        "replies": 2
       },
       {
         "key": "que",
@@ -160,13 +167,6 @@
         "rank": "Support",
         "tickets": 1,
         "replies": 2
-      },
-      {
-        "key": "iawalsh",
-        "name": "IA | Walsh",
-        "rank": "Senior Administrator",
-        "tickets": 1,
-        "replies": 1
       },
       {
         "key": "giyu",
@@ -191,7 +191,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 154,
+      "totalTickets": 158,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -250,6 +250,13 @@
           "replies": 14
         },
         {
+          "key": "kat",
+          "name": "kat",
+          "rank": "Server Manager",
+          "tickets": 6,
+          "replies": 20
+        },
+        {
           "key": "tartsorrengail",
           "name": "Tart Sorrengail",
           "rank": "Administrator",
@@ -257,18 +264,18 @@
           "replies": 21
         },
         {
-          "key": "kat",
-          "name": "kat",
-          "rank": "Server Manager",
-          "tickets": 5,
-          "replies": 18
-        },
-        {
           "key": "sienna3",
           "name": "Sienna <3",
           "rank": "Support",
           "tickets": 5,
           "replies": 18
+        },
+        {
+          "key": "lunasmith",
+          "name": "Luna Smith",
+          "rank": "Administrator",
+          "tickets": 5,
+          "replies": 13
         },
         {
           "key": "gp",
@@ -299,11 +306,11 @@
           "replies": 13
         },
         {
-          "key": "lunasmith",
-          "name": "Luna Smith",
-          "rank": "Administrator",
+          "key": "evelyn",
+          "name": "Evelyn",
+          "rank": "Support",
           "tickets": 4,
-          "replies": 9
+          "replies": 10
         },
         {
           "key": "savi",
@@ -313,18 +320,18 @@
           "replies": 12
         },
         {
-          "key": "evelyn",
-          "name": "Evelyn",
-          "rank": "Support",
-          "tickets": 3,
-          "replies": 9
-        },
-        {
           "key": "amateur",
           "name": "Amateur",
           "rank": "Support",
           "tickets": 2,
           "replies": 5
+        },
+        {
+          "key": "iawalsh",
+          "name": "IA | Walsh",
+          "rank": "Senior Administrator",
+          "tickets": 2,
+          "replies": 2
         },
         {
           "key": "que",
@@ -339,13 +346,6 @@
           "rank": "Support",
           "tickets": 1,
           "replies": 2
-        },
-        {
-          "key": "iawalsh",
-          "name": "IA | Walsh",
-          "rank": "Senior Administrator",
-          "tickets": 1,
-          "replies": 1
         },
         {
           "key": "giyu",
@@ -3853,15 +3853,15 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11696,
-  "totalTickets": 16090,
+  "transcriptCount": 11698,
+  "totalTickets": 16094,
   "staff": [
     {
       "key": "kat",
       "name": "kat",
       "rank": "Server Manager",
-      "tickets": 2201,
-      "replies": 5411
+      "tickets": 2202,
+      "replies": 5413
     },
     {
       "key": "mirasorrengail",
@@ -3916,8 +3916,8 @@
       "key": "lunasmith",
       "name": "Luna Smith",
       "rank": "Administrator",
-      "tickets": 577,
-      "replies": 1373
+      "tickets": 578,
+      "replies": 1377
     },
     {
       "key": "blaze",
@@ -3965,8 +3965,8 @@
       "key": "iawalsh",
       "name": "IA | Walsh",
       "rank": "Senior Administrator",
-      "tickets": 313,
-      "replies": 1008
+      "tickets": 314,
+      "replies": 1009
     },
     {
       "key": "commissionercrispymcchicken",
@@ -4077,8 +4077,8 @@
       "key": "evelyn",
       "name": "Evelyn",
       "rank": "Support",
-      "tickets": 105,
-      "replies": 245
+      "tickets": 106,
+      "replies": 246
     },
     {
       "key": "onthedeadhomies",

@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-12T07:34:32.221Z",
+  "generated": "2026-08-12T07:35:33.792Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 153,
+    "totalTickets": 154,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -29,18 +29,18 @@
         "replies": 53
       },
       {
+        "key": "bonnie",
+        "name": "Bonnie",
+        "rank": "Head Administrator",
+        "tickets": 13,
+        "replies": 26
+      },
+      {
         "key": "kensorrengail",
         "name": "Ken Sorrengail",
         "rank": "Support",
         "tickets": 12,
         "replies": 49
-      },
-      {
-        "key": "bonnie",
-        "name": "Bonnie",
-        "rank": "Head Administrator",
-        "tickets": 12,
-        "replies": 25
       },
       {
         "key": "snq",
@@ -191,7 +191,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 153,
+      "totalTickets": 154,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -208,18 +208,18 @@
           "replies": 53
         },
         {
+          "key": "bonnie",
+          "name": "Bonnie",
+          "rank": "Head Administrator",
+          "tickets": 13,
+          "replies": 26
+        },
+        {
           "key": "kensorrengail",
           "name": "Ken Sorrengail",
           "rank": "Support",
           "tickets": 12,
           "replies": 49
-        },
-        {
-          "key": "bonnie",
-          "name": "Bonnie",
-          "rank": "Head Administrator",
-          "tickets": 12,
-          "replies": 25
         },
         {
           "key": "snq",
@@ -3853,8 +3853,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11694,
-  "totalTickets": 16089,
+  "transcriptCount": 11695,
+  "totalTickets": 16090,
   "staff": [
     {
       "key": "kat",
@@ -3874,8 +3874,8 @@
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 966,
-      "replies": 3324
+      "tickets": 967,
+      "replies": 3325
     },
     {
       "key": "clarksmith",

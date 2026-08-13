@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-12T08:06:52.129Z",
+  "generated": "2026-08-13T04:46:23.859Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,14 +12,14 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 158,
+    "totalTickets": 161,
     "staff": [
       {
         "key": "mirasorrengail",
         "name": "Mira Sorrengail",
         "rank": "Senior Administrator",
-        "tickets": 27,
-        "replies": 87
+        "tickets": 28,
+        "replies": 98
       },
       {
         "key": "pluplu",
@@ -46,8 +46,8 @@
         "key": "snq",
         "name": "ʇsɹnʍʇɐɹq",
         "rank": "Administrator",
-        "tickets": 11,
-        "replies": 38
+        "tickets": 12,
+        "replies": 41
       },
       {
         "key": "franklitt",
@@ -74,8 +74,8 @@
         "key": "kat",
         "name": "kat",
         "rank": "Server Manager",
-        "tickets": 6,
-        "replies": 20
+        "tickets": 7,
+        "replies": 21
       },
       {
         "key": "tartsorrengail",
@@ -191,14 +191,14 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 158,
+      "totalTickets": 161,
       "staff": [
         {
           "key": "mirasorrengail",
           "name": "Mira Sorrengail",
           "rank": "Senior Administrator",
-          "tickets": 27,
-          "replies": 87
+          "tickets": 28,
+          "replies": 98
         },
         {
           "key": "pluplu",
@@ -225,8 +225,8 @@
           "key": "snq",
           "name": "ʇsɹnʍʇɐɹq",
           "rank": "Administrator",
-          "tickets": 11,
-          "replies": 38
+          "tickets": 12,
+          "replies": 41
         },
         {
           "key": "franklitt",
@@ -253,8 +253,8 @@
           "key": "kat",
           "name": "kat",
           "rank": "Server Manager",
-          "tickets": 6,
-          "replies": 20
+          "tickets": 7,
+          "replies": 21
         },
         {
           "key": "tartsorrengail",
@@ -3853,22 +3853,22 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11698,
-  "totalTickets": 16094,
+  "transcriptCount": 11699,
+  "totalTickets": 16097,
   "staff": [
     {
       "key": "kat",
       "name": "kat",
       "rank": "Server Manager",
-      "tickets": 2202,
-      "replies": 5413
+      "tickets": 2203,
+      "replies": 5414
     },
     {
       "key": "mirasorrengail",
       "name": "Mira Sorrengail",
       "rank": "Senior Administrator",
-      "tickets": 2042,
-      "replies": 7376
+      "tickets": 2043,
+      "replies": 7387
     },
     {
       "key": "bonnie",
@@ -3909,8 +3909,8 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Administrator",
-      "tickets": 602,
-      "replies": 2585
+      "tickets": 603,
+      "replies": 2588
     },
     {
       "key": "lunasmith",

@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-13T05:08:05.462Z",
+  "generated": "2026-08-13T05:29:29.320Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 169,
+    "totalTickets": 170,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -188,6 +188,13 @@
         "rank": "Support",
         "tickets": 1,
         "replies": 1
+      },
+      {
+        "key": "carlitos",
+        "name": "Carlitos",
+        "rank": "LOA",
+        "tickets": 1,
+        "replies": 1
       }
     ]
   },
@@ -198,7 +205,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 169,
+      "totalTickets": 170,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -372,6 +379,13 @@
           "key": "exe",
           "name": ".exe",
           "rank": "Support",
+          "tickets": 1,
+          "replies": 1
+        },
+        {
+          "key": "carlitos",
+          "name": "Carlitos",
+          "rank": "LOA",
           "tickets": 1,
           "replies": 1
         }
@@ -3867,8 +3881,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11704,
-  "totalTickets": 16105,
+  "transcriptCount": 11705,
+  "totalTickets": 16106,
   "staff": [
     {
       "key": "kat",
@@ -3972,8 +3986,8 @@
       "key": "carlitos",
       "name": "Carlitos",
       "rank": "LOA",
-      "tickets": 334,
-      "replies": 991
+      "tickets": 335,
+      "replies": 992
     },
     {
       "key": "iawalsh",

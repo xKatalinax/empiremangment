@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-13T05:42:58.106Z",
+  "generated": "2026-08-13T05:43:38.008Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 175,
+    "totalTickets": 180,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -53,8 +53,8 @@
         "key": "franklitt",
         "name": "Frank litt",
         "rank": "Support",
-        "tickets": 11,
-        "replies": 37
+        "tickets": 12,
+        "replies": 38
       },
       {
         "key": "kolton",
@@ -78,6 +78,13 @@
         "replies": 21
       },
       {
+        "key": "sienna3",
+        "name": "Sienna <3",
+        "rank": "Support",
+        "tickets": 6,
+        "replies": 25
+      },
+      {
         "key": "angelsorrengail",
         "name": "Angel Sorrengail",
         "rank": "Administrator",
@@ -90,13 +97,6 @@
         "rank": "Administrator",
         "tickets": 5,
         "replies": 21
-      },
-      {
-        "key": "sienna3",
-        "name": "Sienna <3",
-        "rank": "Support",
-        "tickets": 5,
-        "replies": 18
       },
       {
         "key": "lunasmith",
@@ -134,11 +134,25 @@
         "replies": 13
       },
       {
+        "key": "carlitos",
+        "name": "Carlitos",
+        "rank": "LOA",
+        "tickets": 4,
+        "replies": 4
+      },
+      {
         "key": "savi",
         "name": "Savi",
         "rank": "Head Administrator",
         "tickets": 3,
         "replies": 12
+      },
+      {
+        "key": "amateur",
+        "name": "Amateur",
+        "rank": "Support",
+        "tickets": 3,
+        "replies": 8
       },
       {
         "key": "iawalsh",
@@ -153,20 +167,6 @@
         "rank": "LOA",
         "tickets": 2,
         "replies": 8
-      },
-      {
-        "key": "amateur",
-        "name": "Amateur",
-        "rank": "Support",
-        "tickets": 2,
-        "replies": 5
-      },
-      {
-        "key": "carlitos",
-        "name": "Carlitos",
-        "rank": "LOA",
-        "tickets": 2,
-        "replies": 2
       },
       {
         "key": "que",
@@ -205,7 +205,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 175,
+      "totalTickets": 180,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -246,8 +246,8 @@
           "key": "franklitt",
           "name": "Frank litt",
           "rank": "Support",
-          "tickets": 11,
-          "replies": 37
+          "tickets": 12,
+          "replies": 38
         },
         {
           "key": "kolton",
@@ -271,6 +271,13 @@
           "replies": 21
         },
         {
+          "key": "sienna3",
+          "name": "Sienna <3",
+          "rank": "Support",
+          "tickets": 6,
+          "replies": 25
+        },
+        {
           "key": "angelsorrengail",
           "name": "Angel Sorrengail",
           "rank": "Administrator",
@@ -283,13 +290,6 @@
           "rank": "Administrator",
           "tickets": 5,
           "replies": 21
-        },
-        {
-          "key": "sienna3",
-          "name": "Sienna <3",
-          "rank": "Support",
-          "tickets": 5,
-          "replies": 18
         },
         {
           "key": "lunasmith",
@@ -327,11 +327,25 @@
           "replies": 13
         },
         {
+          "key": "carlitos",
+          "name": "Carlitos",
+          "rank": "LOA",
+          "tickets": 4,
+          "replies": 4
+        },
+        {
           "key": "savi",
           "name": "Savi",
           "rank": "Head Administrator",
           "tickets": 3,
           "replies": 12
+        },
+        {
+          "key": "amateur",
+          "name": "Amateur",
+          "rank": "Support",
+          "tickets": 3,
+          "replies": 8
         },
         {
           "key": "iawalsh",
@@ -346,20 +360,6 @@
           "rank": "LOA",
           "tickets": 2,
           "replies": 8
-        },
-        {
-          "key": "amateur",
-          "name": "Amateur",
-          "rank": "Support",
-          "tickets": 2,
-          "replies": 5
-        },
-        {
-          "key": "carlitos",
-          "name": "Carlitos",
-          "rank": "LOA",
-          "tickets": 2,
-          "replies": 2
         },
         {
           "key": "que",
@@ -3881,8 +3881,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11709,
-  "totalTickets": 16111,
+  "transcriptCount": 11712,
+  "totalTickets": 16116,
   "staff": [
     {
       "key": "kat",
@@ -3979,8 +3979,8 @@
       "key": "carlitos",
       "name": "Carlitos",
       "rank": "LOA",
-      "tickets": 336,
-      "replies": 993
+      "tickets": 338,
+      "replies": 995
     },
     {
       "key": "fazehazard13",
@@ -4189,8 +4189,8 @@
       "key": "franklitt",
       "name": "Frank litt",
       "rank": "Support",
-      "tickets": 48,
-      "replies": 177
+      "tickets": 49,
+      "replies": 178
     },
     {
       "key": "spiraldontping",
@@ -4203,8 +4203,8 @@
       "key": "sienna3",
       "name": "Sienna <3",
       "rank": "Support",
-      "tickets": 44,
-      "replies": 204
+      "tickets": 45,
+      "replies": 211
     },
     {
       "key": "id265933025764835329",
@@ -4231,8 +4231,8 @@
       "key": "amateur",
       "name": "Amateur",
       "rank": "Support",
-      "tickets": 29,
-      "replies": 92
+      "tickets": 30,
+      "replies": 95
     },
     {
       "key": "ricky",

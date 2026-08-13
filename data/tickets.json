@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-13T04:46:23.859Z",
+  "generated": "2026-08-13T04:53:09.053Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 161,
+    "totalTickets": 165,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -32,8 +32,15 @@
         "key": "bonnie",
         "name": "Bonnie",
         "rank": "Head Administrator",
+        "tickets": 14,
+        "replies": 31
+      },
+      {
+        "key": "snq",
+        "name": "ʇsɹnʍʇɐɹq",
+        "rank": "Administrator",
         "tickets": 13,
-        "replies": 26
+        "replies": 44
       },
       {
         "key": "kensorrengail",
@@ -41,13 +48,6 @@
         "rank": "Support",
         "tickets": 12,
         "replies": 49
-      },
-      {
-        "key": "snq",
-        "name": "ʇsɹnʍʇɐɹq",
-        "rank": "Administrator",
-        "tickets": 12,
-        "replies": 41
       },
       {
         "key": "franklitt",
@@ -85,6 +85,13 @@
         "replies": 21
       },
       {
+        "key": "angelsorrengail",
+        "name": "Angel Sorrengail",
+        "rank": "Administrator",
+        "tickets": 5,
+        "replies": 21
+      },
+      {
         "key": "sienna3",
         "name": "Sienna <3",
         "rank": "Support",
@@ -113,13 +120,6 @@
         "replies": 10
       },
       {
-        "key": "angelsorrengail",
-        "name": "Angel Sorrengail",
-        "rank": "Administrator",
-        "tickets": 4,
-        "replies": 19
-      },
-      {
         "key": "mrwhitaker",
         "name": "Mr. Whitaker",
         "rank": "Support",
@@ -141,18 +141,18 @@
         "replies": 12
       },
       {
+        "key": "iawalsh",
+        "name": "IA | Walsh",
+        "rank": "Senior Administrator",
+        "tickets": 3,
+        "replies": 7
+      },
+      {
         "key": "amateur",
         "name": "Amateur",
         "rank": "Support",
         "tickets": 2,
         "replies": 5
-      },
-      {
-        "key": "iawalsh",
-        "name": "IA | Walsh",
-        "rank": "Senior Administrator",
-        "tickets": 2,
-        "replies": 2
       },
       {
         "key": "que",
@@ -191,7 +191,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 161,
+      "totalTickets": 165,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -211,8 +211,15 @@
           "key": "bonnie",
           "name": "Bonnie",
           "rank": "Head Administrator",
+          "tickets": 14,
+          "replies": 31
+        },
+        {
+          "key": "snq",
+          "name": "ʇsɹnʍʇɐɹq",
+          "rank": "Administrator",
           "tickets": 13,
-          "replies": 26
+          "replies": 44
         },
         {
           "key": "kensorrengail",
@@ -220,13 +227,6 @@
           "rank": "Support",
           "tickets": 12,
           "replies": 49
-        },
-        {
-          "key": "snq",
-          "name": "ʇsɹnʍʇɐɹq",
-          "rank": "Administrator",
-          "tickets": 12,
-          "replies": 41
         },
         {
           "key": "franklitt",
@@ -264,6 +264,13 @@
           "replies": 21
         },
         {
+          "key": "angelsorrengail",
+          "name": "Angel Sorrengail",
+          "rank": "Administrator",
+          "tickets": 5,
+          "replies": 21
+        },
+        {
           "key": "sienna3",
           "name": "Sienna <3",
           "rank": "Support",
@@ -292,13 +299,6 @@
           "replies": 10
         },
         {
-          "key": "angelsorrengail",
-          "name": "Angel Sorrengail",
-          "rank": "Administrator",
-          "tickets": 4,
-          "replies": 19
-        },
-        {
           "key": "mrwhitaker",
           "name": "Mr. Whitaker",
           "rank": "Support",
@@ -320,18 +320,18 @@
           "replies": 12
         },
         {
+          "key": "iawalsh",
+          "name": "IA | Walsh",
+          "rank": "Senior Administrator",
+          "tickets": 3,
+          "replies": 7
+        },
+        {
           "key": "amateur",
           "name": "Amateur",
           "rank": "Support",
           "tickets": 2,
           "replies": 5
-        },
-        {
-          "key": "iawalsh",
-          "name": "IA | Walsh",
-          "rank": "Senior Administrator",
-          "tickets": 2,
-          "replies": 2
         },
         {
           "key": "que",
@@ -3853,8 +3853,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11699,
-  "totalTickets": 16097,
+  "transcriptCount": 11701,
+  "totalTickets": 16101,
   "staff": [
     {
       "key": "kat",
@@ -3874,8 +3874,8 @@
       "key": "bonnie",
       "name": "Bonnie",
       "rank": "Head Administrator",
-      "tickets": 967,
-      "replies": 3325
+      "tickets": 968,
+      "replies": 3330
     },
     {
       "key": "clarksmith",
@@ -3895,8 +3895,8 @@
       "key": "angelsorrengail",
       "name": "Angel Sorrengail",
       "rank": "Administrator",
-      "tickets": 703,
-      "replies": 2012
+      "tickets": 704,
+      "replies": 2014
     },
     {
       "key": "savi",
@@ -3909,8 +3909,8 @@
       "key": "snq",
       "name": "ʇsɹnʍʇɐɹq",
       "rank": "Administrator",
-      "tickets": 603,
-      "replies": 2588
+      "tickets": 604,
+      "replies": 2591
     },
     {
       "key": "lunasmith",
@@ -3965,8 +3965,8 @@
       "key": "iawalsh",
       "name": "IA | Walsh",
       "rank": "Senior Administrator",
-      "tickets": 314,
-      "replies": 1009
+      "tickets": 315,
+      "replies": 1014
     },
     {
       "key": "commissionercrispymcchicken",

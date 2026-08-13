@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-13T05:29:29.320Z",
+  "generated": "2026-08-13T05:31:58.400Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 170,
+    "totalTickets": 172,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -113,6 +113,13 @@
         "replies": 11
       },
       {
+        "key": "evelyn",
+        "name": "Evelyn",
+        "rank": "Support",
+        "tickets": 5,
+        "replies": 11
+      },
+      {
         "key": "eteal",
         "name": "/E Teal",
         "rank": "Administrator",
@@ -125,13 +132,6 @@
         "rank": "Support",
         "tickets": 4,
         "replies": 13
-      },
-      {
-        "key": "evelyn",
-        "name": "Evelyn",
-        "rank": "Support",
-        "tickets": 4,
-        "replies": 10
       },
       {
         "key": "savi",
@@ -162,6 +162,13 @@
         "replies": 5
       },
       {
+        "key": "carlitos",
+        "name": "Carlitos",
+        "rank": "LOA",
+        "tickets": 2,
+        "replies": 2
+      },
+      {
         "key": "que",
         "name": "que",
         "rank": "LOA",
@@ -188,13 +195,6 @@
         "rank": "Support",
         "tickets": 1,
         "replies": 1
-      },
-      {
-        "key": "carlitos",
-        "name": "Carlitos",
-        "rank": "LOA",
-        "tickets": 1,
-        "replies": 1
       }
     ]
   },
@@ -205,7 +205,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 170,
+      "totalTickets": 172,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -306,6 +306,13 @@
           "replies": 11
         },
         {
+          "key": "evelyn",
+          "name": "Evelyn",
+          "rank": "Support",
+          "tickets": 5,
+          "replies": 11
+        },
+        {
           "key": "eteal",
           "name": "/E Teal",
           "rank": "Administrator",
@@ -318,13 +325,6 @@
           "rank": "Support",
           "tickets": 4,
           "replies": 13
-        },
-        {
-          "key": "evelyn",
-          "name": "Evelyn",
-          "rank": "Support",
-          "tickets": 4,
-          "replies": 10
         },
         {
           "key": "savi",
@@ -355,6 +355,13 @@
           "replies": 5
         },
         {
+          "key": "carlitos",
+          "name": "Carlitos",
+          "rank": "LOA",
+          "tickets": 2,
+          "replies": 2
+        },
+        {
           "key": "que",
           "name": "que",
           "rank": "LOA",
@@ -379,13 +386,6 @@
           "key": "exe",
           "name": ".exe",
           "rank": "Support",
-          "tickets": 1,
-          "replies": 1
-        },
-        {
-          "key": "carlitos",
-          "name": "Carlitos",
-          "rank": "LOA",
           "tickets": 1,
           "replies": 1
         }
@@ -3881,8 +3881,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11705,
-  "totalTickets": 16106,
+  "transcriptCount": 11706,
+  "totalTickets": 16108,
   "staff": [
     {
       "key": "kat",
@@ -3976,18 +3976,18 @@
       "replies": 1201
     },
     {
+      "key": "carlitos",
+      "name": "Carlitos",
+      "rank": "LOA",
+      "tickets": 336,
+      "replies": 993
+    },
+    {
       "key": "fazehazard13",
       "name": "faZe_HaZard13",
       "rank": "LOA",
       "tickets": 335,
       "replies": 1010
-    },
-    {
-      "key": "carlitos",
-      "name": "Carlitos",
-      "rank": "LOA",
-      "tickets": 335,
-      "replies": 992
     },
     {
       "key": "iawalsh",
@@ -4105,8 +4105,8 @@
       "key": "evelyn",
       "name": "Evelyn",
       "rank": "Support",
-      "tickets": 106,
-      "replies": 246
+      "tickets": 107,
+      "replies": 247
     },
     {
       "key": "onthedeadhomies",

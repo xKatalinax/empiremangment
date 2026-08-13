@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-13T04:53:09.053Z",
+  "generated": "2026-08-13T04:53:39.575Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,14 +12,14 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 165,
+    "totalTickets": 169,
     "staff": [
       {
         "key": "mirasorrengail",
         "name": "Mira Sorrengail",
         "rank": "Senior Administrator",
-        "tickets": 28,
-        "replies": 98
+        "tickets": 29,
+        "replies": 99
       },
       {
         "key": "pluplu",
@@ -78,15 +78,15 @@
         "replies": 21
       },
       {
-        "key": "tartsorrengail",
-        "name": "Tart Sorrengail",
-        "rank": "Administrator",
-        "tickets": 5,
-        "replies": 21
-      },
-      {
         "key": "angelsorrengail",
         "name": "Angel Sorrengail",
+        "rank": "Administrator",
+        "tickets": 6,
+        "replies": 22
+      },
+      {
+        "key": "tartsorrengail",
+        "name": "Tart Sorrengail",
         "rank": "Administrator",
         "tickets": 5,
         "replies": 21
@@ -148,6 +148,13 @@
         "replies": 7
       },
       {
+        "key": "esrie",
+        "name": "esrie",
+        "rank": "LOA",
+        "tickets": 2,
+        "replies": 8
+      },
+      {
         "key": "amateur",
         "name": "Amateur",
         "rank": "Support",
@@ -191,14 +198,14 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 165,
+      "totalTickets": 169,
       "staff": [
         {
           "key": "mirasorrengail",
           "name": "Mira Sorrengail",
           "rank": "Senior Administrator",
-          "tickets": 28,
-          "replies": 98
+          "tickets": 29,
+          "replies": 99
         },
         {
           "key": "pluplu",
@@ -257,15 +264,15 @@
           "replies": 21
         },
         {
-          "key": "tartsorrengail",
-          "name": "Tart Sorrengail",
-          "rank": "Administrator",
-          "tickets": 5,
-          "replies": 21
-        },
-        {
           "key": "angelsorrengail",
           "name": "Angel Sorrengail",
+          "rank": "Administrator",
+          "tickets": 6,
+          "replies": 22
+        },
+        {
+          "key": "tartsorrengail",
+          "name": "Tart Sorrengail",
           "rank": "Administrator",
           "tickets": 5,
           "replies": 21
@@ -325,6 +332,13 @@
           "rank": "Senior Administrator",
           "tickets": 3,
           "replies": 7
+        },
+        {
+          "key": "esrie",
+          "name": "esrie",
+          "rank": "LOA",
+          "tickets": 2,
+          "replies": 8
         },
         {
           "key": "amateur",
@@ -3853,8 +3867,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11701,
-  "totalTickets": 16101,
+  "transcriptCount": 11703,
+  "totalTickets": 16105,
   "staff": [
     {
       "key": "kat",
@@ -3867,8 +3881,8 @@
       "key": "mirasorrengail",
       "name": "Mira Sorrengail",
       "rank": "Senior Administrator",
-      "tickets": 2043,
-      "replies": 7387
+      "tickets": 2044,
+      "replies": 7388
     },
     {
       "key": "bonnie",
@@ -3888,15 +3902,15 @@
       "key": "esrie",
       "name": "esrie",
       "rank": "LOA",
-      "tickets": 718,
-      "replies": 1763
+      "tickets": 720,
+      "replies": 1771
     },
     {
       "key": "angelsorrengail",
       "name": "Angel Sorrengail",
       "rank": "Administrator",
-      "tickets": 704,
-      "replies": 2014
+      "tickets": 705,
+      "replies": 2015
     },
     {
       "key": "savi",

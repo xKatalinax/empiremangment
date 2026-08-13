@@ -1,7 +1,7 @@
 {
   "source": "empire-ticket-counter",
   "version": 3,
-  "generated": "2026-08-13T05:45:37.327Z",
+  "generated": "2026-08-13T07:42:18.999Z",
   "rule": {
     "qualityMinWords": 2,
     "ticketMinReplies": 1,
@@ -12,7 +12,7 @@
     "start": "2026-08-07T04:00:00.000Z",
     "end": "2026-08-14T04:00:00.000Z",
     "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
-    "totalTickets": 182,
+    "totalTickets": 185,
     "staff": [
       {
         "key": "mirasorrengail",
@@ -78,6 +78,13 @@
         "replies": 21
       },
       {
+        "key": "evelyn",
+        "name": "Evelyn",
+        "rank": "Support",
+        "tickets": 7,
+        "replies": 15
+      },
+      {
         "key": "sienna3",
         "name": "Sienna <3",
         "rank": "Support",
@@ -92,11 +99,11 @@
         "replies": 22
       },
       {
-        "key": "evelyn",
-        "name": "Evelyn",
-        "rank": "Support",
+        "key": "carlitos",
+        "name": "Carlitos",
+        "rank": "LOA",
         "tickets": 6,
-        "replies": 14
+        "replies": 6
       },
       {
         "key": "tartsorrengail",
@@ -125,13 +132,6 @@
         "rank": "Administrator",
         "tickets": 5,
         "replies": 10
-      },
-      {
-        "key": "carlitos",
-        "name": "Carlitos",
-        "rank": "LOA",
-        "tickets": 5,
-        "replies": 5
       },
       {
         "key": "mrwhitaker",
@@ -169,6 +169,13 @@
         "replies": 8
       },
       {
+        "key": "giyu",
+        "name": "Giyu",
+        "rank": "LOA",
+        "tickets": 2,
+        "replies": 3
+      },
+      {
         "key": "que",
         "name": "que",
         "rank": "LOA",
@@ -181,13 +188,6 @@
         "rank": "Support",
         "tickets": 1,
         "replies": 2
-      },
-      {
-        "key": "giyu",
-        "name": "Giyu",
-        "rank": "LOA",
-        "tickets": 1,
-        "replies": 1
       },
       {
         "key": "exe",
@@ -205,7 +205,7 @@
       "end": "2026-08-14T04:00:00.000Z",
       "label": "Fri 7 Aug 12:00 AM – Fri 14 Aug 12:00 AM",
       "inProgress": true,
-      "totalTickets": 182,
+      "totalTickets": 185,
       "staff": [
         {
           "key": "mirasorrengail",
@@ -271,6 +271,13 @@
           "replies": 21
         },
         {
+          "key": "evelyn",
+          "name": "Evelyn",
+          "rank": "Support",
+          "tickets": 7,
+          "replies": 15
+        },
+        {
           "key": "sienna3",
           "name": "Sienna <3",
           "rank": "Support",
@@ -285,11 +292,11 @@
           "replies": 22
         },
         {
-          "key": "evelyn",
-          "name": "Evelyn",
-          "rank": "Support",
+          "key": "carlitos",
+          "name": "Carlitos",
+          "rank": "LOA",
           "tickets": 6,
-          "replies": 14
+          "replies": 6
         },
         {
           "key": "tartsorrengail",
@@ -318,13 +325,6 @@
           "rank": "Administrator",
           "tickets": 5,
           "replies": 10
-        },
-        {
-          "key": "carlitos",
-          "name": "Carlitos",
-          "rank": "LOA",
-          "tickets": 5,
-          "replies": 5
         },
         {
           "key": "mrwhitaker",
@@ -362,6 +362,13 @@
           "replies": 8
         },
         {
+          "key": "giyu",
+          "name": "Giyu",
+          "rank": "LOA",
+          "tickets": 2,
+          "replies": 3
+        },
+        {
           "key": "que",
           "name": "que",
           "rank": "LOA",
@@ -374,13 +381,6 @@
           "rank": "Support",
           "tickets": 1,
           "replies": 2
-        },
-        {
-          "key": "giyu",
-          "name": "Giyu",
-          "rank": "LOA",
-          "tickets": 1,
-          "replies": 1
         },
         {
           "key": "exe",
@@ -3881,8 +3881,8 @@
       "staff": []
     }
   ],
-  "transcriptCount": 11713,
-  "totalTickets": 16118,
+  "transcriptCount": 11714,
+  "totalTickets": 16121,
   "staff": [
     {
       "key": "kat",
@@ -3979,8 +3979,8 @@
       "key": "carlitos",
       "name": "Carlitos",
       "rank": "LOA",
-      "tickets": 339,
-      "replies": 996
+      "tickets": 340,
+      "replies": 997
     },
     {
       "key": "fazehazard13",
@@ -4105,8 +4105,8 @@
       "key": "evelyn",
       "name": "Evelyn",
       "rank": "Support",
-      "tickets": 108,
-      "replies": 250
+      "tickets": 109,
+      "replies": 251
     },
     {
       "key": "onthedeadhomies",
@@ -4175,8 +4175,8 @@
       "key": "giyu",
       "name": "Giyu",
       "rank": "LOA",
-      "tickets": 63,
-      "replies": 178
+      "tickets": 64,
+      "replies": 180
     },
     {
       "key": "chickensorrengail",
